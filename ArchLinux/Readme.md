@@ -325,6 +325,7 @@ sudo yaourt -S telegram-desktop
 sudo yaourt -S dbeaver
 sudo yaourt -S docker
 sudo yaourt -S docker-compose
+sudo usermod -aG docker ilinium
 ```
 
 
@@ -336,3 +337,10 @@ Tray icons: Reloaded
 AppIndicator and KStatusNotifierItem Support
 Gtk4 Desktop Icons NG (DING)
 Add to desktop
+
+
+### Удаляем мусор
+sudo pacman -R gitg
+sudo pacman -R polari
+sudo pacman -R endeavour
+sudo yaourt -R geary
