@@ -329,7 +329,7 @@ sudo usermod -aG docker ilinium
 ```
 
 
-### Gnome visua
+### Gnome visual
 ###### Расширения Gnome
 Dash to Panel
 ArchMenu
