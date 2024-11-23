@@ -154,6 +154,15 @@ mkinitcpio -p linux
 # Запустите автоматическую настройку grub
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
+### Перезагружаемся
+```bash
+# Выходим из arch-chroot
+exit
+```
+```bash
+# Перезагрузка(не забудь вынуть диск)
+reboot
+```
 
 ### Установка Графической оболчки(Gnome) и менеджера(gdm)
 ```bash
@@ -161,14 +170,10 @@ pacman -S gnome gnome-extra
 pacman -S gdm
 pacman -S networkmanager
 pacman -S sudo
-systemct enable gdm.service
-systemct enable NetworkManager.service
+systemctl enable gdm.service
+systemctl enable NetworkManager.service
 # Шрифты:
 pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family
-
-
-# Драйвер nvidia(если Nvidia)
-pacman -S nvidia
 ```
 
 ### Создание пользователя и настройка sudo
@@ -181,6 +186,28 @@ nano /etc/sudoers
 ```
 
 ### Доп по(на выбор):
+###### Лучше установить
+```bash
+pacman -S wget 
+pacman -S yajl
+pacman -S git 
+pacman -S base-devel
+```
+
+###### AUR
+```bash
+mkdir ~/OTB
+mkdir ~/OTB/gits
+cd ~/OTB/gits
+git clone https://aur.archlinux.org/package-query.git
+git clone https://aur.archlinux.org/yaourt.git
+cd package-query/
+makepkg -si && cd ../yaourt
+makepkg -si && cd ~
+
+sudo nano /etc/pacman.conf
+```
+
 ###### xorg
 ```bash
 pacman -S xorg-server xorg-utils xorg-apps
@@ -209,7 +236,7 @@ pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage 
 **xf86-video-intel** - драйвер для встроенной графики Intel;
 **xf86-video-nouveau** - свободный драйвер для карт NVIDIA;
 **xf86-video-vesa** - свободный драйвер, поддерживающий все карты, но с очень ограниченной функциональностью;
-nvidia - проприетарный драйвер для NVIDIA.
+**nvidia** - проприетарный драйвер для NVIDIA.
 ###### Пример:
 ```bash
 pacman -S xf86-video-vesa
@@ -224,3 +251,8 @@ alsamixer
 speaker-test -c 2
 ```
 
+### Gnome ПО
+```bash
+# Вернём привычные -▢X
+gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
+```
