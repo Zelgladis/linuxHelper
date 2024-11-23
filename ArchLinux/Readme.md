@@ -73,7 +73,7 @@ hwclock --systohc
 ### Локализация
 ###### Найти и раскоментить строки **en_US.UTF-8 UTF-8** и **ru_RU.UTF-8 UTF-8**
 ```bash
-pacman -S nano
+pacman -S nano --noconfirm
 nano /etc/locale.gen
 ```
 ###### Генерация локали в систему
@@ -123,10 +123,10 @@ passwd
 ```bash
 pacman -Suy
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
-pacman -S dhcpcd
+pacman -S dhcpcd --noconfirm
 systemctl enable dhcpcd
 # Установите пакет grub и efibootmgr
-pacman -S grub efibootmgr os-prober hwinfo
+pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 ```
 
 ### Установка загрузчика GRUB
@@ -147,13 +147,77 @@ pacman -S grub efibootmgr os-prober hwinfo
 
 Более того, возможности скриптов GRUB2 позволяют средствами самого загрузчика, прямо перед загрузкой ОС, генерировать меню с переменным количеством строк, для поиска и загрузки всех установленных ядер Arch Linux
 
+
+Автоматическая настройка
 ```bash
-grub-install /dev/sda --efi-dir=/efi/
+# grub-install /dev/sda --efi-dir=/efi/
+grub-install /dev/sda --efi-directory=/efi --bootloader-id=ArchLinux
 # Перегенерируйте initramfs
 mkinitcpio -p linux
 # Запустите автоматическую настройку grub
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+ручная настройка
+```bash
+grub-install /dev/sda --efi-directory=/efi --bootloader-id=ArchLinux
+mkinitcpio -p linux
+```
+создаём меню
+```bash
+nano /boot/grub/menu.cfg
+```
+
+(hd0,gpt1) необходимо найти эти разделы в grub(перезагрузившись в grub)
+вбив ls
+и ls (hd0,msdos1)/
+Ищем файлы загрузки
+```
+set default=0
+set timeout=5
+
+# Название пункта меню
+menuentry "Arch Linux" {
+    set root=(hd0,gpt1)
+    linux /boot/vmlinuz-linux root=/dev/sda1 rw quiet
+    initrd /boot/initramfs-linux.img
+}
+
+menuentry "Arch Linux (Fallback)" {
+    set root=(hd0,gpt1)
+    linux /boot/vmlinuz-linux root=/dev/sda1 rw
+    initrd /boot/initramfs-linux-fallback.img
+}
+```
+```bash
+nano /boot/grub/grub.cfg
+```
+$prefix пересенная grub внутри путь к (раздел)boot/grub
+```
+. $prefix/menu.cfg
+```
+защищаем от перезаписи grub.cfg
+```
+chattr +i /boot/grub/grub.cfg
+```
+Чтобы избежать конфликта с файлом из пакета, добавьте его имя в строку NoUpgrade в /etc/pacman.conf
+```bash
+nano /etc/pacman.conf
+```
+Добавить строку в блоке [Options]
+```
+NoUpgrade = boot/grub/grub.cfg
+```
+### Создание пользователя и настройка sudo
+```bash
+useradd -m -g users -G wheel -s /bin/bash ilinium
+passwd ilinium
+# Предоставить членам группы wheel доступ к sudo: 
+# в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
+pacman -S sudo --noconfirm
+nano /etc/sudoers
+```
+
 ### Перезагружаемся
 ```bash
 # Выходим из arch-chroot
@@ -166,32 +230,22 @@ reboot
 
 ### Установка Графической оболчки(Gnome) и менеджера(gdm)
 ```bash
-pacman -S gnome gnome-extra
-pacman -S gdm
-pacman -S networkmanager
-pacman -S sudo
+sudo pacman -S gnome gnome-extra --noconfirm
+sudo pacman -S gdm --noconfirm
+sudo pacman -S networkmanager --noconfirm
 systemctl enable gdm.service
 systemctl enable NetworkManager.service
 # Шрифты:
-pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family
-```
-
-### Создание пользователя и настройка sudo
-```bash
-useradd -m -g users -G wheel -s /bin/bash ilinium
-passwd ilinium
-# Предоставить членам группы wheel доступ к sudo: 
-# в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
-nano /etc/sudoers
+sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family --noconfirm
 ```
 
 ### Доп по(на выбор):
 ###### Лучше установить
 ```bash
-pacman -S wget 
-pacman -S yajl
-pacman -S git 
-pacman -S base-devel
+sudo pacman -S wget --noconfirm
+sudo pacman -S yajl --noconfirm
+sudo pacman -S git --noconfirm
+sudo pacman -S base-devel --noconfirm
 ```
 
 ###### AUR
@@ -204,15 +258,13 @@ git clone https://aur.archlinux.org/yaourt.git
 cd package-query/
 makepkg -si && cd ../yaourt
 makepkg -si && cd ~
-
-sudo nano /etc/pacman.conf
 ```
 
 ###### xorg
 ```bash
-pacman -S xorg-server xorg-utils xorg-apps
-pacman -S xorg
-pacman -S xorg-xinit xterm xorg-xclock
+sudo pacman -S xorg-server xorg-apps --noconfirm
+sudo pacman -S xorg --noconfirm
+sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
 
 xorg-drivers # Ниже есть драйвера но это вроде тоже
 Xorg :0 -configure # После драверов
@@ -222,10 +274,10 @@ cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 
 ###### wayland
 ```bash
-pacman -Qi wayland
-sudo pacman -S --needed wayland
-pacman -S --needed xorg-xwayland xorg-xlsclients glfw-wayland
-pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome-multi-writer adwaita-icon-theme xdg-user-dirs-gtk fwupd arc-gtk-theme
+sudo pacman -Qi wayland --noconfirm
+sudo pacman -S --needed wayland --noconfirm
+sudo pacman -S --needed xorg-xwayland xorg-xlsclients glfw-wayland --noconfirm
+sudo pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome-multi-writer adwaita-icon-theme xdg-user-dirs-gtk fwupd arc-gtk-theme --noconfirm
 ```
 
 
@@ -239,12 +291,12 @@ pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage 
 **nvidia** - проприетарный драйвер для NVIDIA.
 ###### Пример:
 ```bash
-pacman -S xf86-video-vesa
+sudo pacman -S xf86-video-vesa --noconfirm
 ```
 
 ### Драйвера audio
 ```bash
-pacman -S alsa-utils alsa-plugins
+sudo pacman -S alsa-utils alsa-plugins --noconfirm
 # Настройка громкости
 alsamixer
 # test
@@ -256,3 +308,31 @@ speaker-test -c 2
 # Вернём привычные -▢X
 gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
 ```
+
+### ПО
+```bash
+sudo pacman -Syu gnome-browser-connector
+sudo pacman -S gcc perl make --noconfirm
+flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo pacman -S firefox
+flatpak install flathub org.gnome.Extensions
+flatpak install flathub com.mattjakeman.ExtensionManager
+flatpak install flathub com.visualstudio.code
+flatpak install flathub com.jetbrains.IntelliJ-IDEA-Community
+sudo yaourt -S kate
+sudo yaourt -S keepassxc
+sudo yaourt -S telegram-desktop
+sudo yaourt -S dbeaver
+sudo yaourt -S docker
+sudo yaourt -S docker-compose
+```
+
+
+### Gnome visua
+###### Расширения Gnome
+Dash to Panel
+ArchMenu
+Tray icons: Reloaded
+AppIndicator and KStatusNotifierItem Support
+Gtk4 Desktop Icons NG (DING)
+Add to desktop
