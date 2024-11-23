@@ -328,6 +328,16 @@ sudo yaourt -S docker-compose
 sudo usermod -aG docker ilinium
 ```
 
+WINE
+```bash
+none
+```
+
+### Terminal Visual
+```bash
+export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
+nano ~/.bashrc
+```
 
 ### Gnome visual
 ###### Расширения Gnome
