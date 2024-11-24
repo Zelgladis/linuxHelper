@@ -328,9 +328,17 @@ sudo yaourt -S docker-compose
 sudo usermod -aG docker ilinium
 ```
 
-WINE
+##### WINE
 ```bash
-none
+# Enable multilib
+nano /etc/pacman.conf
+# find [multilib] and decoment it
+sudo pacman -S wine wine-mono wine-gecko
+winecfg # Настройка wine
+```
+```
+[multilib]
+Include = /etc/pacman.d/mirrorlist
 ```
 
 ### Terminal Visual
@@ -339,18 +347,21 @@ export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
 nano ~/.bashrc
 ```
 
+
 ### Gnome visual
 ###### Расширения Gnome
-Dash to Panel
-ArchMenu
-Tray icons: Reloaded
-AppIndicator and KStatusNotifierItem Support
-Gtk4 Desktop Icons NG (DING)
-Add to desktop
+- Dash to Panel
+- ArchMenu
+- Tray icons: Reloaded
+- AppIndicator and KStatusNotifierItem Support
+- Gtk4 Desktop Icons NG (DING)
+- Add to desktop
 
 
-### Удаляем мусор
+### Удаляем ненужное(для меня) предустановленное по
+```bash
 sudo pacman -R gitg
 sudo pacman -R polari
 sudo pacman -R endeavour
 sudo yaourt -R geary
+```
