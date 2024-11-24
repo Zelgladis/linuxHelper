@@ -335,6 +335,11 @@ nano /etc/pacman.conf
 # find [multilib] and decoment it
 sudo pacman -S wine wine-mono wine-gecko
 winecfg # Настройка wine
+
+# Библиотеки WineTricks
+cd $HOME/Downloads
+wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+chmod +x winetricks
 ```
 ```
 [multilib]
