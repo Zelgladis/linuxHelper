@@ -93,7 +93,7 @@ vim /etc/vconsole.conf
 ```
 ```text
 KEYMAP=ru
-FONT=cyr-sun16
+FONT=ter-c32b
 ```
 
 ### Настройка сети
@@ -111,7 +111,7 @@ vim /etc/hosts
 ```text
 127.0.0.1 localhost
 ::1 localhot
-127.0.1.1 ariko.myDomain ariko
+127.0.1.1 ariko.mydomain ariko
 ```
 
 ### Пароль суперпользователя
@@ -147,11 +147,12 @@ pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 
 Более того, возможности скриптов GRUB2 позволяют средствами самого загрузчика, прямо перед загрузкой ОС, генерировать меню с переменным количеством строк, для поиска и загрузки всех установленных ядер Arch Linux
 
-
+### LEGACY
 Автоматическая настройка
 ```bash
 # grub-install /dev/sda --efi-dir=/efi/
 grub-install /dev/sda --efi-directory=/efi --bootloader-id=ArchLinux
+
 # Перегенерируйте initramfs
 mkinitcpio -p linux
 # Запустите автоматическую настройку grub
@@ -178,15 +179,21 @@ set timeout=5
 
 # Название пункта меню
 menuentry "Arch Linux" {
-    set root=(hd0,gpt1)
+    set root=(hd0,msdos1)
     linux /boot/vmlinuz-linux root=/dev/sda1 rw quiet
     initrd /boot/initramfs-linux.img
 }
 
 menuentry "Arch Linux (Fallback)" {
-    set root=(hd0,gpt1)
+    set root=(hd0,msdos1)
     linux /boot/vmlinuz-linux root=/dev/sda1 rw
     initrd /boot/initramfs-linux-fallback.img
+}
+
+# Для Windows legacy
+menuentry "Windows 10 (Legacy)" {
+    set root='hd0,msdos2'
+    chainloader +1
 }
 ```
 ```bash
@@ -194,8 +201,39 @@ vim /boot/grub/grub.cfg
 ```
 $prefix пересенная grub внутри путь к (раздел)boot/grub
 ```
-. $prefix/menu.cfg
+source $prefix/menu.cfg
 ```
+
+### EFI
+```bash
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
+mkinitcpio -p linux
+
+vim /boot/grub/grub.cfg
+'source $prefix/menu.cfg'
+
+vim /boot/grub/menu.cfg
+```
+##### MenuEFI
+```text
+menuentry "Arch Linux" {
+    set root=(hd1,gpt1)
+    linux /boot/vmlinuz-linux root=/dev/sdb1 rw quiet
+    initrd /boot//initramfs-linux.img
+}
+
+menuentry "Arch Linux (Fallback)" {
+    set root=(hd1,gpt1)
+    linux /boot//vmlinuz-linux root=/dev/sdb1 rw
+    initrd /boot//initramfs-linux-fallback.img
+}
+menuentry "Windows 10 (EFI)" {
+    set root=(hd0,gpt1)
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+```
+
+### Для обоих версий ручной настройки
 защищаем от перезаписи grub.cfg
 ```
 chattr +i /boot/grub/grub.cfg
@@ -208,6 +246,8 @@ vim /etc/pacman.conf
 ```
 NoUpgrade = boot/grub/grub.cfg
 ```
+
+
 ### Создание пользователя и настройка sudo
 ```bash
 useradd -m -g users -G wheel -s /bin/bash ilinium
