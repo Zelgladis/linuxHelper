@@ -1,0 +1,18 @@
+services:
+    pg:
+        image: postgres:latest
+        container_name: pgdb
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./data:/data/postgres:rw
+        cap_add:
+            - IPC_LOCK
+        env_file:
+            - .menvs
+        command: sh -c "chown postgres data && docker-entrypoint.sh postgres"
+        networks:
+            - mynet
+networks:
+  mynet:
+    driver: bridge

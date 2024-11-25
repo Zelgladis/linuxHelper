@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - .menvs
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres-db:/var/lib/postgresql/data:rw
+
+  git:
+    image: gitea/gitea:1.20.5-rootless
+    env_file:
+      - .menvs
+    restart: always
+    volumes:
+      - ./data:/var/lib/gitea:rw
+      - ./config:/etc/gitea:rw
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000"
+      - "2222:2222"
+    depends_on:
+      - db
