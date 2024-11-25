@@ -73,8 +73,8 @@ hwclock --systohc
 ### Локализация
 ###### Найти и раскоментить строки **en_US.UTF-8 UTF-8** и **ru_RU.UTF-8 UTF-8**
 ```bash
-pacman -S nano --noconfirm
-nano /etc/locale.gen
+pacman -S vim vi nano micro --noconfirm
+vim /etc/locale.gen
 ```
 ###### Генерация локали в систему
 ```bash
@@ -82,14 +82,14 @@ locale-gen
 ```
 ###### Создайте файл **/etc/locale.conf** и задайте переменной LANG необходимое значение
 ```bash
-nano /etc/locale.conf
+vim /etc/locale.conf
 ```
 ```text
 LANG=ru_RU.UTF-8
 ```
 ###### Если вы меняли раскладку клавиатуры или шрифт, сделайте эти изменения постоянными, прописав их в файле **vconsole.conf**: 
 ```bash
-nano /etc/vconsole.conf
+vim /etc/vconsole.conf
 ```
 ```text
 KEYMAP=ru
@@ -99,14 +99,14 @@ FONT=cyr-sun16
 ### Настройка сети
 ###### Создайте файл hostname: 
 ```bash
-nano /etc/hostname
+vim /etc/hostname
 ```
 ```text
 ariko
 ```
 ###### Отредактируйте файл hoss:
  ```bash
-nano /etc/hosts
+vim /etc/hosts
 ```
 ```text
 127.0.0.1 localhost
@@ -165,7 +165,7 @@ mkinitcpio -p linux
 ```
 создаём меню
 ```bash
-nano /boot/grub/menu.cfg
+vim /boot/grub/menu.cfg
 ```
 
 (hd0,gpt1) необходимо найти эти разделы в grub(перезагрузившись в grub)
@@ -190,7 +190,7 @@ menuentry "Arch Linux (Fallback)" {
 }
 ```
 ```bash
-nano /boot/grub/grub.cfg
+vim /boot/grub/grub.cfg
 ```
 $prefix пересенная grub внутри путь к (раздел)boot/grub
 ```
@@ -202,7 +202,7 @@ chattr +i /boot/grub/grub.cfg
 ```
 Чтобы избежать конфликта с файлом из пакета, добавьте его имя в строку NoUpgrade в /etc/pacman.conf
 ```bash
-nano /etc/pacman.conf
+vim /etc/pacman.conf
 ```
 Добавить строку в блоке [Options]
 ```
@@ -215,7 +215,7 @@ passwd ilinium
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
-nano /etc/sudoers
+vim /etc/sudoers
 ```
 
 ### Перезагружаемся
@@ -331,7 +331,7 @@ sudo usermod -aG docker ilinium
 ##### WINE
 ```bash
 # Enable multilib
-nano /etc/pacman.conf
+vim /etc/pacman.conf
 # find [multilib] and decoment it
 sudo pacman -S wine wine-mono wine-gecko
 winecfg # Настройка wine
@@ -349,7 +349,7 @@ Include = /etc/pacman.d/mirrorlist
 ### Terminal Visual
 ```bash
 export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
-nano ~/.bashrc
+vim ~/.bashrc
 ```
 
 
