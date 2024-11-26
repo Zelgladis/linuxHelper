@@ -356,21 +356,21 @@ gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize
 
 ### ПО
 ```bash
-sudo pacman -Syu gnome-browser-connector
+sudo pacman -Syu gnome-browser-connector --noconfirm
 sudo pacman -S gcc perl make --noconfirm
 flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo pacman -S firefox
+sudo pacman -S firefox --noconfirm
 flatpak install flathub org.gnome.Extensions
 flatpak install flathub com.mattjakeman.ExtensionManager
 flatpak install flathub com.visualstudio.code
 flatpak install flathub com.jetbrains.IntelliJ-IDEA-Community
-sudo yaourt -S kate
-sudo yaourt -S keepassxc
-sudo yaourt -S telegram-desktop
-sudo yaourt -S dbeaver
-sudo yaourt -S docker
-sudo yaourt -S docker-compose
-sudo usermod -aG docker ilinium
+yaourt -S kate --noconfirm
+yaourt -S keepassxc --noconfirm
+yaourt -S telegram-desktop --noconfirm
+yaourt -S dbeaver --noconfirm
+yaourt -S docker --noconfirm
+yaourt -S docker-compose --noconfirm
+usermod -aG docker ilinium
 ```
 
 ##### WINE
@@ -379,7 +379,7 @@ sudo usermod -aG docker ilinium
 vim /etc/pacman.conf
 # find [multilib] and decoment it
 sudo pacman -S wine wine-mono wine-gecko
-sudo yaourt -S Bottles
+yaourt -S Bottles
 winecfg # Настройка wine
 
 # Библиотеки WineTricks
@@ -416,7 +416,7 @@ vim ~/.bashrc
 sudo pacman -R gitg --noconfirm
 sudo pacman -R polari --noconfirm
 sudo pacman -R endeavour --noconfirm
-sudo yaourt -R geary --noconfirm
+yaourt -R geary --noconfirm
 ```
 
 ### Удаляем игры
