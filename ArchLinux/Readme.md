@@ -358,12 +358,11 @@ gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize
 ```bash
 sudo pacman -Syu gnome-browser-connector --noconfirm
 sudo pacman -S gcc perl make --noconfirm
-flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo pacman -S firefox --noconfirm
-flatpak install flathub org.gnome.Extensions
-flatpak install flathub com.mattjakeman.ExtensionManager
-flatpak install flathub com.visualstudio.code
-flatpak install flathub com.jetbrains.IntelliJ-IDEA-Community
+yaourt -S visual-studio-code-bin
+yaourt -S extension-manager
+yaourt -S intellij-idea-community-edition
+yaourt -S gnome-extensions-cli
 yaourt -S kate --noconfirm
 yaourt -S keepassxc --noconfirm
 yaourt -S telegram-desktop --noconfirm
@@ -371,6 +370,7 @@ yaourt -S dbeaver --noconfirm
 yaourt -S docker --noconfirm
 yaourt -S docker-compose --noconfirm
 usermod -aG docker ilinium
+flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
 ##### WINE
