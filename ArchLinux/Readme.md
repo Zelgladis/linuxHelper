@@ -413,8 +413,29 @@ vim ~/.bashrc
 
 ### Удаляем ненужное(для меня) предустановленное по
 ```bash
-sudo pacman -R gitg
-sudo pacman -R polari
-sudo pacman -R endeavour
-sudo yaourt -R geary
+sudo pacman -R gitg --noconfirm
+sudo pacman -R polari --noconfirm
+sudo pacman -R endeavour --noconfirm
+sudo yaourt -R geary --noconfirm
+```
+
+### Удаляем игры
+```bash
+yaourt -R gnome-sudoku --noconfirm
+yaourt -R gnome-mines --noconfirm
+yaourt -R five-or-more --noconfirm
+yaourt -R gnome-robots --noconfirm
+yaourt -R gnome-mahjongg --noconfirm
+yaourt -R gnome-2048 --noconfirm
+yaourt -R gnome-tetravex --noconfirm
+yaourt -R hitori --noconfirm
+yaourt -R gnome-nibbles --noconfirm
+yaourt -R gnome-taquin --noconfirm
+yaourt -R gnome-klotski --noconfirm
+yaourt -R gnome-chess --noconfirm
+yaourt -R four-in-a-row --noconfirm
+yaourt -R iagno --noconfirm
+yaourt -R swell-foop --noconfirm
+yaourt -R tali --noconfirm
+yaourt -R quadrapassel --noconfirm
 ```
