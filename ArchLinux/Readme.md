@@ -176,8 +176,8 @@ vim /boot/grub/menu.cfg
 
 (hd0,gpt1) необходимо найти эти разделы в grub(перезагрузившись в grub)
 вбив ls
-и ls (hd0,msdos1)/
-Ищем файлы загрузки
+и ls (hd0,msdos1)
+### Ищем файлы загрузки
 ```
 set default=0
 set timeout=5
@@ -215,12 +215,14 @@ grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux 
 mkinitcpio -p linux
 
 vim /boot/grub/grub.cfg
-'source $prefix/menu.cfg'
+```
+source $prefix/menu.cfg
+```
 
 vim /boot/grub/menu.cfg
 ```
 ##### MenuEFI
-```text
+```
 menuentry "Arch Linux" {
     set root=(hd1,gpt1)
     linux /boot/vmlinuz-linux root=/dev/sdb1 rw quiet
@@ -273,16 +275,7 @@ exit
 reboot
 ```
 ---
-### Установка Графической оболчки(Gnome) и менеджера(gdm)
-```bash
-sudo pacman -S gnome gnome-extra --noconfirm
-sudo pacman -S gdm --noconfirm
-sudo pacman -S networkmanager --noconfirm
-systemctl enable gdm.service
-systemctl enable NetworkManager.service
-# Шрифты:
-sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family --noconfirm
-```
+
 
 ### Доп по(на выбор):
 ###### Лучше установить
@@ -291,6 +284,11 @@ sudo pacman -S wget --noconfirm
 sudo pacman -S yajl --noconfirm
 sudo pacman -S git --noconfirm
 sudo pacman -S base-devel --noconfirm
+```
+
+# Шрифты:
+```bash
+sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family --noconfirm
 ```
 
 ###### AUR
@@ -304,27 +302,6 @@ cd package-query/
 makepkg -si && cd ../yaourt
 makepkg -si && cd ~
 ```
-
-###### xorg
-```bash
-sudo pacman -S xorg-server xorg-apps --noconfirm
-sudo pacman -S xorg --noconfirm
-sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
-
-xorg-drivers # Ниже есть драйвера но это вроде тоже
-Xorg :0 -configure # После драверов
-cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
-
-```
-
-###### wayland
-```bash
-sudo pacman -Qi wayland --noconfirm
-sudo pacman -S --needed wayland --noconfirm
-sudo pacman -S --needed xorg-xwayland xorg-xlsclients glfw-wayland --noconfirm
-sudo pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome-multi-writer adwaita-icon-theme xdg-user-dirs-gtk fwupd arc-gtk-theme --noconfirm
-```
-
 
 ### Дравйвера Video
 
@@ -348,21 +325,27 @@ alsamixer
 speaker-test -c 2
 ```
 
-### Gnome ПО
+---
+
+###### xorg
 ```bash
-# Вернём привычные -▢X
-gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
+# sudo pacman -S xorg-server xorg-apps --noconfirm
+# sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
+sudo pacman -S xorg --noconfirm
+
+xorg-drivers # Ниже есть драйвера но это вроде тоже
+Xorg :0 -configure # После драверов
+cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 ```
 
+### !!! AFTER VISUAL MANAGER !!!
 ### ПО
 ```bash
 sudo pacman -Syu gnome-browser-connector --noconfirm
 sudo pacman -S gcc perl make --noconfirm
 sudo pacman -S firefox --noconfirm
 yaourt -S visual-studio-code-bin
-yaourt -S extension-manager
 yaourt -S intellij-idea-community-edition
-yaourt -S gnome-extensions-cli
 yaourt -S kate --noconfirm
 yaourt -S keepassxc --noconfirm
 yaourt -S telegram-desktop --noconfirm
@@ -398,19 +381,6 @@ export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
 vim ~/.bashrc
 ```
 
-
-### Gnome visual
-###### Шрифты
-Установить в терминале шрифт Dejavu-sans-mono 14
-###### Расширения Gnome
-- Dash to Panel
-- ArchMenu
-- Tray icons: Reloaded
-- AppIndicator and KStatusNotifierItem Support
-- Gtk4 Desktop Icons NG (DING)
-- Add to desktop
-
-
 ### Удаляем ненужное(для меня) предустановленное по
 ```bash
 sudo pacman -R gitg --noconfirm
@@ -419,23 +389,3 @@ sudo pacman -R endeavour --noconfirm
 yaourt -R geary --noconfirm
 ```
 
-### Удаляем игры
-```bash
-yaourt -R gnome-sudoku --noconfirm
-yaourt -R gnome-mines --noconfirm
-yaourt -R five-or-more --noconfirm
-yaourt -R gnome-robots --noconfirm
-yaourt -R gnome-mahjongg --noconfirm
-yaourt -R gnome-2048 --noconfirm
-yaourt -R gnome-tetravex --noconfirm
-yaourt -R hitori --noconfirm
-yaourt -R gnome-nibbles --noconfirm
-yaourt -R gnome-taquin --noconfirm
-yaourt -R gnome-klotski --noconfirm
-yaourt -R gnome-chess --noconfirm
-yaourt -R four-in-a-row --noconfirm
-yaourt -R iagno --noconfirm
-yaourt -R swell-foop --noconfirm
-yaourt -R tali --noconfirm
-yaourt -R quadrapassel --noconfirm
-```
