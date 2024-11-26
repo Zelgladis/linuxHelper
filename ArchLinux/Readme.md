@@ -394,6 +394,8 @@ vim ~/.bashrc
 
 
 ### Gnome visual
+###### Шрифты
+Установить в терминале шрифт Dejavu-sans-mono 14
 ###### Расширения Gnome
 - Dash to Panel
 - ArchMenu
