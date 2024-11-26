@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  archlinux:
+    image: archim
+    container_name: arhi
+    hostname: arhi
+    environment:
+      - JSERVER=jenkins
+    ports:
+      - '223:22'
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge

@@ -374,6 +374,7 @@ sudo usermod -aG docker ilinium
 vim /etc/pacman.conf
 # find [multilib] and decoment it
 sudo pacman -S wine wine-mono wine-gecko
+sudo yaourt -S Bottles
 winecfg # Настройка wine
 
 # Библиотеки WineTricks
