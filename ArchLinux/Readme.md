@@ -1,3 +1,5 @@
+# Установка ArchLinux
+---
 #### Установка раскладки клавиатуры и шрифта
 ```bash
 loadkeys ru
@@ -13,7 +15,7 @@ setfont ter-c32b # big
 timedatectl
 ```
 
-### Разметка дисков
+#### Разметка дисков
 
 ```bash
 fdisk -l
@@ -24,7 +26,7 @@ cfdisk /dev/sda
 ###### Нажимает n для создания необходимых раздлв(личное предпочтения)
 ```bash
 /dev/sda1 # ROOT
-/dev/sda2 # Efi 1G
+/dev/sda2 # Efi 1G нужен только для efi
 /dev/sda3 # SWAP 5+G
 # w для записи и выхода
 ```
@@ -52,21 +54,23 @@ mount --mkdir /dev/sda2 /mnt/efi
 swapon /dev/sda3
 ```
 
-### Установка ArchLinux
+#### Установка ArchLinux в /mnt
 ```bash
 pacstrap /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
+---
 
-###### Предварительная настройка ArchLinux
+# Предварительная настройка ArchLinux
+---
 ```bash
 arch-chroot /mnt
 ```
-###### **Europe/Saratov** ваш регион/город
+#### **Europe/Saratov** ваш регион/город
 ```bash
 ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime 
 ```
-###### Синхронизация часов
+#### Синхронизация часов
 ```bash
 hwclock --systohc
 ```
@@ -84,18 +88,19 @@ locale-gen
 ```bash
 vim /etc/locale.conf
 ```
-```text
-LANG=ru_RU.UTF-8
+``` 
+LANG=ru_RU.UTF-8 
 ```
+
 ###### Если вы меняли раскладку клавиатуры или шрифт, сделайте эти изменения постоянными, прописав их в файле **vconsole.conf**: 
 ```bash
 vim /etc/vconsole.conf
-```
-```text
+``` 
+``` 
 KEYMAP=ru
-FONT=ter-c32b
+FONT=ter-c32b 
 ```
-
+--- ---
 ### Настройка сети
 ###### Создайте файл hostname: 
 ```bash
@@ -113,13 +118,13 @@ vim /etc/hosts
 ::1 localhot
 127.0.1.1 ariko.mydomain ariko
 ```
-
-### Пароль суперпользователя
+---
+##### Пароль суперпользователя
 ```bash
 passwd
 ```
 
-### Доп по(необходимое):
+##### Доп по(необходимое):
 ```bash
 pacman -Suy
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
@@ -267,7 +272,7 @@ exit
 # Перезагрузка(не забудь вынуть диск)
 reboot
 ```
-
+---
 ### Установка Графической оболчки(Gnome) и менеджера(gdm)
 ```bash
 sudo pacman -S gnome gnome-extra --noconfirm
