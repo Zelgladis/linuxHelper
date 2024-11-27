@@ -219,23 +219,25 @@ vim /boot/grub/grub.cfg
 source $prefix/menu.cfg
 ```
 
+#### Через lsblk -f найдите UUID нужных дисков для Windows это диск с EFI(FAT) для linux диск с ROOT
+
 vim /boot/grub/menu.cfg
 ```
 ##### MenuEFI
 ```
 menuentry "Arch Linux" {
-    set root=(hd1,gpt1)
-    linux /boot/vmlinuz-linux root=/dev/sdb1 rw quiet
+    search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
+    linux /boot/vmlinuz-linux root=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw quiet
     initrd /boot//initramfs-linux.img
 }
 
 menuentry "Arch Linux (Fallback)" {
-    set root=(hd1,gpt1)
-    linux /boot//vmlinuz-linux root=/dev/sdb1 rw
+    search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
+    linux /boot//vmlinuz-linux root=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw
     initrd /boot//initramfs-linux-fallback.img
 }
 menuentry "Windows 10 (EFI)" {
-    set root=(hd0,gpt1)
+    search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
     chainloader /EFI/Microsoft/Boot/bootmgfw.efi
 }
 ```
