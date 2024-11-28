@@ -1,6 +1,7 @@
 ### GNOME
 ### Установка Графической оболчки(Gnome) и менеджера(gdm)
 ```bash
+sudo pacman -Syu gnome-browser-connector --noconfirm
 sudo pacman -S gnome gnome-extra --noconfirm
 sudo pacman -S gdm --noconfirm
 sudo pacman -S networkmanager --noconfirm

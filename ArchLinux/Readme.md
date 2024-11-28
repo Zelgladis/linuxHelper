@@ -278,6 +278,11 @@ reboot
 ```
 ---
 
+### Terminal Visual
+```bash
+export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
+vim ~/.bashrc
+```
 
 ### Доп по(на выбор):
 ###### Лучше установить
@@ -333,6 +338,7 @@ speaker-test -c 2
 ```bash
 # sudo pacman -S xorg-server xorg-apps --noconfirm
 # sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
+# sudo pacman -S xorg-drivers
 sudo pacman -S xorg --noconfirm
 
 xorg-drivers # Ниже есть драйвера но это вроде тоже
@@ -343,7 +349,7 @@ cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 ### !!! AFTER VISUAL MANAGER !!!
 ### ПО
 ```bash
-sudo pacman -Syu gnome-browser-connector --noconfirm
+
 sudo pacman -S gcc perl make --noconfirm
 sudo pacman -S firefox --noconfirm
 yaourt -S visual-studio-code-bin
@@ -354,7 +360,7 @@ yaourt -S telegram-desktop --noconfirm
 yaourt -S dbeaver --noconfirm
 yaourt -S docker --noconfirm
 yaourt -S docker-compose --noconfirm
-usermod -aG docker ilinium
+sudo usermod -aG docker ilinium
 flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
@@ -375,12 +381,6 @@ chmod +x winetricks
 ```
 [multilib]
 Include = /etc/pacman.d/mirrorlist
-```
-
-### Terminal Visual
-```bash
-export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
-vim ~/.bashrc
 ```
 
 ### Удаляем ненужное(для меня) предустановленное по
