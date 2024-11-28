@@ -1,5 +1,22 @@
 #!/bin/bash
 
+VisMan='NONE'
+
+if [ VisMan == 'KDE' ]; then
+    sudo pacman -S --needed xorg
+    #sudo pacman -S --needed plasma kde-applications
+
+    sudo pacman -S --needed sddm
+    spawn sudo pacman -S --needed plasma kde-applications
+        expect "первый вопрос" { send "2\r" }
+        expect "второй вопрос" { send "3\r" }
+        expect "третий вопрос" { send "96\r" }
+    interact
+
+    sudo systemctl enable sddm
+    sudo systemctl enable NetworkManager
+fi
+
 # Visual Console start
 sudo sed 's/PS1=/#PS1=/' ~/.bashrc -i
 sudo echo 'PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "' >> ~/.bashrc
