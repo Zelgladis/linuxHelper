@@ -201,6 +201,7 @@ menuentry "Windows 10 (Legacy)" {
     chainloader +1
 }
 ```
+
 ```bash
 vim /boot/grub/grub.cfg
 ```
