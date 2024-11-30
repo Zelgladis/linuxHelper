@@ -204,6 +204,7 @@ menuentry "Windows 10 (Legacy)" {
     chainloader +1
 }
 ```
+
 ```bash
 vim /boot/grub/grub.cfg
 ```
@@ -385,6 +386,11 @@ chmod +x winetricks
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 ```
+
+### VPN eanbled
+sudo systemctl enable vpnagentd.service
+sudo systemctl start vpnagentd.service
+
 
 ### Удаляем ненужное(для меня) предустановленное по
 ```bash
