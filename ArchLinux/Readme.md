@@ -78,6 +78,9 @@ hwclock --systohc
 ###### Найти и раскоментить строки **en_US.UTF-8 UTF-8** и **ru_RU.UTF-8 UTF-8**
 ```bash
 pacman -S vim vi nano micro --noconfirm
+sed -i 's/#en_US.UTF\-8 UTF\-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sed -i 's/#ru_RU.UTF\-8 UTF\-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
+
 vim /etc/locale.gen
 ```
 ###### Генерация локали в систему
@@ -86,38 +89,38 @@ locale-gen
 ```
 ###### Создайте файл **/etc/locale.conf** и задайте переменной LANG необходимое значение
 ```bash
-vim /etc/locale.conf
-```
-``` 
-LANG=ru_RU.UTF-8 
+# vim /etc/locale.conf
+echo 'LANG=ru_RU.UTF-8' >  /etc/locale.conf
 ```
 
 ###### Если вы меняли раскладку клавиатуры или шрифт, сделайте эти изменения постоянными, прописав их в файле **vconsole.conf**: 
 ```bash
 vim /etc/vconsole.conf
+echo 'KEYMAP=ru
+FONT=cyr-sun16' > /etc/vconsole.conf
 ``` 
 ``` 
 KEYMAP=ru
-FONT=ter-c32b 
+FONT=cyr-sun16
 ```
 --- ---
 ### Настройка сети
 ###### Создайте файл hostname: 
 ```bash
-vim /etc/hostname
+#vim /etc/hostname
+echo 'ariko' > /etc/hostname
 ```
 ```text
 ariko
 ```
 ###### Отредактируйте файл hoss:
  ```bash
-vim /etc/hosts
-```
-```text
-127.0.0.1 localhost
+#vim /etc/hosts
+echo '127.0.0.1 localhost
 ::1 localhot
-127.0.1.1 ariko.mydomain ariko
+127.0.1.1 ariko.localdomain ariko' >> /etc/hosts
 ```
+
 ---
 ##### Пароль суперпользователя
 ```bash
@@ -227,13 +230,13 @@ vim /boot/grub/menu.cfg
 ```
 menuentry "Arch Linux" {
     search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
-    linux /boot/vmlinuz-linux root=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw quiet
+    linux /boot/vmlinuz-linux root=UUID=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw quiet
     initrd /boot//initramfs-linux.img
 }
 
 menuentry "Arch Linux (Fallback)" {
     search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
-    linux /boot//vmlinuz-linux root=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw
+    linux /boot//vmlinuz-linux root=UIID=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw
     initrd /boot//initramfs-linux-fallback.img
 }
 menuentry "Windows 10 (EFI)" {
@@ -336,9 +339,9 @@ speaker-test -c 2
 
 ###### xorg
 ```bash
-# sudo pacman -S xorg-server xorg-apps --noconfirm
-# sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
-# sudo pacman -S xorg-drivers
+sudo pacman -S xorg-server xorg-apps --noconfirm
+sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
+sudo pacman -S xorg-drivers --noconfirm
 sudo pacman -S xorg --noconfirm
 
 xorg-drivers # Ниже есть драйвера но это вроде тоже
