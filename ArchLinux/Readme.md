@@ -81,7 +81,7 @@ pacman -S vim vi nano micro --noconfirm
 sed -i 's/#en_US.UTF\-8 UTF\-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 sed -i 's/#ru_RU.UTF\-8 UTF\-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
 
-vim /etc/locale.gen
+# vim /etc/locale.gen
 ```
 ###### Генерация локали в систему
 ```bash
@@ -95,7 +95,7 @@ echo 'LANG=ru_RU.UTF-8' >  /etc/locale.conf
 
 ###### Если вы меняли раскладку клавиатуры или шрифт, сделайте эти изменения постоянными, прописав их в файле **vconsole.conf**: 
 ```bash
-vim /etc/vconsole.conf
+# vim /etc/vconsole.conf
 echo 'KEYMAP=ru
 FONT=cyr-sun16' > /etc/vconsole.conf
 ``` 
@@ -158,9 +158,10 @@ pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 ### LEGACY
 Автоматическая настройка
 ```bash
-# grub-install /dev/sda --efi-dir=/efi/
-grub-install /dev/sda --efi-directory=/efi --bootloader-id=ArchLinux
-
+# easy
+grub-install /dev/sda
+mkinitcpio -p linux
+grub-mkconfig -o /boot/grub/grub.cfg
 # Перегенерируйте initramfs
 mkinitcpio -p linux
 # Запустите автоматическую настройку grub
@@ -263,12 +264,14 @@ NoUpgrade = boot/grub/grub.cfg
 
 ### Создание пользователя и настройка sudo
 ```bash
-useradd -m -g users -G wheel -s /bin/bash ilinium
-passwd ilinium
+useradd -m -g users -G wheel -s /bin/bash mio
+passwd mio
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
 vim /etc/sudoers
+pacman -S openssh --noconfirm
+systemctl enable sshd
 ```
 
 ### Перезагружаемся
