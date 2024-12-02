@@ -77,7 +77,7 @@ hwclock --systohc
 ### Локализация
 ###### Найти и раскоментить строки **en_US.UTF-8 UTF-8** и **ru_RU.UTF-8 UTF-8**
 ```bash
-pacman -S vim vi nano micro --noconfirm
+pacman -S gvim vi nano micro --noconfirm
 sed -i 's/#en_US.UTF\-8 UTF\-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 sed -i 's/#ru_RU.UTF\-8 UTF\-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
 
