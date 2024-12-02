@@ -298,7 +298,7 @@ sudo pacman -S wget --noconfirm
 sudo pacman -S yajl --noconfirm
 sudo pacman -S git --noconfirm
 sudo pacman -S base-devel --noconfirm
-sudo pacman -S linux-headers --noconfirm
+sudo pacman -S linux-headers dkms --noconfirm
 ```
 
 # Шрифты:
