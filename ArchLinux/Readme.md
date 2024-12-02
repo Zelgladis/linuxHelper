@@ -298,6 +298,7 @@ sudo pacman -S wget --noconfirm
 sudo pacman -S yajl --noconfirm
 sudo pacman -S git --noconfirm
 sudo pacman -S base-devel --noconfirm
+sudo pacman -S linux-headers --noconfirm
 ```
 
 # Шрифты:
@@ -333,6 +334,8 @@ sudo pacman -S xf86-video-vesa --noconfirm
 ### Драйвера audio
 ```bash
 sudo pacman -S alsa-utils alsa-plugins --noconfirm
+sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack
+systemctl --user enable --now pipewire pipewire-pulse
 # Настройка громкости
 alsamixer
 # test
