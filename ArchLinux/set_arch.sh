@@ -2,21 +2,6 @@
 
 VisMan='NONE'
 
-if [ VisMan == 'KDE' ]; then
-    sudo pacman -S --needed xorg
-    #sudo pacman -S --needed plasma kde-applications
-
-    sudo pacman -S --needed sddm
-    spawn sudo pacman -S --needed plasma kde-applications
-        expect "первый вопрос" { send "2\r" }
-        expect "второй вопрос" { send "3\r" }
-        expect "третий вопрос" { send "96\r" }
-    interact
-
-    sudo systemctl enable sddm
-    sudo systemctl enable NetworkManager
-fi
-
 # Visual Console start
 sudo sed 's/PS1=/#PS1=/' ~/.bashrc -i
 sudo echo 'PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "' >> ~/.bashrc
@@ -74,3 +59,61 @@ sudo usermod -aG docker ilinium
 sudo pacman -S wine wine-mono wine-gecko
 yaourt -S bottles
 
+
+# kde
+if [ VisMan == 'KDE' ]; then
+    sudo pacman -S --needed xorg
+    #sudo pacman -S --needed plasma kde-applications
+
+    sudo pacman -S --needed sddm
+    spawn sudo pacman -S --needed plasma kde-applications
+        expect "первый вопрос" { send "2\r" }
+        expect "второй вопрос" { send "3\r" }
+        expect "третий вопрос" { send "96\r" }
+    interact
+
+    sudo systemctl enable sddm
+    sudo systemctl enable NetworkManager
+    
+    sudo yaourt -R bomber
+    sudo yaourt -R bovo
+    sudo yaourt -R granatier
+    sudo yaourt -R kajongg
+    sudo yaourt -R kapman
+    sudo yaourt -R katomic
+    sudo yaourt -R kblackbox
+    sudo yaourt -R kblocks
+    sudo yaourt -R kbounce
+    sudo yaourt -R kbreakout
+    sudo yaourt -R kdiamond
+    sudo yaourt -R kfourinline
+    sudo yaourt -R kgoldrunner
+    sudo yaourt -R kigo
+    sudo yaourt -R killbots
+    sudo yaourt -R kiriki
+    sudo yaourt -R kjumpingcube
+    sudo yaourt -R klickety
+    sudo yaourt -R klines
+    sudo yaourt -R kmahjongg
+    # sudo yaourt -R kmines
+    sudo yaourt -R knavalbattle
+    sudo yaourt -R knetwalk
+    sudo yaourt -R knights
+    sudo yaourt -R kolf
+    sudo yaourt -R kollision
+    sudo yaourt -R konquest
+    sudo yaourt -R kpat
+    sudo yaourt -R kreversi
+    sudo yaourt -R kshisen
+    sudo yaourt -R ksirk
+    sudo yaourt -R ksnakeduel
+    sudo yaourt -R kspaceduel
+    sudo yaourt -R ksquares
+    sudo yaourt -R ksudoku
+    sudo yaourt -R ktuberling
+    sudo yaourt -R kubrick
+    sudo yaourt -R lskat
+    sudo yaourt -R palapeli
+    sudo yaourt -R picmi
+    sudo yaourt -R skladnik
+fi

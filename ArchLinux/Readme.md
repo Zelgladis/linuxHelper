@@ -311,10 +311,8 @@ sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family --noconfi
 mkdir ~/OTB
 mkdir ~/OTB/gits
 cd ~/OTB/gits
-git clone https://aur.archlinux.org/package-query.git
-git clone https://aur.archlinux.org/yaourt.git
-cd package-query/
-makepkg -si && cd ../yaourt
+git clone https://aur.archlinux.org/yay.git
+cd yay
 makepkg -si && cd ~
 ```
 
@@ -329,6 +327,21 @@ makepkg -si && cd ~
 ###### Пример:
 ```bash
 sudo pacman -S xf86-video-vesa --noconfirm
+# radeon
+sudo pacman -S mesa
+sudo pacman -S lib32-mesa
+sudo pacman -S xf86-video-amdgpu
+sudo pacman -S lib32-amdvlk
+sudo pacman -S amdvlk
+#sudo pacman -S vulkan-radeon
+#sudo pacman -S lib32-vulkan-radeon
+## performance mode
+echo "performance" | sudo tee /sys/class/drm/card1/device/power_dpm_state
+cat /sys/class/drm/card1/device/power_dpm_state
+# back to auto
+echo "auto" | sudo tee /sys/class/drm/card1/device/power_dpm_state
+cat /sys/class/drm/card1/device/power_dpm_state
+
 ```
 
 ### Драйвера audio
