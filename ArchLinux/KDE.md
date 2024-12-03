@@ -17,6 +17,11 @@ sudo nano /usr/lib/sddm/sddm.conf.d/default.conf
  Current=breeze
 ```
 
+# delete kmix for plasma 6
+```bash
+sudo pacman -R kmix --noconfirm
+```
+
 # games **need chek**
 ```bash
 sudo yaourt -R khangman --noconfirm
