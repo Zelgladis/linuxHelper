@@ -1,12 +1,11 @@
 ### GNOME
 ### Установка Графической оболчки(Gnome) и менеджера(gdm)
 ```bash
-sudo pacman -Syu gnome-browser-connector --noconfirm
 sudo pacman -S gnome gnome-extra --noconfirm
+sudo pacman -Syu gnome-browser-connector --noconfirm
 sudo pacman -S gdm --noconfirm
 sudo pacman -S networkmanager --noconfirm
-yaourt -S extension-manager --noconfirm
-yaourt -S gnome-extensions-cli --noconfirm
+yay -S extension-manager
 systemctl enable gdm.service
 systemctl enable NetworkManager.service
 
@@ -18,7 +17,8 @@ systemctl enable NetworkManager.service
 sudo pacman -Qi wayland --noconfirm
 sudo pacman -S --needed wayland --noconfirm
 sudo pacman -S --needed xorg-xwayland xorg-xlsclients glfw-wayland --noconfirm
-sudo pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome-multi-writer adwaita-icon-theme xdg-user-dirs-gtk fwupd arc-gtk-theme --noconfirm
+sudo pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage adwaita-icon-theme xdg-user-dirs-gtk fwupd arc-gtk-theme --noconfirm
+sudo pacman -S gnome-multi-writer 
 ```
 
 ### Gnome ПО

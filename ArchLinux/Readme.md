@@ -1,4 +1,4 @@
-# Установка ArchLinux
+# 🌸Установка ArchLinux
 ---
 #### Установка раскладки клавиатуры и шрифта
 ```bash
@@ -287,7 +287,7 @@ reboot
 
 ### Terminal Visual
 ```bash
-export PS1="\[\e[96m\]\u@\h\[\e[0m\]~\[\e[33m\]\w\[\e[0m\]$ "
+export PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "
 vim ~/.bashrc
 ```
 
@@ -347,7 +347,7 @@ cat /sys/class/drm/card1/device/power_dpm_state
 ### Драйвера audio
 ```bash
 sudo pacman -S alsa-utils alsa-plugins --noconfirm
-sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack
+sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
 systemctl --user enable --now pipewire pipewire-pulse
 # Настройка громкости
 alsamixer
@@ -359,8 +359,7 @@ speaker-test -c 2
 
 ###### xorg
 ```bash
-sudo pacman -S xorg-server xorg-apps --noconfirm
-sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
+sudo pacman -S xorg-server --noconfirm
 sudo pacman -S xorg-drivers --noconfirm
 sudo pacman -S xorg --noconfirm
 
@@ -375,14 +374,14 @@ cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 
 sudo pacman -S gcc perl make --noconfirm
 sudo pacman -S firefox --noconfirm
-yaourt -S visual-studio-code-bin
-yaourt -S intellij-idea-community-edition
-yaourt -S kate --noconfirm
-yaourt -S keepassxc --noconfirm
-yaourt -S telegram-desktop --noconfirm
-yaourt -S dbeaver --noconfirm
-yaourt -S docker --noconfirm
-yaourt -S docker-compose --noconfirm
+yay -S visual-studio-code-bin
+yay -S intellij-idea-community-edition
+yay -S kate --noconfirm
+yay -S keepassxc --noconfirm
+yay -S telegram-desktop --noconfirm
+yay -S dbeaver --noconfirm
+yay -S docker --noconfirm
+yay -S docker-compose --noconfirm
 sudo usermod -aG docker ilinium
 flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
@@ -393,7 +392,7 @@ flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 vim /etc/pacman.conf
 # find [multilib] and decoment it
 sudo pacman -S wine wine-mono wine-gecko
-yaourt -S Bottles
+yay -S Bottles
 winecfg # Настройка wine
 
 # Библиотеки WineTricks
@@ -416,6 +415,6 @@ sudo systemctl start vpnagentd.service
 sudo pacman -R gitg --noconfirm
 sudo pacman -R polari --noconfirm
 sudo pacman -R endeavour --noconfirm
-yaourt -R geary --noconfirm
+yay -R geary --noconfirm
 ```
 
