@@ -1,7 +1,7 @@
 ### KDE
 ```bash
 sudo pacman -S --needed xorg sddm
-sudo pacman -S --needed plasma kde-applications
+sudo pacman -S --needed plasma
 
 sudo systemctl enable sddm
 sudo systemctl enable NetworkManager
