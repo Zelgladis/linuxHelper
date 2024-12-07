@@ -1,11 +1,8 @@
 # 🌸Установка ArchLinux
 ---
-#### Установка раскладки клавиатуры и шрифта
+#### Установка раскладки клавиатуры и шрифта и Шрифт с русским языком
 ```bash
 loadkeys ru
-```
-#### Шрифт с русским языком
-```bash
 setfont cyr-sun16 # small
 setfont ter-c32b # big
 ```
@@ -66,72 +63,48 @@ genfstab -U /mnt >> /mnt/etc/fstab
 ```bash
 arch-chroot /mnt
 ```
-#### **Europe/Saratov** ваш регион/город
-```bash
-ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime 
-```
-#### Синхронизация часов
-```bash
-hwclock --systohc
-```
-### Локализация
-###### Найти и раскоментить строки **en_US.UTF-8 UTF-8** и **ru_RU.UTF-8 UTF-8**
-```bash
-pacman -S gvim vi nano micro --noconfirm
-sed -i 's/#en_US.UTF\-8 UTF\-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-sed -i 's/#ru_RU.UTF\-8 UTF\-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
-
-# vim /etc/locale.gen
-```
-###### Генерация локали в систему
-```bash
-locale-gen
-```
-###### Создайте файл **/etc/locale.conf** и задайте переменной LANG необходимое значение
-```bash
-# vim /etc/locale.conf
-echo 'LANG=ru_RU.UTF-8' >  /etc/locale.conf
-```
-
-###### Если вы меняли раскладку клавиатуры или шрифт, сделайте эти изменения постоянными, прописав их в файле **vconsole.conf**: 
-```bash
-# vim /etc/vconsole.conf
-echo 'KEYMAP=ru
-FONT=cyr-sun16' > /etc/vconsole.conf
-``` 
-``` 
-KEYMAP=ru
-FONT=cyr-sun16
-```
---- ---
-### Настройка сети
-###### Создайте файл hostname: 
-```bash
-#vim /etc/hostname
-echo 'ariko' > /etc/hostname
-```
-```text
-ariko
-```
-###### Отредактируйте файл hoss:
- ```bash
-#vim /etc/hosts
-echo '127.0.0.1 localhost
-::1 localhot
-127.0.1.1 ariko.localdomain ariko' >> /etc/hosts
-```
-
----
 ##### Пароль суперпользователя
 ```bash
 passwd
 ```
+#### **Europe/Saratov** ваш регион/город Синхронизация часов
+```bash
+ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime 
+hwclock --systohc
+```
+
+### Локализация
+###### Найти и раскоментить строки **en_US.UTF-8 UTF-8** и **ru_RU.UTF-8 UTF-8**
+```bash
+sed -i 's/#en_US.UTF\-8 UTF\-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sed -i 's/#ru_RU.UTF\-8 UTF\-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
+# Генерация локали в систему
+locale-gen
+echo 'LANG=ru_RU.UTF-8' >  /etc/locale.conf
+echo 'KEYMAP=ru
+FONT=cyr-sun16' > /etc/vconsole.conf
+# vim /etc/locale.gen
+```
+
+--- ---
+### Настройка сети
+###### Создайте файл hostname: 
+```bash
+echo 'ariko' > /etc/hostname
+echo '127.0.0.1 localhost
+::1 localhot
+127.0.1.1 ariko.localdomain ariko' >> /etc/hosts
+```
+###### Отредактируйте файл hoss:
 
 ##### Доп по(необходимое):
 ```bash
 pacman -Suy
+pacman -S gvim vi nano micro --noconfirm
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
 pacman -S dhcpcd --noconfirm
+pacman -S openssh --noconfirm
+systemctl enable sshd
 systemctl enable dhcpcd
 # Установите пакет grub и efibootmgr
 pacman -S grub efibootmgr os-prober hwinfo --noconfirm
@@ -155,24 +128,27 @@ pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 
 Более того, возможности скриптов GRUB2 позволяют средствами самого загрузчика, прямо перед загрузкой ОС, генерировать меню с переменным количеством строк, для поиска и загрузки всех установленных ядер Arch Linux
 
-### LEGACY
-Автоматическая настройка
+### GRUB Автоматическая настройка
 ```bash
-# easy
+# LEGACY
 grub-install /dev/sda
-mkinitcpio -p linux
-grub-mkconfig -o /boot/grub/grub.cfg
 # Перегенерируйте initramfs
 mkinitcpio -p linux
-# Запустите автоматическую настройку grub
+
+```
+
+```bash
+# EFI Должен быть создан раздел FAT 32 и монитрован в /efi
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
+mkinitcpio -p linux
+```
+
+##### Автоматическая настрйока
+```bash
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-ручная настройка
-```bash
-grub-install /dev/sda --efi-directory=/efi --bootloader-id=ArchLinux
-mkinitcpio -p linux
-```
+##### ручная настройка
 создаём меню
 ```bash
 vim /boot/grub/menu.cfg
@@ -181,55 +157,16 @@ vim /boot/grub/menu.cfg
 (hd0,gpt1) необходимо найти эти разделы в grub(перезагрузившись в grub)
 вбив ls
 и ls (hd0,msdos1)
-### Ищем файлы загрузки
-```
-set default=0
-set timeout=5
 
-# Название пункта меню
-menuentry "Arch Linux" {
-    set root=(hd0,msdos1)
-    linux /boot/vmlinuz-linux root=/dev/sda1 rw quiet
-    initrd /boot/initramfs-linux.img
-}
-
-menuentry "Arch Linux (Fallback)" {
-    set root=(hd0,msdos1)
-    linux /boot/vmlinuz-linux root=/dev/sda1 rw
-    initrd /boot/initramfs-linux-fallback.img
-}
-
-# Для Windows legacy
-menuentry "Windows 10 (Legacy)" {
-    set root='hd0,msdos2'
-    chainloader +1
-}
-```
-
+# $prefix пересенная grub внутри путь к (раздел)boot/grub
 ```bash
-vim /boot/grub/grub.cfg
-```
-$prefix пересенная grub внутри путь к (раздел)boot/grub
-```
-source $prefix/menu.cfg
+#vim /boot/grub/grub.cfg
+echo 'source $prefix/menu.cfg' > /boot/grub/grub.cfg
 ```
 
-### EFI
+##### Через lsblk -f найдите UUID нужных дисков для Windows это диск с EFI(FAT) для linux диск с ROOT
+##### Или если windows legacy путь к диску windows
 ```bash
-grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
-mkinitcpio -p linux
-
-vim /boot/grub/grub.cfg
-```
-source $prefix/menu.cfg
-```
-
-#### Через lsblk -f найдите UUID нужных дисков для Windows это диск с EFI(FAT) для linux диск с ROOT
-
-vim /boot/grub/menu.cfg
-```
-##### MenuEFI
-```
 menuentry "Arch Linux" {
     search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
     linux /boot/vmlinuz-linux root=UUID=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw quiet
@@ -245,11 +182,16 @@ menuentry "Windows 10 (EFI)" {
     search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
     chainloader /EFI/Microsoft/Boot/bootmgfw.efi
 }
+# Для Windows legacy
+menuentry "Windows 10 (Legacy)" {
+    set root='hd0,msdos2'
+    chainloader +1
+}
 ```
 
 ### Для обоих версий ручной настройки
 защищаем от перезаписи grub.cfg
-```
+```bash
 chattr +i /boot/grub/grub.cfg
 ```
 Чтобы избежать конфликта с файлом из пакета, добавьте его имя в строку NoUpgrade в /etc/pacman.conf
@@ -257,7 +199,7 @@ chattr +i /boot/grub/grub.cfg
 vim /etc/pacman.conf
 ```
 Добавить строку в блоке [Options]
-```
+```conf
 NoUpgrade = boot/grub/grub.cfg
 ```
 
@@ -270,8 +212,6 @@ passwd mio
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
 vim /etc/sudoers
-pacman -S openssh --noconfirm
-systemctl enable sshd
 ```
 
 ### Перезагружаемся
@@ -298,15 +238,16 @@ sudo pacman -S wget --noconfirm
 sudo pacman -S yajl --noconfirm
 sudo pacman -S git --noconfirm
 sudo pacman -S base-devel --noconfirm
-sudo pacman -S linux-headers dkms --noconfirm
+sudo pacman -S linux-headers --noconfirm
+sudo pacman -S dkms --noconfirm
 ```
 
 # Шрифты:
 ```bash
-sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family --noconfirm
+sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
 ```
 
-###### AUR
+###### ЗА AUR
 ```bash
 mkdir ~/OTB
 mkdir ~/OTB/gits
@@ -362,6 +303,8 @@ speaker-test -c 2
 sudo pacman -S xorg-server --noconfirm
 sudo pacman -S xorg-drivers --noconfirm
 sudo pacman -S xorg --noconfirm
+# не обязательно
+sudo pacman -S gcc perl make --noconfirm
 
 xorg-drivers # Ниже есть драйвера но это вроде тоже
 Xorg :0 -configure # После драверов
@@ -371,19 +314,18 @@ cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 ### !!! AFTER VISUAL MANAGER !!!
 ### ПО
 ```bash
-
-sudo pacman -S gcc perl make --noconfirm
 sudo pacman -S firefox --noconfirm
+sudo pacman -S flatpak
 yay -S visual-studio-code-bin
 yay -S intellij-idea-community-edition
-yay -S kate --noconfirm
 yay -S keepassxc --noconfirm
-yay -S telegram-desktop --noconfirm
 yay -S dbeaver --noconfirm
 yay -S docker --noconfirm
 yay -S docker-compose --noconfirm
 sudo usermod -aG docker ilinium
-flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
+yay -S telegram-desktop --noconfirm
+yay -S kate --noconfirm
+# flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
 ##### WINE
