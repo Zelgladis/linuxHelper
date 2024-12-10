@@ -21,6 +21,7 @@ sudo pacman -S gparted gvfs --noconfirm
 sudo pacman -S xfce4-mount-plugin
 sudo pacman -S gvfs-smb
 sudo pacman -S gvfs-mtp
+sudo pacman -S tilix
 
 
 
