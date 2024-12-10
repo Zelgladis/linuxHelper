@@ -128,7 +128,7 @@ pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 
 Более того, возможности скриптов GRUB2 позволяют средствами самого загрузчика, прямо перед загрузкой ОС, генерировать меню с переменным количеством строк, для поиска и загрузки всех установленных ядер Arch Linux
 
-### GRUB Автоматическая настройка
+### GRUB
 ```bash
 # LEGACY
 grub-install /dev/sda
@@ -318,6 +318,7 @@ sudo pacman -S firefox --noconfirm
 sudo pacman -S flatpak
 yay -S visual-studio-code-bin
 yay -S intellij-idea-community-edition
+flatpak install flathub com.getpostman.Postman
 yay -S keepassxc --noconfirm
 yay -S dbeaver --noconfirm
 yay -S docker --noconfirm
