@@ -361,3 +361,9 @@ sudo pacman -R endeavour --noconfirm
 yay -R geary --noconfirm
 ```
 
+### GATE
+
+```bash
+sudo systemctl start vpnagentd
+```
+
