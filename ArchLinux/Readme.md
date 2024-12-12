@@ -167,6 +167,9 @@ echo 'source $prefix/menu.cfg' > /boot/grub/grub.cfg
 ##### Через lsblk -f найдите UUID нужных дисков для Windows это диск с EFI(FAT) для linux диск с ROOT
 ##### Или если windows legacy путь к диску windows
 ```bash
+set timeout=5
+set default=0
+
 menuentry "Arch Linux" {
     search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
     linux /boot/vmlinuz-linux root=UUID=e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51 rw quiet
