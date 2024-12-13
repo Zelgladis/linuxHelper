@@ -243,6 +243,7 @@ sudo pacman -S git --noconfirm
 sudo pacman -S base-devel --noconfirm
 sudo pacman -S linux-headers --noconfirm
 sudo pacman -S dkms --noconfirm
+sudo pacman -S openconnect --noconfirm
 ```
 
 # Шрифты:

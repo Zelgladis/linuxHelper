@@ -3,6 +3,7 @@
 sudo pacman -S --needed xorg sddm
 sudo pacman -S --needed plasma
 sudo pacman -S --needed qt6
+sudo pacman -S --needed networkmanager-openvpn --noconfirm
 
 
 sudo systemctl enable sddm
