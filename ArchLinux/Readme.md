@@ -244,6 +244,10 @@ sudo pacman -S base-devel --noconfirm
 sudo pacman -S linux-headers --noconfirm
 sudo pacman -S dkms --noconfirm
 sudo pacman -S openconnect --noconfirm
+sudo pacman -S btrfs-progs --noconfirm
+sudo pacman -S e2fsprogs --noconfirm
+
+
 ```
 
 # Шрифты:
