@@ -324,7 +324,6 @@ sudo pacman -S firefox --noconfirm
 sudo pacman -S flatpak
 yay -S visual-studio-code-bin
 yay -S intellij-idea-community-edition
-flatpak install flathub com.getpostman.Postman
 yay -S keepassxc --noconfirm
 yay -S dbeaver --noconfirm
 yay -S docker --noconfirm
@@ -332,15 +331,16 @@ yay -S docker-compose --noconfirm
 sudo usermod -aG docker ilinium
 yay -S telegram-desktop --noconfirm
 yay -S kate --noconfirm
+flatpak install flathub com.getpostman.Postman
 # flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
 ##### WINE
 ```bash
 # Enable multilib
-vim /etc/pacman.conf
+sudo vim /etc/pacman.conf
 # find [multilib] and decoment it
-sudo pacman -S wine wine-mono wine-gecko
+sudo pacman -Syu wine wine-mono wine-gecko
 yay -S Bottles
 winecfg # Настройка wine
 
@@ -355,9 +355,21 @@ Include = /etc/pacman.d/mirrorlist
 ```
 
 ### VPN eanbled
-sudo systemctl enable vpnagentd.service
-sudo systemctl start vpnagentd.service
+```bash
+sudo pacman -S networkmanagerfirewalld --noconfirm
+sudo pacman -S networkmanager --noconfirm
+sudo pacman -S network-manager-applet --noconfirm
+sudo pacman -S networkmanager-openconnect --noconfirm
+sudo pacman -S networkmanager-openvpn --noconfirm
+sudo pacman -S openvpn --noconfirm
+sudo pacman -S openresolv --noconfirm
+sudo systemctl enable vpnagentd --now
+sudo systemctl enable NetworkManager --now
+sudo systemctl enable vpnagentd.service --now
+sudo firewall-cmd --permanent --zone=trusted --add-interface=tun0
+sudo firewall-cmd --reload
 
+```
 
 ### Удаляем ненужное(для меня) предустановленное по
 ```bash

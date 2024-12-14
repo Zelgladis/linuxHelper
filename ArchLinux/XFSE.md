@@ -3,15 +3,18 @@ sudo pacman -S xfce4 xfce4-goodies --noconfirm
 sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
 sudo pacman -S lightdm-gtk-greeter-settings --noconfirm
 sudo pacman -S lightdm-webkit2-greeter --noconfirm
-sudo yaourt -S mugshot --noconfirm
 sudo pacman -S ark --noconfirm
-sudo pacman -S networkmanager --noconfirm
+sudo pacman -S networkmanager network-manager-applet --noconfirm
+sudo pacman -S networkmanager-openconnect --noconfirm
 sudo pacman -S networkmanager-openvpn --noconfirm
+
 sudo pacman -S openvpn --noconfirm
+sudo systemctl enable vpnagentd --now
 sudo systemctl start NetworkManager
 sudo systemctl enable NetworkManager
 #cisco-secure-client
 sudo systemctl enable lightdm
+yay -S mugshot --noconfirm
 
 
 
