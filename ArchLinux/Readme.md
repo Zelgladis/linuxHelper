@@ -363,6 +363,9 @@ sudo pacman -S networkmanager-openconnect --noconfirm
 sudo pacman -S networkmanager-openvpn --noconfirm
 sudo pacman -S openvpn --noconfirm
 sudo pacman -S openresolv --noconfirm
+sudo pacman -S webkit2gtk-4.1
+sudo pacman -S gcr
+yay -S cisco-anyconnect
 sudo systemctl enable vpnagentd --now
 sudo systemctl enable NetworkManager --now
 sudo systemctl enable vpnagentd.service --now
