@@ -14,3 +14,7 @@ iface lo inet loopback
 auto eth0
 iface eth0 inet dhcp
 
+### btrfs
+```bash
+sudo apt install btrfs-progs
+```
