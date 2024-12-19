@@ -18,3 +18,10 @@ iface eth0 inet dhcp
 ```bash
 sudo apt install btrfs-progs
 ```
+
+### ssh
+```bash
+sudo apt-get install openssh-client -y
+sudo apt-get install openssh-server -y
+sudo systemctl enable ssh --now
+```
