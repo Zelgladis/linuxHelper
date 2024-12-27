@@ -374,6 +374,11 @@ sudo firewall-cmd --reload
 
 ```
 
+# Иероглифы
+```bash
+sudo pacman -S noto-fonts-cjk
+```
+
 ### Удаляем ненужное(для меня) предустановленное по
 ```bash
 sudo pacman -R gitg --noconfirm
