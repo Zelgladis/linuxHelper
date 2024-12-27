@@ -377,6 +377,7 @@ sudo firewall-cmd --reload
 # Иероглифы
 ```bash
 sudo pacman -S noto-fonts-cjk
+sudo pacman -S otf-ipafont
 ```
 
 ### Удаляем ненужное(для меня) предустановленное по
