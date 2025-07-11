@@ -41,7 +41,7 @@ mkswap -L SWAP /dev/sda3
 
 ###### EFI раздел
 ```bash
-mkfs.fat -F32 /dev/sda2
+mkfs.fat -F32 -n EFI /dev/sda2
 ```
 
 #### Монтируем диски
