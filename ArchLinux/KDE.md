@@ -28,48 +28,48 @@ sudo pacman -R kmix --noconfirm
 
 # games **need chek**
 ```bash
-sudo yay -R khangman --noconfirm
-sudo yay -R kanagram --noconfirm
-sudo yay -R blinken --noconfirm
-sudo yay -R bomber --noconfirm
-sudo yay -R bovo --noconfirm
-sudo yay -R granatier --noconfirm
-sudo yay -R kajongg --noconfirm
-sudo yay -R kapman --noconfirm
-sudo yay -R katomic --noconfirm
-sudo yay -R kblackbox --noconfirm
-sudo yay -R kblocks --noconfirm
-sudo yay -R kbounce --noconfirm
-sudo yay -R kbreakout --noconfirm
-sudo yay -R kdiamond --noconfirm
-sudo yay -R kfourinline --noconfirm
-sudo yay -R kgoldrunner --noconfirm
-sudo yay -R kigo --noconfirm
-sudo yay -R killbots --noconfirm
-sudo yay -R kiriki --noconfirm
-sudo yay -R kjumpingcube --noconfirm
-sudo yay -R klickety --noconfirm
-sudo yay -R klines --noconfirm
-sudo yay -R kmahjongg --noconfirm
-sudo yay -R kmines --noconfirm
-sudo yay -R knavalbattle --noconfirm
-sudo yay -R knetwalk --noconfirm
-sudo yay -R knights --noconfirm
-sudo yay -R kolf --noconfirm
-sudo yay -R kollision --noconfirm
-sudo yay -R konquest --noconfirm
-sudo yay -R kpat --noconfirm
-sudo yay -R kreversi --noconfirm
-sudo yay -R kshisen --noconfirm
-sudo yay -R ksirk --noconfirm
-sudo yay -R ksnakeduel --noconfirm
-sudo yay -R kspaceduel --noconfirm
-sudo yay -R ksquares --noconfirm
-sudo yay -R ksudoku --noconfirm
-sudo yay -R ktuberling --noconfirm
-sudo yay -R kubrick --noconfirm
-sudo yay -R lskat --noconfirm
-sudo yay -R palapeli --noconfirm
-sudo yay -R picmi --noconfirm
-sudo yay -R skladnik --noconfirm
+yay -R khangman --noconfirm
+yay -R kanagram --noconfirm
+yay -R blinken --noconfirm
+yay -R bomber --noconfirm
+yay -R bovo --noconfirm
+yay -R granatier --noconfirm
+yay -R kajongg --noconfirm
+yay -R kapman --noconfirm
+yay -R katomic --noconfirm
+yay -R kblackbox --noconfirm
+yay -R kblocks --noconfirm
+yay -R kbounce --noconfirm
+yay -R kbreakout --noconfirm
+yay -R kdiamond --noconfirm
+yay -R kfourinline --noconfirm
+yay -R kgoldrunner --noconfirm
+yay -R kigo --noconfirm
+yay -R killbots --noconfirm
+yay -R kiriki --noconfirm
+yay -R kjumpingcube --noconfirm
+yay -R klickety --noconfirm
+yay -R klines --noconfirm
+yay -R kmahjongg --noconfirm
+yay -R kmines --noconfirm
+yay -R knavalbattle --noconfirm
+yay -R knetwalk --noconfirm
+yay -R knights --noconfirm
+yay -R kolf --noconfirm
+yay -R kollision --noconfirm
+yay -R konquest --noconfirm
+yay -R kpat --noconfirm
+yay -R kreversi --noconfirm
+yay -R kshisen --noconfirm
+yay -R ksirk --noconfirm
+yay -R ksnakeduel --noconfirm
+yay -R kspaceduel --noconfirm
+yay -R ksquares --noconfirm
+yay -R ksudoku --noconfirm
+yay -R ktuberling --noconfirm
+yay -R kubrick --noconfirm
+yay -R lskat --noconfirm
+yay -R palapeli --noconfirm
+yay -R picmi --noconfirm
+yay -R skladnik --noconfirm
 ```
