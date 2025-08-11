@@ -45,19 +45,19 @@ pacman -S e2fsprogs --noconfirm
 pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 
 # EFI
-if [[ efi == 1 ]];then
-    echo "EFI CHOSEN"
+if [[ "$efi" == '1' ]];then
+    echo "----------- EFI CHOSEN -----------"
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
     mkinitcpio -p linux
 # LEGACY
 else
-    echo "LEGACY"
+    echo "----------- LEGACY -----------"
     grub-install /dev/sda
     # Перегенерируйте initramfs
     mkinitcpio -p linux
 fi
 
-if [[ auto_grub == 1 ]];then
+if [[ "$auto_grub" == '1' ]];then
     echo "AUTOGRUB"
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
@@ -113,7 +113,7 @@ xorg-drivers # Ниже есть драйвера но это вроде тож�
 Xorg :0 -configure # После драверов
 cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 
-if [[ visual == 'XFCE' ]];then
+if [[ "$visual" == 'XFCE' ]];then
     echo "XFCE"
     sudo pacman -S xfce4 xfce4-goodies --noconfirm
     sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
@@ -134,7 +134,7 @@ if [[ visual == 'XFCE' ]];then
     sudo pacman -S gvfs-smb --noconfirm
     sudo pacman -S gvfs-mtp --noconfirm
     sudo pacman -S tilix --noconfirm
-elif [[ visual == 'KDE' ]]; then
+elif [[ "$visual" == 'KDE' ]]; then
     echo "KDE"
     sudo pacman -S --needed xorg sddm --noconfirm
     sudo pacman -S --needed plasma --noconfirm
@@ -144,7 +144,7 @@ elif [[ visual == 'KDE' ]]; then
 
     sudo systemctl enable sddm
     sudo systemctl enable NetworkManager
-elif [[ visual == 'CIN' ]];then
+elif [[ "$visual" == 'CIN' ]];then
     echo "Cinnammon"
     sudo pacman -S cinnamon --noconfirm
     sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
@@ -167,7 +167,7 @@ elif [[ visual == 'CIN' ]];then
     sudo pacman -S strawberry --noconfirm
 fi
 
-if [[ vb == 1 ]];then
+if [[ "$vb" == '1' ]];then
     echo "VirtualBox"
     sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
     sudo systemctl enable --now vboxservice.service
@@ -186,7 +186,7 @@ sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
 }' /etc/pacman.conf
 
 
-if [[ dop == 1 ]];then
+if [[ "$dop" == '1' ]];then
     echo "Add PO"
     sudo pacman -S firefox --noconfirm
     sudo pacman -S flatpak --noconfirm
