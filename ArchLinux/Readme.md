@@ -216,7 +216,7 @@ echo "mio:123" | sudo chpasswd
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
-vim /etc/sudoers
+sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 ```
 
 ### Перезагружаемся
