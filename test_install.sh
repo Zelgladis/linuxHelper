@@ -166,6 +166,15 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S playerctl --noconfirm
     sudo pacman -S strawberry --noconfirm
     sudo pacman -S gnome-terminal --noconfirm
+    yay -S beautyline  --noconfirm
+    mkdir -p ~/.themes
+    cd /tmp
+    wget -c https://github.com/EliverLara/Sweet/releases/download/v6.0/Sweet-Dark-v40.tar.xz
+    tar -xf Sweet-Dark-v40.tar.xz -C ~/.themes/
+    cd ~/
+    # проверь имя папки, можно переименовать, если нужно:
+    # mv ~/.themes/Sweet-Dark-v40 ~/.themes/Sweet-Dark
+    
 fi
 
 if [[ "$vb" == '1' ]];then
@@ -201,5 +210,5 @@ if [[ "$dop" == '1' ]];then
     sudo usermod -aG docker $usern
     yay -S telegram-desktop --noconfirm
     yay -S kate --noconfirm
-    flatpak install flathub com.getpostman.Postman --noconfirm
+    sudo flatpak install flathub com.getpostman.Postman -y
 fi
