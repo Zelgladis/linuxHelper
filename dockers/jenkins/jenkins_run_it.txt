@@ -1,0 +1,11 @@
+docker exec -it jenkins /bin/bash
+cd ~/.ssh
+
+cat <<EOF >> id_rsa
+-----BEGIN OPENSSH PRIVATE KEY-----
+
+-----END OPENSSH PRIVATE KEY-----
+EOF
+
+
+ssh agent1
