@@ -186,6 +186,7 @@ sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
   s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
 }' /etc/pacman.conf
 
+sudo pacman -Syu --noconfirm
 
 if [[ "$dop" == '1' ]];then
     echo "Add PO"
