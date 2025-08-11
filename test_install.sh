@@ -45,7 +45,7 @@ pacman -S e2fsprogs --noconfirm
 pacman -S grub efibootmgr os-prober hwinfo --noconfirm
 
 # EFI
-if [[ efi == '1' ]];then
+if [[ efi == 1 ]];then
     echo "EFI CHOSEN"
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
     mkinitcpio -p linux
@@ -57,7 +57,7 @@ else
     mkinitcpio -p linux
 fi
 
-if [[ auto_grub == '1' ]];then
+if [[ auto_grub == 1 ]];then
     echo "AUTOGRUB"
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
@@ -167,7 +167,7 @@ elif [[ visual == 'CIN' ]];then
     sudo pacman -S strawberry --noconfirm
 fi
 
-if [[ vb == '1' ]];then
+if [[ vb == 1 ]];then
     echo "VirtualBox"
     sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
     sudo systemctl enable --now vboxservice.service
@@ -186,7 +186,7 @@ sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
 }' /etc/pacman.conf
 
 
-if [[ dop == '1' ]];then
+if [[ dop == 1 ]];then
     echo "Add PO"
     sudo pacman -S firefox --noconfirm
     sudo pacman -S flatpak --noconfirm
