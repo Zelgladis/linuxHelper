@@ -68,7 +68,7 @@ pacman -S sudo --noconfirm
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 # Красота в консоле
-echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
+# echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 
 # Ещё доп по
 sudo pacman -S wget --noconfirm
@@ -90,11 +90,11 @@ makepkg -si && cd ~
 # drivers
 sudo pacman -S xf86-video-vesa --noconfirm
 # radeon
-sudo pacman -S mesa
-sudo pacman -S lib32-mesa
-sudo pacman -S xf86-video-amdgpu
-sudo pacman -S lib32-amdvlk
-sudo pacman -S amdvlk
+sudo pacman -S mesa --noconfirm
+sudo pacman -S lib32-mesa --noconfirm
+sudo pacman -S xf86-video-amdgpu --noconfirm
+sudo pacman -S lib32-amdvlk --noconfirm
+sudo pacman -S amdvlk --noconfirm
 sudo pacman -S alsa-utils alsa-plugins --noconfirm
 sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
 systemctl --user enable --now pipewire pipewire-pulse
@@ -149,7 +149,7 @@ elif [[ visual == 'CIN' ]];then
     sudo pacman -S networkmanager-openvpn --noconfirm
     sudo pacman -S openvpn --noconfirm
     sudo pacman -S gtk-engine-murrine --noconfirm
-    sudo pacman -S materia-gtk-theme
+    sudo pacman -S materia-gtk-theme --noconfirm
 
     sudo systemctl start NetworkManager
     sudo systemctl enable NetworkManager
@@ -162,15 +162,15 @@ elif [[ visual == 'CIN' ]];then
 fi
 
 if [[ vb == '1' ]];then
-    sudo pacman -S linux-headers virtualbox-guest-utils
+    sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
     sudo systemctl enable --now vboxservice.service
     # (если нужно загрузить прямо сейчас)
     sudo modprobe -a vboxguest vboxsf vboxvideo
     echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
 fi
 
-sudo pacman -S noto-fonts-cjk
-sudo pacman -S otf-ipafont
+sudo pacman -S noto-fonts-cjk --noconfirm
+sudo pacman -S otf-ipafont --noconfirm
 
 
 sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
