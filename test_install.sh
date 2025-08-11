@@ -165,6 +165,7 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S conky --noconfirm
     sudo pacman -S playerctl --noconfirm
     sudo pacman -S strawberry --noconfirm
+    sudo pacman -S gnome-terminal --noconfirm
 fi
 
 if [[ "$vb" == '1' ]];then
