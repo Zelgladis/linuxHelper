@@ -63,11 +63,11 @@ if [[ "$auto_grub" == '1' ]];then
 fi
 
 useradd -m -g users -G wheel -s /bin/bash $usern
-echo "$usern:123" | sudo chpasswd
 
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
+echo "$usern:123" | sudo chpasswd
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 # Красота в консоле
@@ -80,7 +80,11 @@ sudo pacman -S git --noconfirm
 sudo pacman -S base-devel --noconfirm
 sudo pacman -S linux-headers --noconfirm
 sudo pacman -S dkms --noconfirm
+sudo pacman -S go --noconfirm
 sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
+git clone https://github.com/scopatz/nanorc.git ~/.nano
+echo 'include "~/.nano/*.nanorc"' >> ~/.nanorc
+
 
 # YAY aur
 mkdir ~/OTB
@@ -147,7 +151,8 @@ elif [[ "$visual" == 'KDE' ]]; then
 elif [[ "$visual" == 'CIN' ]];then
     echo "Cinnammon"
     sudo pacman -S cinnamon --noconfirm
-    sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
+    #sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
+    sudo pacman -S sddm --noconfirm
     sudo pacman -S tilix --noconfirm
     sudo pacman -S ark --noconfirm
     sudo pacman -S eog --noconfirm
@@ -156,10 +161,16 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S openvpn --noconfirm
     sudo pacman -S gtk-engine-murrine --noconfirm
     sudo pacman -S materia-gtk-theme --noconfirm
+    sudo pacman -S xed --noconfirm
+    sudo pacman -S krita --noconfirm
+    sudo pacman -S gnome-terminal --noconfirm
+    sudo pacman -S file-roller
+    yay sddm-sugar-candy-git --noconfirm
 
     sudo systemctl start NetworkManager
     sudo systemctl enable NetworkManager
-    sudo systemctl enable lightdm
+    sudo systemctl enable sddm
+    sudo systemctl start sddm
 
     sudo pacman -S font-manager --noconfirm
     sudo pacman -S conky --noconfirm
@@ -172,16 +183,14 @@ elif [[ "$visual" == 'CIN' ]];then
     wget -c https://github.com/EliverLara/Sweet/releases/download/v6.0/Sweet-Dark-v40.tar.xz
     tar -xf Sweet-Dark-v40.tar.xz -C ~/.themes/
     cd ~/
-    # проверь имя папки, можно переименовать, если нужно:
-    # mv ~/.themes/Sweet-Dark-v40 ~/.themes/Sweet-Dark
-    
+    sudo echo "[Theme]" > /etc/sddm.conf
+    sudo echo "Current=sugar-candy" >> /etc/sddm.conf
 fi
 
 if [[ "$vb" == '1' ]];then
     echo "VirtualBox"
     sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
     sudo systemctl enable --now vboxservice.service
-    # (если нужно загрузить прямо сейчас)
     sudo modprobe -a vboxguest vboxsf vboxvideo
     echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
 fi
