@@ -164,7 +164,8 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S xed --noconfirm
     sudo pacman -S krita --noconfirm
     sudo pacman -S gnome-terminal --noconfirm
-    sudo pacman -S file-roller
+    sudo pacman -S file-roller --noconfirm
+    sudo pacman -S meld --noconfirm
     yay sddm-sugar-candy-git --noconfirm
 
     sudo systemctl start NetworkManager
@@ -175,7 +176,7 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S font-manager --noconfirm
     sudo pacman -S conky --noconfirm
     sudo pacman -S playerctl --noconfirm
-    sudo pacman -S strawberry --noconfirm
+    sudo pacman -S Rhythmbox --noconfirm
     sudo pacman -S gnome-terminal --noconfirm
     yay -S beautyline  --noconfirm
     mkdir -p ~/.themes
