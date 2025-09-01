@@ -167,6 +167,8 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S file-roller --noconfirm
     sudo pacman -S meld --noconfirm
     sudo pacman -S mpv --noconfirm
+    sudo pacman -S cmus --noconfirm
+    sudo pacman -S rhythmbox --noconfirm
     yay sddm-sugar-candy-git --noconfirm
 
     sudo systemctl start NetworkManager
