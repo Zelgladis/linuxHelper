@@ -211,11 +211,11 @@ NoUpgrade = boot/grub/grub.cfg
 
 ### Создание пользователя и настройка sudo
 ```bash
+pacman -S sudo --noconfirm
 useradd -m -g users -G wheel -s /bin/bash mio
 echo "mio:123" | sudo chpasswd
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
-pacman -S sudo --noconfirm
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 ```
 

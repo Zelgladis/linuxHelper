@@ -25,14 +25,12 @@ sudo pacman -S xorg-xinit xterm xorg-xclock --noconfirm
 #Xorg :0 -configure # После драверов
 #sudo cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 
-# AUR
+# YAY aur
 mkdir ~/OTB
 mkdir ~/OTB/gits
 cd ~/OTB/gits
-git clone https://aur.archlinux.org/package-query.git
-git clone https://aur.archlinux.org/yaourt.git
-cd package-query/
-makepkg -si && cd ../yaourt
+git clone https://aur.archlinux.org/yay.git
+cd yay
 makepkg -si && cd ~
 
 
@@ -45,19 +43,19 @@ sudo pacman -S base-devel --noconfirm
 sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family --noconfirm
 sudo pacman -S gcc perl make --noconfirm
 sudo pacman -S firefox --noconfirm
-yaourt -S visual-studio-code-bin
-yaourt -S intellij-idea-community-edition
-yaourt -S kate --noconfirm
-yaourt -S keepassxc --noconfirm
-yaourt -S telegram-desktop --noconfirm
-yaourt -S dbeaver --noconfirm
-yaourt -S docker --noconfirm
-yaourt -S docker-compose --noconfirm
+yay -S visual-studio-code-bin
+yay -S intellij-idea-community-edition
+pacman -S kate --noconfirm
+pacman -S keepassxc --noconfirm
+pacman -S telegram-desktop --noconfirm
+pacman -S dbeaver --noconfirm
+pacman -S docker --noconfirm
+pacman -S docker-compose --noconfirm
 sudo usermod -aG docker ilinium
 
 # Enable multilib and install wine
 sudo pacman -S wine wine-mono wine-gecko
-yaourt -S bottles
+pacman -S bottles
 
 
 # kde
@@ -75,45 +73,51 @@ if [ VisMan == 'KDE' ]; then
     sudo systemctl enable sddm
     sudo systemctl enable NetworkManager
     
-    sudo yaourt -R bomber
-    sudo yaourt -R bovo
-    sudo yaourt -R granatier
-    sudo yaourt -R kajongg
-    sudo yaourt -R kapman
-    sudo yaourt -R katomic
-    sudo yaourt -R kblackbox
-    sudo yaourt -R kblocks
-    sudo yaourt -R kbounce
-    sudo yaourt -R kbreakout
-    sudo yaourt -R kdiamond
-    sudo yaourt -R kfourinline
-    sudo yaourt -R kgoldrunner
-    sudo yaourt -R kigo
-    sudo yaourt -R killbots
-    sudo yaourt -R kiriki
-    sudo yaourt -R kjumpingcube
-    sudo yaourt -R klickety
-    sudo yaourt -R klines
-    sudo yaourt -R kmahjongg
-    # sudo yaourt -R kmines
-    sudo yaourt -R knavalbattle
-    sudo yaourt -R knetwalk
-    sudo yaourt -R knights
-    sudo yaourt -R kolf
-    sudo yaourt -R kollision
-    sudo yaourt -R konquest
-    sudo yaourt -R kpat
-    sudo yaourt -R kreversi
-    sudo yaourt -R kshisen
-    sudo yaourt -R ksirk
-    sudo yaourt -R ksnakeduel
-    sudo yaourt -R kspaceduel
-    sudo yaourt -R ksquares
-    sudo yaourt -R ksudoku
-    sudo yaourt -R ktuberling
-    sudo yaourt -R kubrick
-    sudo yaourt -R lskat
-    sudo yaourt -R palapeli
-    sudo yaourt -R picmi
-    sudo yaourt -R skladnik
+    sudo pacman -R bomber -y
+    sudo pacman -R bovo -y
+    sudo pacman -R granatier -y
+    sudo pacman -R kajongg -y
+    sudo pacman -R kapman -y
+    sudo pacman -R katomic -y
+    sudo pacman -R kblackbox -y
+    sudo pacman -R kblocks -y
+    sudo pacman -R kbounce -y
+    sudo pacman -R kbreakout -y
+    sudo pacman -R kdiamond -y
+    sudo pacman -R kfourinline -y
+    sudo pacman -R kgoldrunner -y
+    sudo pacman -R kigo -y
+    sudo pacman -R killbots -y
+    sudo pacman -R kiriki -y
+    sudo pacman -R kjumpingcube -y
+    sudo pacman -R klickety -y
+    sudo pacman -R klines -y
+    sudo pacman -R kmahjongg -y
+    # sudo pacman -R kmines
+    sudo pacman -R knavalbattle -y
+    sudo pacman -R knetwalk -y
+    sudo pacman -R knights -y
+    sudo pacman -R kolf -y
+    sudo pacman -R kollision -y
+    sudo pacman -R konquest -y
+    sudo pacman -R kpat -y
+    sudo pacman -R kreversi -y
+    sudo pacman -R kshisen -y
+    sudo pacman -R ksirk -y
+    sudo pacman -R ksnakeduel -y
+    sudo pacman -R kspaceduel -y
+    sudo pacman -R ksquares -y
+    sudo pacman -R ksudoku -y
+    sudo pacman -R ktuberling -y
+    sudo pacman -R kubrick -y
+    sudo pacman -R lskat -y
+    sudo pacman -R palapeli -y
+    sudo pacman -R picmi -y
+    sudo pacman -R skladnik -y
+    sudo pacman -R blinke -y
+    sudo pacman -R kanagram -y
+    sudo pacman -R khangman -y
+    sudo pacman -R minuet -y
+    sudo pacman -R artikulate -y
+
 fi
