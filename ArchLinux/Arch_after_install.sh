@@ -2,6 +2,24 @@
 # Красота в консоле
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 
+echo "Интерфейс системы - XFCE KDE CIN(cinnamon)"
+read visual
+echo "VirtualBoxGuest 1, No 0"
+read vb
+echo "Add Utils 1, No 0"
+read dop
+echo "
+System Interface: $visual
+VirtualBoxGuest: $vb
+Utils: $dop
+
+Continue?(y/n) default n"
+read conte
+
+if [[ "$conte" != 'y' ]];then
+    exit 0
+fi
+
 # Ещё доп по
 pacman -S wget \
     yajl \

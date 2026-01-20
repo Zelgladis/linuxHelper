@@ -8,15 +8,6 @@ read efi
 echo "auto grub 1, manual 0"
 read auto_grub
 
-echo "Интерфейс системы - XFCE KDE CIN(cinnamon)"
-read visual
-
-echo "VirtualBoxGuest 1, No 0"
-read vb
-
-echo "Add Utils 1, No 0"
-read dop
-
 echo "hostname"
 read myhostname
 
@@ -25,12 +16,9 @@ Username: $usern
 Password: 123 смени его после установки
 UEFI: $efi
 Auto GRUB: $auto_grub
-System Interface: $visual
-VirtualBoxGuest: $vb
-Utils: $dop
 Hostname: $myhostname
----###--- Continue?(y/n) default n ---###---
-"
+
+Continue?(y/n) default n"
 read conte
 
 if [[ "$conte" != 'y' ]];then
