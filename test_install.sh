@@ -141,7 +141,7 @@ if [[ "$visual" == 'XFCE' ]];then
 elif [[ "$visual" == 'KDE' ]]; then
     echo "KDE"
     sudo pacman -S --needed xorg sddm --noconfirm
-    sudo pacman -S --needed plasma kde-applications --noconfirm
+    sudo pacman -S --needed plasma plasma-workspace plasma-x11-session --noconfirm
     sudo pacman -S --needed qt6 --noconfirm
     sudo pacman -S --needed networkmanager-openvpn --noconfirm
     sudo pacman -S networkmanager-openconnect --noconfirm
