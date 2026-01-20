@@ -21,7 +21,7 @@ if [[ "$conte" != 'y' ]];then
 fi
 
 # Ещё доп по
-pacman -S wget \
+sudo pacman -S wget \
     yajl \
     git \
     base-devel \
@@ -105,7 +105,7 @@ elif [[ "$visual" == 'CIN' ]];then
     sudo pacman -S playerctl --noconfirm
     sudo pacman -S Rhythmbox --noconfirm
     sudo pacman -S gnome-terminal --noconfirm
-    yay -S beautyline  --noconfirm
+    yay -S beautyline --noconfirm
     mkdir -p ~/.themes
     cd /tmp
     wget -c https://github.com/EliverLara/Sweet/releases/download/v6.0/Sweet-Dark-v40.tar.xz
@@ -178,20 +178,6 @@ if [[ "$dop" == '1' ]];then
         protontricks \
         wine wine-mono vkd3d winetricks \
         krita --noconfirm
-    flatpak install flathub com.heroicgameslauncher.hgl \
-        ru.linux_gaming.PortProton \
-        nl.hjdskes.gcolor3 \
-        com.visualstudio.code \
-        com.vysp3r.ProtonPlus \
-        net.davidotek.pupgui2 \
-        org.gimp.GIMP \
-        org.DolphinEmu.dolphin-emu \
-        io.mgba.mGBA \
-        net.pcsx2.PCSX2 \
-        net.kuribo64.melonDS \
-        net.rpcs3.RPCS3 \
-        io.github.ryubing.Ryujinx \
-        org.ppsspp.PPSSPP \
-        io.github.xyproto.zsnes
-    sudo usermod -aG docker $usern
+    flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    sudo usermod -aG docker $USER
 fi
