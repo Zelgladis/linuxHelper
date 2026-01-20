@@ -1,16 +1,41 @@
 #!/bin/bash
-echo "username"
+echo "Имя пользователя"
 read usern
-echo "EFI 1 LEGACY 0:"
+
+echo "EFI 1, LEGACY 0:"
 read efi
-echo "auto grub 1 manual 0"
+
+echo "auto grub 1, manual 0"
 read auto_grub
-echo "VI- XFCE KDE CIN(cinnamon)"
+
+echo "Интерфейс системы - XFCE KDE CIN(cinnamon)"
 read visual
-echo "VirtualBox 1 No 0"
+
+echo "VirtualBoxGuest 1, No 0"
 read vb
-echo "Add Utils 1 No 0"
+
+echo "Add Utils 1, No 0"
 read dop
+
+echo "hostname"
+read myhostname
+
+echo "
+Username: $usern
+Password: 123 смени его после установки
+UEFI: $efi
+Auto GRUB: $auto_grub
+System Interface: $visual
+VirtualBoxGuest: $vb
+Utils: $dop
+Hostname: $myhostname
+---###--- Continue?(y/n) default n ---###---
+"
+read conte
+
+if [[ "$conte" != 'y' ]];then
+    exit 0
+fi
 
 # Europe/Saratov ваш регион/город Синхронизация часов
 ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime 
@@ -26,23 +51,20 @@ echo 'KEYMAP=ru
 FONT=cyr-sun16' > /etc/vconsole.conf
 
 # Настройка сети
-echo 'ariko' > /etc/hostname
-echo '127.0.0.1 localhost
+echo "$myhostname" > /etc/hostname
+echo "127.0.0.1 localhost
 ::1 localhost
-127.0.1.1 ariko.localdomain ariko' >> /etc/hosts
+127.0.1.1 $myhostname.localdomain $myhostname" >> /etc/hosts
 
 #Доп по(необходимое):
 pacman -Suy
 pacman -S gvim vi nano --noconfirm
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
-pacman -S dhcpcd --noconfirm
-pacman -S openssh --noconfirm
+pacman -S dhcpcd openssh --noconfirm
 systemctl enable sshd
 systemctl enable dhcpcd
 # Установите пакет grub и efibootmgr
-pacman -S btrfs-progs --noconfirm
-pacman -S e2fsprogs --noconfirm
-pacman -S grub efibootmgr os-prober hwinfo --noconfirm
+pacman -S btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo --noconfirm
 
 # EFI
 if [[ "$efi" == '1' ]];then
@@ -60,6 +82,35 @@ fi
 if [[ "$auto_grub" == '1' ]];then
     echo "AUTOGRUB"
     grub-mkconfig -o /boot/grub/grub.cfg
+else
+sudo cat << EOF > /boot/grub/grub.cfg
+set timeout=5
+set default=0
+
+menuentry "Arch Linux" {
+    search --no-floppy --fs-uuid --set=root --label ROOT
+    linux /boot/vmlinuz-linux root=LABEL=ROOT rw quiet
+    initrd /boot/initramfs-linux.img
+}
+
+menuentry "Arch Linux (Fallback)" {
+    search --no-floppy --fs-uuid --set=root --label ROOT
+    linux /boot/vmlinuz-linux root=LABEL=ROOT rw
+    initrd /boot/initramfs-linux-fallback.img
+}
+menuentry "Windows 11 (EFI)" {
+    search --no-floppy --fs-uuid --set=root e66ce8ef-66cf-4b2a-a36c-7bd61b9c4c51
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+# Для Windows legacy
+menuentry "Windows 7 (Legacy)" {
+    set root='hd0,msdos2'
+    chainloader +1
+}
+EOF
+
+sudo chattr +i /boot/grub/grub.cfg
+sudo sed -i '/#NoExtract   =/a NoUpgrade = boot/grub/grub.cfg' /etc/pacman.conf
 fi
 
 useradd -m -g users -G wheel -s /bin/bash $usern
@@ -74,14 +125,14 @@ sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 
 # Ещё доп по
-sudo pacman -S wget --noconfirm
-sudo pacman -S yajl --noconfirm
-sudo pacman -S git --noconfirm
-sudo pacman -S base-devel --noconfirm
-sudo pacman -S linux-headers --noconfirm
-sudo pacman -S dkms --noconfirm
-sudo pacman -S go --noconfirm
-sudo pacman -S ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
+sudo pacman -S wget \
+    yajl \
+    git \
+    base-devel \
+    linux-headers \
+    dkms \
+    go \
+    ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
 git clone https://github.com/scopatz/nanorc.git ~/.nano
 echo 'include "~/.nano/*.nanorc"' >> ~/.nanorc
 
@@ -97,25 +148,23 @@ makepkg -si && cd ~
 # drivers
 sudo pacman -S xf86-video-vesa --noconfirm
 # radeon
-sudo pacman -S mesa --noconfirm
-sudo pacman -S lib32-mesa --noconfirm
-sudo pacman -S xf86-video-amdgpu --noconfirm
-sudo pacman -S lib32-amdvlk --noconfirm
-sudo pacman -S amdvlk --noconfirm
-sudo pacman -S alsa-utils alsa-plugins --noconfirm
-sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
+sudo pacman -S mesa \
+    lib32-mesa \
+    xf86-video-amdgpu \
+    lib32-amdvlk \
+    amdvlk \
+    alsa-utils alsa-plugins \
+    pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
 systemctl --user enable --now pipewire pipewire-pulse
 
 # xorg
-sudo pacman -S xorg-server --noconfirm
-sudo pacman -S xorg-drivers --noconfirm
-sudo pacman -S xorg --noconfirm
+sudo pacman -S xorg xorg-server xorg-drivers --noconfirm
 # не обязательно
 sudo pacman -S gcc perl make --noconfirm
 
-xorg-drivers # Ниже есть драйвера но это вроде тоже
-Xorg :0 -configure # После драверов
-cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
+# xorg-drivers # Ниже есть драйвера но это вроде тоже
+# Xorg :0 -configure # После драверов
+# cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 
 if [[ "$visual" == 'XFCE' ]];then
     echo "XFCE"
@@ -140,7 +189,7 @@ if [[ "$visual" == 'XFCE' ]];then
     sudo pacman -S tilix --noconfirm
 elif [[ "$visual" == 'KDE' ]]; then
     echo "KDE"
-    sudo pacman -S --needed xorg sddm --noconfirm
+    sudo pacman -S --needed sddm --noconfirm
     sudo pacman -S --needed plasma plasma-workspace plasma-x11-session --noconfirm
     sudo pacman -S --needed qt6 --noconfirm
     sudo pacman -S --needed networkmanager-openvpn --noconfirm
@@ -199,9 +248,7 @@ if [[ "$vb" == '1' ]];then
     echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
 fi
 
-sudo pacman -S noto-fonts-cjk --noconfirm
-sudo pacman -S otf-ipafont --noconfirm
-
+sudo pacman -S noto-fonts-cjk otf-ipafont --noconfirm
 
 sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
   s/^#\(\[multilib\]\)/\1/
@@ -212,16 +259,64 @@ sudo pacman -Syu --noconfirm
 
 if [[ "$dop" == '1' ]];then
     echo "Add PO"
-    sudo pacman -S firefox --noconfirm
-    sudo pacman -S flatpak --noconfirm
-    yay -S visual-studio-code-bin --noconfirm
-    yay -S intellij-idea-community-edition --noconfirm
-    yay -S keepassxc --noconfirm
-    yay -S dbeaver --noconfirm
-    yay -S docker --noconfirm
-    yay -S docker-compose --noconfirm
+    sudo pacman -S firefox \
+        flatpak \
+        keepassxc \
+        dbeaver \
+        docker \
+        docker-compose \
+        intellij-idea-community-edition \
+        telegram-desktop \
+        kate \
+        cmake \
+        corectrl \
+        pavucontrol \
+        meld \
+        kdf \
+        htop \
+        psensor \
+        lm_sensors \
+        xsensors \
+        yakuake \
+        blueman \
+        partitionmanager \
+        flatseal \
+        filelight \
+        kcalc \
+        openrgb \
+        dolphin \
+        koko \
+        lutris \
+        telegram-desktop \
+        inkscape \
+        kate \
+        blender \
+        firefox \
+        elisa \
+        obs-studio \
+        rhythmbox \
+        krecorder \
+        vlc \
+        virtualbox \
+        ark \
+        kleopatra \
+        protontricks \
+        wine wine-mono vkd3d winetricks \
+        krita --noconfirm
+    flatpak install flathub com.heroicgameslauncher.hgl \
+        ru.linux_gaming.PortProton \
+        nl.hjdskes.gcolor3 \
+        com.visualstudio.code \
+        com.vysp3r.ProtonPlus \
+        net.davidotek.pupgui2 \
+        org.gimp.GIMP \
+        org.DolphinEmu.dolphin-emu \
+        io.mgba.mGBA \
+        net.pcsx2.PCSX2 \
+        net.kuribo64.melonDS \
+        net.rpcs3.RPCS3 \
+        io.github.ryubing.Ryujinx \
+        org.ppsspp.PPSSPP \
+        io.github.xyproto.zsnes
     sudo usermod -aG docker $usern
-    yay -S telegram-desktop --noconfirm
-    yay -S kate --noconfirm
-    sudo flatpak install flathub com.getpostman.Postman -y
 fi
