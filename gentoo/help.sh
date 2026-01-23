@@ -76,6 +76,10 @@ emerge --ask media-video/pipewire
 emerge --ask kde-plasma/plasma-systemmonitor
 emerge --ask sys-apps/xdg-desktop-portal
 emerge --ask kde-plasma/xdg-desktop-portal-kde
+emerge --ask app-portage/gentoolkit
+# Добавляем конфигурацию USE-флагов для Firefox
+echo "www-client/firefox X dbus pulseaudio system-icu system-jpeg system-libevent system-libvpx system-webp system-harfbuzz wayland media-libs/libvpx postproc" >> /etc/portage/package.use/firefox
+emerge --ask www-client/firefox
 
 
 
