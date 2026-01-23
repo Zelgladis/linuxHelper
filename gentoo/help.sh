@@ -48,28 +48,43 @@ passwd mio
 
 EDITOR=nano visudo
 # %wheel ALL=(ALL) ALL
+##
+nano /etc/portage/package.use/zz-autounmask
+##
 
 emerge --ask --update --deep --newuse @world
 emerge --ask kde-plasma/plasma-meta
-emerge --ask x11-misc/sddm
-emerge --ask net-misc/networkmanager
-echo "sys-boot/grub efi" >> /etc/portage/package.use/grub
-emerge --ask sys-boot/grub
-
-
-systemctl enable NetworkManager
-systemctl enable sddm
 
 emerge --ask sys-kernel/gentoo-kernel
+emerge --ask sys-kernel/gentoo-sources
+emerge --ask sys-kernel/genkernel
+emerge --ask sys-boot/grub
+emerge --ask x11-misc/sddm
+emerge --ask net-misc/networkmanager
+emerge --ask net-misc/openssh
+emerge --ask kde-apps/konsole
+emerge --ask app-misc/fastfetch
+
+
+cd /usr/src
+KERNEL_DIR=$(ls -d linux-*-gentoo | head -n1)
+[ ! -e linux ] && ln -s "$KERNEL_DIR" linux
+
 genkernel all
 
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Gentoo
-grub-mkconfig -o /boot/grub/grub.cfg
+blkid
 
 nano /etc/fstab
 # /dev/sda1  /boot  vfat  defaults,noatime  0 2
 
+echo "sys-boot/grub efi" >> /etc/portage/package.use/grub
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Gentoo
+grub-mkconfig -o /boot/grub/grub.cfg
 
+
+systemctl enable NetworkManager
+systemctl enable sddm
+systemctl enable sshd
 
 
 

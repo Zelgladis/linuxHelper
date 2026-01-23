@@ -1,0 +1,4 @@
+# <fs>                                   <mountpoint>  <type>  <opts>              <dump/pass>
+UUID=AC28-8EBA                            /boot         vfat    defaults,noatime    0 2
+UUID=32b66c1a-f002-4c15-9484-3e0be1db52f1 /             ext4    defaults,noatime    0 1
+UUID=b6d12a05-a30f-486f-9fb2-71e94b629063 none          swap    sw                  0 0

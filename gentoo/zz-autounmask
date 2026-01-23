@@ -1,0 +1,45 @@
+# package.use
+# Added by autounmask for kernel
+sys-kernel/installkernel dracut
+
+# KDE Plasma 6 specific flags
+kde-frameworks/frameworks plasma-wayland-session wayland x11
+kde-plasma/plasma-desktop wayland x11
+kde-plasma/plasma-workspace wayland x11
+kde-plasma/plasma-meta wayland x11
+kde-applications/kde-applications wayland x11
+
+# Общие флаги для KDE
+sys-apps/dbus dbus-python
+sys-libs/qtwayland wayland
+x11-libs/qt5-base wayland
+x11-libs/qt5-declarative wayland
+
+# Ядро и базовые компоненты
+sys-kernel/linux-headers wayland
+sys-kernel/linux-firmware
+sys-kernel/gentoo-sources
+
+# Дополнительные полезные флаги
+dev-qt/qtwayland wayland
+media-libs/mesa gles3
+media-libs/libva
+media-libs/va-driver-libs
+
+# Аудио и мультимедиа
+media-sound/pulseaudio alsa
+media-libs/libpulse
+
+# Безопасность и стабильность
+sys-kernel/hardened-sources
+sys-kernel/security-patches
+
+# Производительность и оптимизация
+sys-process/cpupower
+sys-fs/btrfs-progs
+
+# Дополнительные компоненты KDE
+kde-apps/okular
+kde-apps/konsole
+kde-apps/dolphin
+kde-apps/kwin
