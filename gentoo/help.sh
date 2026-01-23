@@ -51,6 +51,10 @@ EDITOR=nano visudo
 ##
 nano /etc/portage/package.use/zz-autounmask
 ##
+systemd-machine-id-setup
+eselect repository enable flathub
+eselect repository enable kde
+emaint sync -r kde
 
 emerge --ask --update --deep --newuse @world
 emerge --ask kde-plasma/plasma-meta
@@ -64,7 +68,35 @@ emerge --ask net-misc/networkmanager
 emerge --ask net-misc/openssh
 emerge --ask kde-apps/konsole
 emerge --ask app-misc/fastfetch
+emerge --ask kde-plasma/discover
+emerge --ask app-eselect/eselect-repository
+emerge --ask sys-apps/flatpak
+emerge --ask media-video/wireplumber
+emerge --ask media-video/pipewire
+emerge --ask kde-plasma/plasma-systemmonitor
+emerge --ask sys-apps/xdg-desktop-portal
+emerge --ask kde-plasma/xdg-desktop-portal-kde
 
+
+
+flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# video
+# VM
+emerge --ask x11-drivers/xf86-video-vmware x11-libs/libdrm media-libs/mesa 
+emerge --ask media-libs/mesa
+emerge --ask x11-apps/mesa-progs
+echo "x11-libs/libdrm ~amd64" >> /etc/portage/package.accept_keywords/99-libdrm
+echo "x11-libs/libdrm ~amd64" >> /etc/portage/package.accept_keywords/99-vmware
+echo "media-libs/mesa ~amd64" >> /etc/portage/package.accept_keywords/99-vmware
+echo "x11-drivers/xf86-video-vmware ~amd64" >> /etc/portage/package.accept_keywords/99-vmware
+echo 'x11-libs/libdrm video_cards_vmware' >> /etc/portage/package.accept_keywords/99-vmware
+echo 'media-libs/mesa xa video_cards_vmware' >> /etc/portage/package.accept_keywords/99-vmware
+emerge --ask --newuse @world
+
+
+# glxinfo | grep "OpenGL renderer"
+# END VM
 
 cd /usr/src
 KERNEL_DIR=$(ls -d linux-*-gentoo | head -n1)
@@ -85,7 +117,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable NetworkManager
 systemctl enable sddm
 systemctl enable sshd
-
+systemctl --user enable pipewire pipewire-pulse wireplumber
+systemctl enable bluetooth
 
 
 
