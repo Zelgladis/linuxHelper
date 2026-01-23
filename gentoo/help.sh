@@ -49,13 +49,29 @@ passwd mio
 EDITOR=nano visudo
 # %wheel ALL=(ALL) ALL
 
-# временно для сборки
-echo "media-libs/tiff -webp" >> /etc/portage/package.use/temp
-#echo "dev-python/pillow -truetype" >> /etc/portage/package.use/temp
 emerge --ask --update --deep --newuse @world
-rm /etc/portage/package.use/temp
-
 emerge --ask kde-plasma/plasma-meta
+emerge --ask x11-misc/sddm
+emerge --ask net-misc/networkmanager
+echo "sys-boot/grub efi" >> /etc/portage/package.use/grub
+emerge --ask sys-boot/grub
+
+
+systemctl enable NetworkManager
+systemctl enable sddm
+
+emerge --ask sys-kernel/gentoo-kernel
+genkernel all
+
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Gentoo
+grub-mkconfig -o /boot/grub/grub.cfg
+
+nano /etc/fstab
+# /dev/sda1  /boot  vfat  defaults,noatime  0 2
+
+
+
+
 
 
 #mkdir -p /var/db/repos
