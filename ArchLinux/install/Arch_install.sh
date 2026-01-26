@@ -46,7 +46,7 @@ echo "127.0.0.1 localhost
 
 #Доп по(необходимое):
 pacman -Suy --noconfirm
-pacman -S gvim vi nano --noconfirm
+pacman -S vi nano reflector --noconfirm
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
 pacman -S dhcpcd openssh --noconfirm
 systemctl enable sshd
@@ -119,7 +119,7 @@ pacman -S mesa \
 systemctl --user enable --now pipewire pipewire-pulse
 
 # xorg
-pacman -S xorg xorg-server xorg-drivers --noconfirm
+pacman -S xorg xorg-server xorg-drivers xorg-init --noconfirm
 # не обязательно
 pacman -S gcc perl make --noconfirm
 

@@ -100,7 +100,7 @@ echo '127.0.0.1 localhost
 ##### Доп по(необходимое):
 ```bash
 pacman -Suy
-pacman -S gvim vi nano micro --noconfirm
+pacman -S gvim vi nano micro reflector --noconfirm
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
 pacman -S dhcpcd --noconfirm
 pacman -S openssh --noconfirm
