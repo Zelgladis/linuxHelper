@@ -41,7 +41,7 @@ mkdir ~/OTB/gits
 cd ~/OTB/gits
 git clone https://aur.archlinux.org/yay.git
 cd yay
-sudo makepkg -si && cd ~
+makepkg -si && cd ~
 
 if [[ "$visual" == 'XFCE' ]];then
     echo "XFCE"
