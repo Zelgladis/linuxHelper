@@ -130,12 +130,21 @@ elif [[ "$visual" == 'GNOME' ]];then
         gnome-extra \
         gnome-shell-extensions \
         packagekit \
-        network-manager-applet --noconfirm
+        network-manager-applet \
+        firefox --noconfirm
     yay -S gnome-shell-extension-dash-to-dock pamac-aur --noconfirm
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Alt>Shift_L']"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift>Alt_L']"
-
-
+    gnome-extensions enable dash-to-dock@micxgx.gmail.com
+    gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'LEFT'
+    gsettings set org.gnome.shell.extensions.dash-to-dock extend-height true
+    # gsettings list-recursively org.gnome.shell | grep favorite
+    gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Nautilus.desktop', 'org.manjaro.pamac.manager.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']"
+    gnome-extensions enable system-monitor@gnome-shell-extensions.gcampax.github.com
+    #gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode 'FIXED'
+    #gsettings set org.gnome.shell.extensions.dash-to-dock background-opacity 0.9
+    gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,maximize,close"
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
