@@ -113,6 +113,23 @@ elif [[ "$visual" == 'CIN' ]];then
     cd ~/
     sudo echo "[Theme]" > /etc/sddm.conf
     sudo echo "Current=sugar-candy" >> /etc/sddm.conf
+elif [[ "$visual" == 'GNOME' ]];then
+    sudo pacman -S gnome-shell \
+        gnome-terminal \
+        gnome-tweaks \
+        gnome-control-center \
+        xdg-user-dirs \
+        gdm \
+        gnome-keyring \
+        nautilus \
+        eog \
+        file-roller \
+        gnome \
+        gnome-extra \
+        network-manager-applet
+
+sudo systemctl enable --now NetworkManager
+sudo systemctl enable gdm
 fi
 
 if [[ "$vb" == '1' ]];then

@@ -110,16 +110,16 @@ echo "$usern:123" | sudo chpasswd
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 # drivers
-pacman -S xf86-video-vesa --noconfirm
-# radeon
-pacman -S mesa \
-    xf86-video-amdgpu \
+pacman -S xf86-video-vesa mesa \
     alsa-utils alsa-plugins \
     pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
 systemctl --user enable --now pipewire pipewire-pulse
 
+# radeon
+pacman -S mesa xf86-video-amdgpu --noconfirm
+
 # xorg
-pacman -S xorg xorg-server xorg-drivers xorg-init --noconfirm
+pacman -S xorg xorg-server xorg-drivers --noconfirm
 # не обязательно
 pacman -S gcc perl make --noconfirm
 
