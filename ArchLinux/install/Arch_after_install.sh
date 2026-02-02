@@ -2,15 +2,13 @@
 # Красота в консоле
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 
-echo "Интерфейс системы - XFCE KDE CIN(cinnamon)"
+echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon)"
 read visual
-echo "VirtualBoxGuest 1, No 0"
-read vb
+
 echo "Add Utils 1, No 0"
 read dop
 echo "
 System Interface: $visual
-VirtualBoxGuest: $vb
 Utils: $dop
 
 Continue?(y/n) default n"
@@ -126,28 +124,17 @@ elif [[ "$visual" == 'GNOME' ]];then
         file-roller \
         gnome \
         gnome-extra \
+        gnome-shell-extensions \
+        dash-to-dock \
         network-manager-applet
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
 fi
 
-if [[ "$vb" == '1' ]];then
-    echo "VirtualBox"
-    sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
-    sudo systemctl enable --now vboxservice.service
-    sudo modprobe -a vboxguest vboxsf vboxvideo
-    echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
-fi
 
-sudo pacman -S noto-fonts-cjk otf-ipafont --noconfirm
 
-sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
-  s/^#\(\[multilib\]\)/\1/
-  s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
-}' /etc/pacman.conf
 
-sudo pacman -Syu --noconfirm
 
 if [[ "$dop" == '1' ]];then
     echo "Add PO"

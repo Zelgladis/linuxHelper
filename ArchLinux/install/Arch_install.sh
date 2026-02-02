@@ -11,9 +11,16 @@ read auto_grub
 echo "hostname"
 read myhostname
 
+echo "VirtualBoxGuest 1, No 0"
+read vb
+
+echo "nvidia 1 radeo 2 other *"
+read graph
+
 echo "
 Username: $usern
 Password: 123 смени его после установки
+VirtualBoxGuest: $vb
 UEFI: $efi
 Auto GRUB: $auto_grub
 Hostname: $myhostname
@@ -45,14 +52,11 @@ echo "127.0.0.1 localhost
 127.0.1.1 $myhostname.localdomain $myhostname" >> /etc/hosts
 
 #Доп по(необходимое):
-pacman -Suy --noconfirm
-pacman -S vi nano reflector --noconfirm
-# Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
-pacman -S dhcpcd openssh --noconfirm
+pacman -Syu --noconfirm
+pacman -S vi nano reflector gcc perl make dhcpcd openssh \
+       btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo --noconfirm
 systemctl enable sshd
 systemctl enable dhcpcd
-# Установите пакет grub и efibootmgr
-pacman -S btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo --noconfirm
 
 # EFI
 if [[ "$efi" == '1' ]];then
@@ -116,12 +120,28 @@ pacman -S xf86-video-vesa mesa \
 systemctl --user enable --now pipewire pipewire-pulse
 
 # radeon
-pacman -S mesa xf86-video-amdgpu --noconfirm
+if [[ "${graph}" == '1' ]]; then
+    pacman -S mesa xf86-video-amdgpu --noconfirm
+else
+    pacman -S mesa --noconfirm
+fi
+# xorg dop
+pacman -S xorg xorg-server xorg-drivers noto-fonts-cjk otf-ipafont --noconfirm
 
-# xorg
-pacman -S xorg xorg-server xorg-drivers --noconfirm
-# не обязательно
-pacman -S gcc perl make --noconfirm
+sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
+  s/^#\(\[multilib\]\)/\1/
+  s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
+}' /etc/pacman.conf
+
+sudo pacman -Syu --noconfirm
+
+if [[ "$vb" == '1' ]];then
+    echo "VirtualBox"
+    sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
+    sudo systemctl enable --now vboxservice.service
+    sudo modprobe -a vboxguest vboxsf vboxvideo
+    echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
+fi
 
 # xorg-drivers # Ниже есть драйвера но это вроде тоже
 # Xorg :0 -configure # После драверов
