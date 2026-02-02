@@ -131,6 +131,7 @@ elif [[ "$visual" == 'GNOME' ]];then
         gnome-shell-extensions \
         packagekit \
         network-manager-applet \
+        gnome-shell-extensions \
         firefox --noconfirm
     yay -S gnome-shell-extension-dash-to-dock pamac-aur --noconfirm
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Alt>Shift_L']"
@@ -145,6 +146,7 @@ elif [[ "$visual" == 'GNOME' ]];then
     #gsettings set org.gnome.shell.extensions.dash-to-dock background-opacity 0.9
     gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,maximize,close"
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
