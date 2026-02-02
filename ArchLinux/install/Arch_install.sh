@@ -11,16 +11,12 @@ read auto_grub
 echo "hostname"
 read myhostname
 
-echo "VirtualBoxGuest 1, No 0"
-read vb
-
 echo "nvidia 1 radeo 2 other *"
 read graph
 
 echo "
 Username: $usern
 Password: 123 смени его после установки
-VirtualBoxGuest: $vb
 UEFI: $efi
 Auto GRUB: $auto_grub
 Hostname: $myhostname
@@ -135,13 +131,6 @@ sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
 
 sudo pacman -Syu --noconfirm
 
-if [[ "$vb" == '1' ]];then
-    echo "VirtualBox"
-    sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
-    sudo systemctl enable --now vboxservice.service
-    sudo modprobe -a vboxguest vboxsf vboxvideo
-    echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
-fi
 
 # xorg-drivers # Ниже есть драйвера но это вроде тоже
 # Xorg :0 -configure # После драверов

@@ -5,11 +5,15 @@
 echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon)"
 read visual
 
+echo "VirtualBoxGuest 1, No 0"
+read vb
+
 echo "Add Utils 1, No 0"
 read dop
 echo "
 System Interface: $visual
 Utils: $dop
+VirtualBoxGuest: $vb
 
 Continue?(y/n) default n"
 read conte
@@ -184,4 +188,12 @@ if [[ "$dop" == '1' ]];then
         krita --noconfirm
     flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo usermod -aG docker $USER
+fi
+
+if [[ "$vb" == '1' ]];then
+    echo "VirtualBox"
+    pacman -S linux-headers virtualbox-guest-utils --noconfirm
+    systemctl enable --now vboxservice.service
+    modprobe -a vboxguest vboxsf vboxvideo
+    echo -e "vboxguest\nvboxsf\nvboxvideo" | tee /etc/modules-load.d/virtualbox.conf
 fi
