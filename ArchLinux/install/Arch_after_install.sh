@@ -41,7 +41,7 @@ mkdir ~/OTB/gits
 cd ~/OTB/gits
 git clone https://aur.archlinux.org/yay.git
 cd yay
-makepkg -si && cd ~
+sudo makepkg -si && cd ~
 
 if [[ "$visual" == 'XFCE' ]];then
     echo "XFCE"
@@ -129,8 +129,13 @@ elif [[ "$visual" == 'GNOME' ]];then
         gnome \
         gnome-extra \
         gnome-shell-extensions \
-        dash-to-dock \
-        network-manager-applet
+        packagekit \
+        network-manager-applet --noconfirm
+    yay -S gnome-shell-extension-dash-to-dock --noconfirm
+    gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Alt>Shift_L']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift>Alt_L']"
+
+
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
@@ -192,8 +197,8 @@ fi
 
 if [[ "$vb" == '1' ]];then
     echo "VirtualBox"
-    pacman -S linux-headers virtualbox-guest-utils --noconfirm
-    systemctl enable --now vboxservice.service
-    modprobe -a vboxguest vboxsf vboxvideo
-    echo -e "vboxguest\nvboxsf\nvboxvideo" | tee /etc/modules-load.d/virtualbox.conf
+    sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
+    sudo systemctl enable --now vboxservice.service
+    sudo modprobe -a vboxguest vboxsf vboxvideo
+    echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
 fi
