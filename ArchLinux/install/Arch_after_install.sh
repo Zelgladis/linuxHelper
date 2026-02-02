@@ -131,7 +131,7 @@ elif [[ "$visual" == 'GNOME' ]];then
         gnome-shell-extensions \
         packagekit \
         network-manager-applet --noconfirm
-    yay -S gnome-shell-extension-dash-to-dock --noconfirm
+    yay -S gnome-shell-extension-dash-to-dock pamac-aur --noconfirm
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Alt>Shift_L']"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift>Alt_L']"
 
