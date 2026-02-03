@@ -31,7 +31,7 @@ USE="X wayland plasma kde qt5 qt6 dbus networkmanager wifi
 
 # Оптимизация для процессора (VirtualBox обычно x86-64)
 # Для виртуальной машины лучше использовать generic, а не native
-COMMON_FLAGS="-march=x86-64 -O2 -pipe"
+COMMON_FLAGS="-march=native -O2 -pipe"
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
 
@@ -53,13 +53,10 @@ EMERGE_DEFAULT_OPTS="--with-bdeps=y --binpkg-respect-use=y"
 # Для ускорения сборки в VM (бинарные пакеты)
 EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --getbinpkg --binpkg-changed-deps=y"
 
-GENTOO_MIRRORS="https://gentoo-mirror.alexxy.name/ \
-    http://gentoo-mirror.alexxy.name/ \
-    https://ru.mirrors.cicku.me/gentoo/ \
-    http://ru.mirrors.cicku.me/gentoo/ \
-    https://mirror.yandex.ru/gentoo-distfiles/ \
+GENTOO_MIRRORS="https://mirror.yandex.ru/gentoo-distfiles/ \
     http://mirror.yandex.ru/gentoo-distfiles/ \
-    ftp://mirror.yandex.ru/gentoo-distfiles/"
+    ftp://mirror.yandex.ru/gentoo-distfiles/ \
+    https://ru.mirrors.cicku.me/gentoo/"
 
 EOF
 
@@ -73,7 +70,7 @@ export PS1="(gentoo) $PS1"
 ## 
 
 # Установка ядра
-emerge-webrsync
+# emerge-webrsync
 
 # Установите ядро с поддержкой VirtualBox
 # Вариант A: Дистрибутивное ядро (проще, но может не иметь всех нужных модулей)
