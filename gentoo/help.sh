@@ -19,15 +19,72 @@ mount --make-rslave /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
 
-cp -L /etc/resolv.conf /mnt/gentoo/etc/resolv.conf
+cp -L /etc/resolv.conf /mnt/gentoo/etc/
+
+# mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
+cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
+# USE-флаги для KDE Plasma и VirtualBox
+USE="X wayland plasma kde qt5 qt6 dbus networkmanager wifi 
+     alsa pulseaudio bluetooth systemd elogind 
+     virtualbox-guest-additions dri xvmc 
+     network-manager sdl v4l vulkan"
+
+# Оптимизация для процессора (VirtualBox обычно x86-64)
+# Для виртуальной машины лучше использовать generic, а не native
+COMMON_FLAGS="-march=x86-64 -O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+
+# Параллельная сборка (ядра + 1, для VM можно меньше)
+MAKEOPTS="-j5"
+EMERGE_DEFAULT_OPTS="--jobs=3 --load-average=5"
+
+# Для VirtualBox (гостевая система)
+VIDEO_CARDS="virtualbox"
+INPUT_DEVICES="libinput vmmouse"
+
+# Для systemd
+GRUB_PLATFORMS="efi-64"
+
+# Особенности Portage
+FEATURES="buildpkg candy parallel-fetch parallel-install"
+EMERGE_DEFAULT_OPTS="--with-bdeps=y --binpkg-respect-use=y"
+
+# Для ускорения сборки в VM (бинарные пакеты)
+EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --getbinpkg --binpkg-changed-deps=y"
+
+GENTOO_MIRRORS="https://gentoo-mirror.alexxy.name/ \
+    http://gentoo-mirror.alexxy.name/ \
+    https://ru.mirrors.cicku.me/gentoo/ \
+    http://ru.mirrors.cicku.me/gentoo/ \
+    https://mirror.yandex.ru/gentoo-distfiles/ \
+    http://mirror.yandex.ru/gentoo-distfiles/ \
+    ftp://mirror.yandex.ru/gentoo-distfiles/"
+
+EOF
+
 
 chroot /mnt/gentoo /bin/bash
 source /etc/profile
 export PS1="(gentoo) $PS1"
 
 ##
-nano /etc/portage/make.conf
+# nano /etc/portage/make.conf
 ## 
+
+# Установка ядра
+emerge-webrsync
+
+# Установите ядро с поддержкой VirtualBox
+# Вариант A: Дистрибутивное ядро (проще, но может не иметь всех нужных модулей)
+emerge --ask sys-kernel/gentoo-kernel-bin
+
+# Вариант B: Собрать ядро с нужными опциями
+emerge --ask sys-kernel/gentoo-sources
+cd /usr/src/linux
+
+# Минимальные настройки для VirtualBox:
+make menuconfig
 
 emerge --sync
 

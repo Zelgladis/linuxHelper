@@ -158,7 +158,7 @@ sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
 elif [[ "$visual" == 'MangoWC' ]]; then
     echo 'TODO make it'
-elif [[ "$visual" == 'Hyprland' ]]
+elif [[ "$visual" == 'Hyprland' ]]; then
     # Установка (официальные репозитории!)
     sudo pacman -S hyprland
 
