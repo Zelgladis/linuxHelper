@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 echo "Имя пользователя"
 read usern
 
@@ -14,12 +16,24 @@ read myhostname
 echo "nvidia 1 radeo 2 other *"
 read graph
 
+echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon) Hyprland MangoWC"
+read visual
+
+echo "VirtualBoxGuest 1, No 0"
+read vb
+
+echo "Add Utils 1, No 0"
+read dop
+
 echo "
 Username: $usern
 Password: 123 смени его после установки
 UEFI: $efi
 Auto GRUB: $auto_grub
 Hostname: $myhostname
+System Interface: $visual
+Utils: $dop
+VirtualBoxGuest: $vb
 
 Continue?(y/n) default n"
 read conte
@@ -28,7 +42,7 @@ if [[ "$conte" != 'y' ]];then
     exit 0
 fi
 set -e
-
+function part1(){
 # Europe/Saratov ваш регион/город Синхронизация часов
 ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime 
 hwclock --systohc
@@ -126,15 +140,37 @@ fi
 # xorg dop
 pacman -S xorg xorg-server xorg-drivers noto-fonts-cjk otf-ipafont --noconfirm
 
-sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
+sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
   s/^#\(\[multilib\]\)/\1/
   s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
 }' /etc/pacman.conf
 
-sudo pacman -Syu --noconfirm
+pacman -Syu --noconfirm
 
+pacman -S wget \
+    yajl \
+    git \
+    base-devel \
+    linux-headers \
+    dkms \
+    go \
+    ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
+}
+
+function part2(){
+git clone https://github.com/scopatz/nanorc.git ~/.nano
+echo 'include "~/.nano/*.nanorc"' >> ~/.nanorc
 
 # xorg-drivers # Ниже есть драйвера но это вроде тоже
 # Xorg :0 -configure # После драверов
 # cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
+
+# YAY aur
+mkdir ~/OTB
+mkdir ~/OTB/gits
+cd ~/OTB/gits
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si && cd ~
+}
 

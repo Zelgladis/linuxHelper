@@ -2,6 +2,8 @@
 # Красота в консоле
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 
+set -e
+
 echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon) Hyprland MangoWC"
 read visual
 
@@ -63,7 +65,6 @@ if [[ "$visual" == 'XFCE' ]];then
     sudo pacman -S xfce4-mount-plugin --noconfirm
     sudo pacman -S gvfs-smb --noconfirm
     sudo pacman -S gvfs-mtp --noconfirm
-    sudo pacman -S tilix --noconfirm
 elif [[ "$visual" == 'KDE' ]]; then
     echo "KDE"
     sudo pacman -S --needed sddm --noconfirm
@@ -158,7 +159,11 @@ sudo systemctl enable gdm
 elif [[ "$visual" == 'MangoWC' ]]; then
     echo 'TODO make it'
 elif [[ "$visual" == 'Hyprland' ]]
-    echo 'TODO make it'
+    # Установка (официальные репозитории!)
+    sudo pacman -S hyprland
+
+    # Дополнительные полезные компоненты
+    sudo pacman -S waybar rofi wofi grim slurp mako
 fi
 
 if [[ "$dop" == '1' ]];then
