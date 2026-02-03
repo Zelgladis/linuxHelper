@@ -232,7 +232,8 @@ reboot
 
 ### Terminal Visual
 ```bash
-export PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "
+#export PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "
+export PS1="\[\e[38;5;197m\]\$(if [[ \$? -eq 0 ]]; then echo '✨'; else echo '💀'; fi) \[\e[38;5;118m\]\u\[\e[0m\]@\[\e[38;5;81m\]\h\[\e[0m\] \[\e[38;5;171m\]🌸 \[\e[38;5;227m\]\w\[\e[0m\]\[\e[38;5;213m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}')\[\e[0m\] \[\e[38;5;219m\]➤\[\e[0m\] "
 vim ~/.bashrc
 ```
 
