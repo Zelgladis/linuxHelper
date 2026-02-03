@@ -47,7 +47,7 @@ fi
 }
 
 function saveVars(){
-cat << EOF > "home/$usern/myvars.sh"
+cat << EOF > "/home/$usern/myvars.sh"
 usern="$usern"
 efi="$efi"
 auto_grub="$auto_grub"
