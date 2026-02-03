@@ -2,7 +2,7 @@
 # Красота в консоле
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 
-echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon)"
+echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon) Hyprland MangoWC"
 read visual
 
 echo "VirtualBoxGuest 1, No 0"
@@ -135,15 +135,13 @@ elif [[ "$visual" == 'GNOME' ]];then
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Alt>Shift_L']"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift>Alt_L']"
 
-
-
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
+elif [[ "$visual" == 'MangoWC' ]]; then
+    echo 'TODO make it'
+elif [[ "$visual" == 'Hyprland' ]]
+    echo 'TODO make it'
 fi
-
-
-
-
 
 if [[ "$dop" == '1' ]];then
     echo "Add PO"
