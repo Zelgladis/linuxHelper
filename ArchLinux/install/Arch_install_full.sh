@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+if [[ "$1" == '1' ]]; then
 echo "Имя пользователя"
 read usern
 
@@ -41,7 +42,24 @@ read conte
 if [[ "$conte" != 'y' ]];then
     exit 0
 fi
+fi
 set -e
+
+function saveVars(){
+cat << EOF > "home/$usern/myvars.sh"
+usern="$usern"
+efi="$efi"
+auto_grub="$auto_grub"
+myhostname="$myhostname"
+graph="$visual"
+dop="$dop"
+vb="$vb"
+EOF
+}
+function readVars(){
+source "home/$usern/myvars.sh"
+}
+
 function part1(){
 # Europe/Saratov ваш регион/город Синхронизация часов
 ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime 
@@ -65,7 +83,7 @@ echo "127.0.0.1 localhost
 #Доп по(необходимое):
 pacman -Syu --noconfirm
 pacman -S vi nano reflector gcc perl make dhcpcd openssh \
-       btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo --noconfirm
+    btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo --noconfirm
 systemctl enable sshd
 systemctl enable dhcpcd
 
@@ -155,9 +173,16 @@ pacman -S wget \
     dkms \
     go \
     ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
+
+saveVars
 }
 
 function part2(){
+if [[ "$(whoami)" == 'root' ]]; then
+    echo "Не под рутом"
+    exit 0
+fi
+readVars
 git clone https://github.com/scopatz/nanorc.git ~/.nano
 echo 'include "~/.nano/*.nanorc"' >> ~/.nanorc
 
@@ -173,4 +198,6 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si && cd ~
 }
+
+
 
