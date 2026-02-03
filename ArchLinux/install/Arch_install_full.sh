@@ -319,6 +319,38 @@ elif [[ "$visual" == 'Hyprland' ]]; then
 
     # Дополнительные полезные компоненты
     sudo pacman -S waybar rofi wofi grim slurp mako
+
+    sudo pacman -S greetd \
+        hyprpaper \
+        hyprlock \
+        hypridle \
+        tlp powertop \
+        power-profiles-daemon \
+        hyprpicker \
+        xdg-desktop-portal-hyprland \
+        swaylock \
+        grim \
+        slurp \
+        waybar \
+        man-db \
+        kitty \
+        noto-fonts \
+        ttf-jetbrains-mono \
+        ttf-font-awesome \
+        sddm \
+        ntfs-3g \
+        bluez \
+        bluez-utils \
+        firefox --noconfirm
+        yay -S hyprpanel --noconfirm
+
+        # Install libvirt and qemu things.
+sudo pacman -S libvirt virt-viewer qemu-common
+# Add yourself to the libvirt group.
+sudo usermod -a -G libvirt mio # Replace 'USER' with your username.
+# Enable and start libvirtd.
+systemctl enable --now libvirtd
+
 fi
 
 if [[ "$dop" == '1' ]];then

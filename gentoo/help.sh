@@ -1,5 +1,5 @@
 mkfs.fat -F32 /dev/sda1 -n EFI
-mkfs.ext4 /dev/sda2 -L ROOT
+mkfs.btrfs /dev/sda2 -L ROOT
 mkswap /dev/sda3 -L SWAP
 
 swapon /dev/sda3
