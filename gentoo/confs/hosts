@@ -1,0 +1,3 @@
+# Это обязательные настройки для текущей системы
+127.0.0.1     ariko.homenetwork ariko localhost
+::1           ariko.homenetwork ariko localhost

@@ -1,0 +1,34 @@
+/dev/sr0: BLOCK_SIZE="2048" UUID="2026-02-01-19-32-31-00" LABEL="gentoo-amd64-livegui" TYPE="iso9660" PTTYPE="PMBR"
+/dev/loop0: BLOCK_SIZE="131072" TYPE="squashfs"
+
+# /etc/fstab: static file system information.
+#
+# See the manpage fstab(5) for more information.
+#
+# NOTE: The root filesystem should have a pass number of either 0 or 1.
+#       All other filesystems should have a pass number of 0 or greater than 1.
+#
+# NOTE: Even though we list ext4 as the type here, it will work with ext2/ext3
+#       filesystems.  This just tells the kernel to use the ext4 driver.
+#
+# NOTE: You can use full paths to devices like /dev/sda3, but it is often
+#       more reliable to use filesystem labels or UUIDs. See your filesystem
+#       documentation for details on setting a label. To obtain the UUID, use
+#       the blkid(8) command.
+
+# <fs>                  <mountpoint>    <type>          <opts>              <dump> <pass>
+
+#LABEL=boot             /boot           ext4            defaults                1 2
+#UUID=58e72203-57d1-4497-81ad-97655bd56494              /                       xfs             defaults                0 1
+#LABEL=swap             none            swap            sw                      0 0
+#/dev/cdrom             /mnt/cdrom      auto            noauto,ro               0 0
+LABEL="SWAP"            none            swap            umask=0077              0 0
+LABEL="ROOT"            /               btrfs           sw                      0 1
+LABEL="EFI"             /boot           vfat            defaults,noatime        0 2
+
+/dev/sda2: LABEL="SWAP" UUID="f6b7751b-99d2-4f9d-8163-1089601e4825" TYPE="swap" PARTUUID="a343102a-74c8-40ed-93fa-7d06fa6e6de6"
+/dev/sda3: LABEL="ROOT" UUID="611e1df1-f128-4957-b3c7-d336df9a82ec" UUID_SUB="9abebb58-1baf-45fe-acd7-0473505cd390" BLOCK_SIZE="4096" TYPE="btrfs" PARTUUID="3d913b54-ae39-477d-899d-e49cea6d4651"
+/dev/sda1: LABEL_FATBOOT="EFI" LABEL="EFI" UUID="AF3E-6F24" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="665b2b86-1420-4baf-9dc5-4b8468bd1b50"
+
+
+

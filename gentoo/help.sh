@@ -63,7 +63,15 @@ EOF
 
 chroot /mnt/gentoo /bin/bash
 source /etc/profile
-export PS1="(gentoo) $PS1"
+export PS1="(chroot) $PS1"
+
+mkdir /etc/portage/repos.conf
+portageq repos_config / > /etc/portage/repos.conf/gentoo.conf
+ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime
+nano /etc/locale.gen
+locale-gen
+
+
 
 ##
 # nano /etc/portage/make.conf
