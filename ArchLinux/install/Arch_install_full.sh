@@ -141,7 +141,7 @@ useradd -m -g users -G wheel -s /bin/bash $usern
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
-echo "$usern:123" | sudo chpasswd
+echo "gentoo:123" | sudo chpasswd
 echo "root:123" | sudo chpasswd
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
