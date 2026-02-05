@@ -23,6 +23,7 @@ mkdir --parents /mnt/gentoo
 swapon /dev/sda2
 mount /dev/sda3 /mnt/gentoo
 mkdir --parents /mnt/gentoo/efi
+#mount /dev/sd1 /mnt/gentoo/
 
 # Установка основы системы stage3 desktop systemd(современная)
 cd /mnt/gentoo
@@ -81,7 +82,8 @@ nano /etc/portage/binrepos.conf/gentoobinhost.conf # confs/gentoobinhost.conf
 emerge --ask --oneshot app-portage/cpuid2cpuflags
 cpuid2cpuflags
 echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
-echo '*/* VIDEO_CARDS: amdgpu radeonsi' >  /etc/portage/package.use/00video_cards
+# echo '*/* VIDEO_CARDS: amdgpu radeonsi' >  /etc/portage/package.use/00video_cards
+# echo '*/* VIDEO_CARDS: VMSVGA' >  /etc/portage/package.use/00video_cards
 # emerge --ask sys-fs/btrfs-progs
 
 # Настройка локали
@@ -120,7 +122,7 @@ blkid # ROOT UUID осюда взять
 nano /etc/dracut.conf.d/00-installkernel.conf
 # kernel_cmdline=" root=UUID=611e1df1-f128-4957-b3c7-d336df9a82ec "
 
-echo 'sys-apps/systemd boot' > /etc/portage/package.use/uki
+# echo 'sys-apps/systemd boot' > /etc/portage/package.use/uki
 
 emerge --ask sys-kernel/installkernel
 emerge --ask sys-kernel/gentoo-kernel-bin
@@ -132,63 +134,65 @@ ls -l /usr/src/linux
 
 nano /etc/fstab
 echo ariko > /etc/hostname
-
-
-emerge --ask net-misc/dhcpcd
-systemctl enable dhcpcd
-
-
 nano /etc/hosts
 
-passwd
+
 systemd-machine-id-setup
 systemctl preset-all --preset-mode=enable-only
 
 # Установка системных приложений
 # emerge --ask app-admin/sysklogd
 # rc-update add sysklogd default
+emerge --ask net-misc/dhcpcd
+systemctl enable dhcpcd
 emerge --ask sys-apps/mlocate
-systemctl enable sshd
+emerge --ask net-misc/networkmanager
+systemctl enable NetworkManager
+
+# emerge --ask net-misc/openssh
+# systemctl enable sshd
 systemctl enable getty@tty1.service
 emerge --ask app-shells/bash-completion
 emerge --ask net-misc/chrony
 systemctl enable chronyd.service
 
 # Утилиты для работы с файловыми системами и НВМЕ
-emerge --ask sys-fs/btrfs-progs
-emerge --ask sys-fs/e2fsprogs
-emerge --ask sys-block/io-scheduler-udev-rules
+emerge --ask sys-fs/btrfs-progs sys-fs/e2fsprogs sys-block/io-scheduler-udev-rules
 
-
+# WIFI PPPp
 emerge --ask net-dialup/ppp
 emerge --ask net-wireless/iw net-wireless/wpa_supplicant
 
-emerge --ask --update --newuse --verbose sys-boot/grub
+emerge --ask --verbose sys-boot/grub
+# emerge --ask --update --newuse --verbose sys-boot/grub
 ### Если какая-то шляпа
 umount /dev/sda1
 mount /dev/sda1 /efi
 ###
 
-grub-install --efi-directory=/efi --target=x86_64-efi 
+# grub-install --efi-directory=/efi --target=x86_64-efi
+grub-install --efi-directory=/efi
 grub-mkconfig -o /efi/grub/grub.cfg
 
+passwd
 emerge --ask app-admin/sudo
 useradd -m -G users,wheel,audio -s /bin/bash mio 
 passwd mio
 passwd -l root
+EDITOR=nano visudo
+# %wheel ALL=(ALL) ALL
 
 # Finnale По идеи после этой команды можно загружаться в систему и всё должно работать
 emerge --ask --update --deep --newuse @world
 # Починить конфы(точнее обновить)
 dispatch-conf
 locale-gen
-env-update && source /etc/profile
+env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 
 
 # Но нам нужно KDE так-что продолжаем
 emerge --ask kde-plasma/plasma-meta
 emerge --ask x11-misc/sddm
-emerge --ask net-misc/openssh
 emerge --ask media-video/wireplumber
 emerge --ask media-video/pipewire
 emerge --ask kde-plasma/plasma-systemmonitor
