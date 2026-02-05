@@ -23,9 +23,7 @@ mkdir --parents /mnt/gentoo
 swapon /dev/sda2
 mount /dev/sda3 /mnt/gentoo
 mkdir --parents /mnt/gentoo/efi
-#mount /dev/sd1 /mnt/gentoo/
 
-# Установка основы системы stage3 desktop systemd(современная)
 cd /mnt/gentoo
 date
 chronyd -q
@@ -33,18 +31,51 @@ chronyd -q
 links https://www.gentoo.org/downloads/mirrors/ # Качаем downloads/stage3-desktop-systemd ~700mb
 gpg --import /usr/share/openpgp-keys/gentoo-release.asc # скачивание gpg ключей
 tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo # установка stage3
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 
 # Первоначальная Настройка системы установки
 # Настройка менеджера пакетов portage
-nano /mnt/gentoo/etc/portage/make.conf # confs/make.conf
+cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
+# These settings were set by the catalyst build script that automatically
+# built this stage.
+# Please consult /usr/share/portage/config/make.conf.example for a more
+# detailed example.
+COMMON_FLAGS="-march=native -O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
 
-# Для Rust и настройки проца
-# RUSTFLAGS="${RUSTFLAGS} -C target-cpu=native"
-# MAKEOPTS="-j4 -l5"
-# EMERGE_DEFAULT_OPTS="--jobs=3 --load-average=5"
+USE="systemd grub alsa dbus networkmanager pipewire pulseaudio dracut"
+USE="${USE} video_cards_vmware"
+# USE="${USE} X wayland plasma qt5 qt6 kde firewall kwallet crypt discover flatpak rdp thunderbolt"
+# USE="${USE}  bluetooth -efistub -grub -refind -systemd-boot -ugrd -uki -ukify wacom"
 
-# Копируем настройки DNS из мастер системы
-cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
+#VIDEO_CARDS="VMSVGA"
+
+
+RUSTFLAGS="${RUSTFLAGS} -C target-cpu=native"
+
+MAKEOPTS="-j4 -l5"
+EMERGE_DEFAULT_OPTS="--jobs=3 --load-average=5"
+
+FEATURES="${FEATURES} getbinpkg"
+# Require signatures
+FEATURES="${FEATURES} binpkg-request-signature"
+
+# NOTE: This stage was built with the bindist USE flag enabled
+
+# This sets the language of build output to English.
+# Please keep this setting intact when reporting bugs.
+LC_MESSAGES=C.UTF-8
+ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE"
+
+GENTOO_MIRRORS="https://mirror.yandex.ru/gentoo-distfiles/ \
+    http://mirror.yandex.ru/gentoo-distfiles/ \
+    ftp://mirror.yandex.ru/gentoo-distfiles/"
+
+GRUB_PLATFORMS="efi-64"
+EOF
 
 # Монтирование и привязка необходимых ФС
 # Каталог /proc/ монтируется в /mnt/gentoo/proc/, остальные — через перепривязку точки монтирования. 
@@ -63,41 +94,45 @@ chroot /mnt/gentoo /bin/bash
 source /etc/profile && export PS1="(chroot) ${PS1}"
 mount /dev/sda1 /efi
 
-# mount /dev/sda1 /efi 
 emerge-webrsync
-
-# установка и настройка зеркал
 emerge --ask --verbose --oneshot app-portage/mirrorselect
-mirrorselect -i -o >> /etc/portage/make.conf
+emerge --ask --oneshot app-portage/cpuid2cpuflags
+# mirrorselect -i -o >> /etc/portage/make.conf
 emerge --sync
 
-# Выбираем для KDE plasma
-eselect profile set 8
-eselect profile list
+cat > /etc/portage/binrepos.conf/gentoobinhost.conf << 'EOF'
+# These settings were set by the catalyst build script that automatically
+# built this stage.
+# Please consider using a local mirror.
 
-# Поддержка bin пакетов
-nano /etc/portage/binrepos.conf/gentoobinhost.conf # confs/gentoobinhost.conf
+[gentoo]
+priority = 1
+# sync-uri = https://distfiles.gentoo.org/releases/amd64/binpackages/23.0/x86-64
+sync-uri = https://mirror.yandex.ru/gentoo-distfiles/releases/amd64/binpackages/23.0/x86-64/
+location = /var/cache/binhost/gentoo
+verify-signature = true
+
+[binhost]
+priority = 9999
+#sync-uri = https://distfiles.gentoo.org/releases/amd64/binpackages/23.0/x86-64/
+sync-uri = https://mirror.yandex.ru/gentoo-distfiles/releases/amd64/binpackages/23.0/x86-64/
+EOF
 
 # Поддержка процессора и видеокарты
-emerge --ask --oneshot app-portage/cpuid2cpuflags
-cpuid2cpuflags
 echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
 # echo '*/* VIDEO_CARDS: amdgpu radeonsi' >  /etc/portage/package.use/00video_cards
-# echo '*/* VIDEO_CARDS: VMSVGA' >  /etc/portage/package.use/00video_cards
-# emerge --ask sys-fs/btrfs-progs
+echo '*/* VIDEO_CARDS: VMSVGA' >  /etc/portage/package.use/00video_cards
+
 
 # Настройка локали
 ls -l /usr/share/zoneinfo/Europe/Saratov
 ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime
-
-nano /etc/locale.gen # confs/locale.gen
+echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
+echo 'ru_RU.UTF-8 UTF-8' >> /etc/locale.gen
 locale-gen
 
 eselect locale list
 eselect locale set 5
-# /etc/env.d/02locale
-### LANG="ru_RU.UTF-8"
-### LC_COLLATE="C.UTF-8"
 
 # Перезагрузка окружения
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
@@ -111,12 +146,11 @@ emerge --ask sys-firmware/sof-firmware
 # Загрузчик
 emerge --ask sys-kernel/installkernel
 mkdir -p /efi/EFI/Gentoo
-nano /etc/portage/package.use/installkernel
-# sys-kernel/installkernel dracut
+echo 'sys-kernel/installkernel dracut' > /etc/portage/package.use/installkernel
 mkdir /etc/dracut.conf.d
+
 blkid # ROOT UUID осюда взять
-nano /etc/dracut.conf.d/00-installkernel.conf
-# kernel_cmdline=" root=UUID=611e1df1-f128-4957-b3c7-d336df9a82ec "
+echo "kernel_cmdline=\" root=UUID=$(blkid | grep 'ROOT' | cut -d'"' -f4) \"" > /etc/dracut.conf.d/00-installkernel.conf
 # echo 'sys-apps/systemd boot' > /etc/portage/package.use/uki
 emerge --ask sys-kernel/installkernel
 emerge --ask sys-kernel/gentoo-kernel-bin
@@ -126,6 +160,7 @@ eselect kernel list
 eselect kernel set 2
 ls -l /usr/src/linux
 
+# TODO генерация fstab и hosts
 nano /etc/fstab
 echo ariko > /etc/hostname
 nano /etc/hosts
@@ -143,11 +178,11 @@ emerge --ask app-misc/ca-certificates
 
 # emerge --ask net-misc/openssh
 # systemctl enable sshd
+update-ca-certificates
 emerge --ask app-shells/bash-completion
 emerge --ask sys-apps/mlocate
 emerge --ask net-misc/chrony
 
-update-ca-certificates
 systemctl enable chronyd.service
 systemctl enable getty@tty1.service
 systemctl enable NetworkManager
@@ -162,15 +197,10 @@ emerge --ask net-dialup/ppp
 emerge --ask net-wireless/iw net-wireless/wpa_supplicant
 
 emerge --ask --verbose sys-boot/grub
-# emerge --ask --update --newuse --verbose sys-boot/grub
-### Если какая-то шляпа
-umount /dev/sda1
-mount /dev/sda1 /efi
-###
-
-# grub-install --efi-directory=/efi --target=x86_64-efi
 grub-install --efi-directory=/efi
+mkdir /efi/grub
 grub-mkconfig -o /efi/grub/grub.cfg
+cp /efi/EFI/gentoo/grubx64.efi /efi/grub/
 
 passwd
 emerge --ask app-admin/sudo
@@ -187,29 +217,5 @@ dispatch-conf
 locale-gen
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 eselect locale list
-
-
-# Но нам нужно KDE так-что продолжаем
-emerge --ask kde-plasma/plasma-meta
-emerge --ask x11-misc/sddm
-emerge --ask x11-base/xorg-server
-emerge --ask media-video/wireplumber
-emerge --ask media-video/pipewire
-emerge --ask kde-plasma/plasma-systemmonitor
-emerge --ask sys-apps/xdg-desktop-portal kde-plasma/xdg-desktop-portal-kde
-emerge --ask app-portage/gentoolkit
-emerge --ask media-libs/mesa x11-apps/mesa-progs
-
-systemctl enable sddm
-systemctl enable NetworkManager
-systemctl --user enable pipewire pipewire-pulse wireplumber
-systemctl enable bluetooth
-
-# dop po
-emerge --ask kde-apps/konsole
-emerge --ask app-misc/fastfetch
-emerge --ask kde-plasma/discover
-emerge --ask app-eselect/eselect-repository
-emerge --ask sys-apps/flatpak
 
 
