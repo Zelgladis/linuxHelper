@@ -171,7 +171,7 @@ mount /dev/sda1 /efi
 
 # grub-install --efi-directory=/efi --target=x86_64-efi
 grub-install --efi-directory=/efi
-grub-mkconfig -o /efi/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
 
 passwd
 emerge --ask app-admin/sudo
@@ -237,16 +237,14 @@ sudo emerge --ask media-sound/rhythmbox \
             dev-build/cmake \
             sys-process/htop \
             media-gfx/inkscape \
-            media-sound/elisa
+            media-sound/elisa \
+            media-gfx/krita
+sudo emerge --ask media-gfx/blender
+
+
+
 
 protontricks
-krita
-blender
-
-
 lutris
-
-
-
-
 obs-studio
+

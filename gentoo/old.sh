@@ -191,3 +191,10 @@ systemctl enable bluetooth
 #mkdir -p /var/db/repos
 #emerge-webrsync
 
+
+
+
+
+
+
+
