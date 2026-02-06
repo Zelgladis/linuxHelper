@@ -192,15 +192,15 @@ eselect locale list
 
 # Но нам нужно KDE так-что продолжаем
 emerge --ask kde-plasma/plasma-meta
-emerge --ask x11-misc/sddm
-emerge --ask x11-base/xorg-server
-emerge --ask media-video/wireplumber
-emerge --ask media-video/pipewire
-emerge --ask kde-plasma/plasma-systemmonitor
-emerge --ask sys-apps/xdg-desktop-portal kde-plasma/xdg-desktop-portal-kde
-emerge --ask app-portage/gentoolkit
-emerge --ask media-libs/mesa x11-apps/mesa-progs
-emerge --ask kde-apps/dolphin
+emerge --ask x11-misc/sddm \
+            x11-base/xorg-server \
+            media-video/wireplumber \
+            media-video/pipewire \
+            kde-plasma/plasma-systemmonitor \
+            sys-apps/xdg-desktop-portal kde-plasma/xdg-desktop-portal-kde \
+            app-portage/gentoolkit \
+            media-libs/mesa x11-apps/mesa-progs \
+            kde-apps/dolphin \
 
 systemctl enable sddm
 systemctl enable NetworkManager
@@ -208,35 +208,36 @@ systemctl --user enable pipewire pipewire-pulse wireplumber
 systemctl enable bluetooth
 
 # dop po KDE
-emerge --ask kde-apps/konsole
-emerge --ask app-misc/fastfetch
-emerge --ask kde-plasma/discover
-emerge --ask app-eselect/eselect-repository
-emerge --ask sys-apps/flatpak
-emerge --ask kde-misc/kdeconnect
-emerge --ask kde-apps/ark
-emerge --ask kde-apps/okular
-emerge --ask kde-apps/gwenview
-emerge --ask kde-apps/ksystemlog 
-emerge --ask kde-apps/yakuake
+emerge --ask kde-apps/konsole \
+            app-misc/fastfetch \
+            kde-plasma/discover \
+            app-eselect/eselect-repository \
+            sys-apps/flatpak \
+            kde-misc/kdeconnect \
+            kde-apps/ark \
+            kde-apps/okular \
+            kde-apps/gwenview \
+            kde-apps/ksystemlog \
+            kde-apps/yakuake
 
 
-emerge --ask app-portage/gentoolkit       # equery, revdep-rebuild
-emerge --ask app-portage/eix              # быстрый поиск пакетов
-emerge --ask app-portage/ufed             # TUI-менеджер USE-флагов
-emerge --ask app-portage/elogv            # удобный просмотр elog
+emerge --ask app-portage/gentoolkit \    # equery, revdep-rebuild
+            app-portage/eix \            # быстрый поиск пакетов
+            app-portage/ufed \           # TUI-менеджер USE-флагов
+            app-portage/elogv            # удобный просмотр elog
 
 # MY LOVED PO
-sudo emerge --ask --verbose app-containers/docker app-containers/docker-cli
-sudo emerge --ask --verbose app-containers/docker-compose
-sudo usermod -aG docker $USER 
-sudo emerge --ask media-sound/rhythmbox
-sudo emerge --ask app-admin/keepassxc
-sudo emerge --ask dev-build/cmake
-sudo emerge --ask sys-process/htop
+sudo emerge --ask --verbose app-containers/docker \
+            app-containers/docker-cli \
+            app-containers/docker-compose
+sudo usermod -aG docker $USER
 
-sudo emerge --ask media-gfx/inkscape
-sudo emerge --ask media-sound/elisa
+sudo emerge --ask media-sound/rhythmbox \
+            app-admin/keepassxc \
+            dev-build/cmake \
+            sys-process/htop \
+            media-gfx/inkscape \
+            media-sound/elisa
 
 protontricks
 krita
