@@ -206,6 +206,11 @@ systemctl enable sddm
 systemctl enable NetworkManager
 systemctl --user enable pipewire pipewire-pulse wireplumber
 systemctl enable bluetooth
+# sudo emerge --ask --unmerge x11-drivers/xf86-video-vmware
+echo ">=x11-drivers/xf86-video-vmware-0" | sudo tee /etc/portage/package.mask/vmware
+echo "x11-base/xorg-drivers -video_cards_vmware" | sudo tee -a /etc/portage/package.use/xorg-drivers
+
+
 
 # dop po KDE
 emerge --ask kde-apps/konsole \
@@ -241,6 +246,14 @@ sudo emerge --ask media-sound/rhythmbox \
             media-gfx/krita
 sudo emerge --ask media-gfx/blender
 
+# Создаём/редактируем package.use для ncurses
+mkdir -p /etc/portage/package.use
+echo "sys-libs/ncurses -gpm" >> /etc/portage/package.use/ncurses
+emerge --ask --oneshot sys-libs/ncurses sys-libs/gpm
+sudo mkdir -p /etc/portage/package.use
+echo "media-gfx/blender -brotli" | sudo tee -a /etc/portage/package.use/blender
+echo "media-libs/freetype brotli" | sudo tee -a /etc/portage/package.use/freetype
+echo ">=media-libs/freetype-2.14.1-r1" | sudo tee /etc/portage/package.unmask/freetype-brotli
 
 
 
