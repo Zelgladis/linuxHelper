@@ -4,21 +4,134 @@
 
 set -e
 
-echo "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon) Hyprland MangoWC"
-read visual
+#!/bin/bash
+visual_list=(
+    "Cinnamon"
+    "KDE"
+    "XFCE"
+    "GNOME"
+    "Выход"
+)
+po_list=(
+   "flatpak|Менедже sпакетов флатпак|OFF"
+   "keepassxc|NOT|OFF"
+   "dbeaver|NOT|OFF"
+   "docker|NOT|OFF"
+   "docker-compose|NOT|OFF"
+   "intellij-idea-community-edition|NOT|OFF"
+   "telegram-desktop|NOT|OFF"
+   "kate|NOT|OFF"
+   "cmake|NOT|OFF"
+   "corectrl|NOT|OFF"
+   "pavucontrol|NOT|OFF"
+   "meld|NOT|OFF"
+   "kdf|NOT|OFF"
+   "htop|NOT|OFF"
+   "psensor|NOT|OFF"
+   "lm_sensors|NOT|OFF"
+   "xsensors|NOT|OFF"
+   "yakuake|NOT|OFF"
+   "blueman|NOT|OFF"
+   "partitionmanager|NOT|OFF"
+   "flatseal|NOT|OFF"
+   "filelight|NOT|OFF"
+   "kcalc|NOT|OFF"
+   "openrgb|NOT|OFF"
+   "dolphin|NOT|OFF"
+   "koko|NOT|OFF"
+   "lutris|NOT|OFF"
+   "telegram-desktop|NOT|OFF"
+   "inkscape|NOT|OFF"
+   "kate|NOT|OFF"
+   "blender|NOT|OFF"
+   "firefox|NOT|OFF"
+   "elisa|NOT|OFF"
+   "obs-studio|NOT|OFF"
+   "rhythmbox|NOT|OFF"
+   "krecorder|NOT|OFF"
+   "vlc|NOT|OFF"
+   "virtualbox|NOT|OFF"
+   "ark|NOT|OFF"
+   "kleopatra|NOT|OFF"
+   "protontricks|NOT|OFF"
+   "wine|NOT|OFF"
+   "krita|NOT|OFF"
+)
 
-echo "VirtualBoxGuest 1, No 0"
-read vb
+yesno=('Yes' 'No')
 
-echo "Add Utils 1, No 0"
-read dop
+po_main_list=(
+    "all"
+    "nothing"
+    "choice"
+    "choice_min"
+)
+
+win_size=(20 90 10)
+
+visual_opt=()
+for((i=0; i<${#visual_list[@]}; i++)); do
+    visual_opt+=("$((i+1))" "${visual_list[$i]}")
+done
+
+po_opt=()
+for((i=0; i<${#po_list[@]}; i++)); do
+    IFS="|" read -r a b c <<< "${po_list[$i]}"
+    po_opt+=("$a" "$b" "$c")
+done
+
+po_main_opt=()
+for((i=0; i<${#po_main_list[@]}; i++)); do
+    po_main_opt+=("$((i+1))" "${po_main_list[$i]}")
+done
+
+visual=$(whiptail --title "Выбор опции" \
+    --menu "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon)" \
+    "${win_size[@]}" \
+    "${visual_opt[@]}" \
+    3>&1 1>&2 2>&3)
+exit_status=$?
+
+vb=$(whiptail --title "Установить VBox" --menu "VirtualBoxGuestAdditions" "${win_size[@]}" \
+    1 "Yes" \
+    2 "No" 3>&1 1>&2 2>&3)
+exit_status=$?
+
+po_main=$(whiptail --title "Доплнительное по" --menu "Выбор дополнительного по" "${win_size[@]}" \
+    "${po_main_opt[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
+
+if [[ "${po_main}" == "4" ]]; then
+    po_install_str=$(whiptail --title "Настройки" \
+        --checklist "Выберите параметры:" "${win_size[@]}" \
+        --separate-output \
+        "base_po" "Базовое по текстовый редактор и тд." OFF \
+        "system_po" "Установка не которых системных по htop и тд." OFF \
+        "gamig_po" "Игровое по lutris и тд." OFF \
+        "visual_po" "Визуальные редакторы blender kirita" OFF 3>&1 1>&2 2>&3)
+    exit_status=$?
+elif [[ "${po_main}" == "3" ]]; then
+    po_install_str=$(whiptail --title "Настройки" \
+        --checklist "Выберите параметры:" "${win_size[@]}" \
+        --separate-output \
+        "${po_opt[@]}" \
+        3>&1 1>&2 2>&3)
+    exit_status=$?
+fi
+
+IFS=$'\n' read -r -d '' -a po_install <<< "$po_install_str"
+
 echo "
-System Interface: $visual
-Utils: $dop
-VirtualBoxGuest: $vb
+System Interface: ${visual_list[$visual]}
+VirtualBoxGuest: ${yesno[$vb]}
+Utils:
+${po_main_list[$po_main]}
+$po_install
 
-Continue?(y/n) default n"
+
+Продолжаем?: "
 read conte
+
 
 if [[ "$conte" != 'y' ]];then
     exit 0
@@ -45,7 +158,7 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si && cd ~
 
-if [[ "$visual" == 'XFCE' ]];then
+if [[ "${visual_list[$visual]}" == 'XFCE' ]];then
     echo "XFCE"
     sudo pacman -S xfce4 xfce4-goodies --noconfirm
     sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
@@ -65,7 +178,7 @@ if [[ "$visual" == 'XFCE' ]];then
     sudo pacman -S xfce4-mount-plugin --noconfirm
     sudo pacman -S gvfs-smb --noconfirm
     sudo pacman -S gvfs-mtp --noconfirm
-elif [[ "$visual" == 'KDE' ]]; then
+elif [[ "${visual_list[$visual]}" == 'KDE' ]]; then
     echo "KDE"
     sudo pacman -S --needed sddm --noconfirm
     sudo pacman -S --needed plasma plasma-workspace plasma-x11-session --noconfirm
@@ -75,7 +188,7 @@ elif [[ "$visual" == 'KDE' ]]; then
 
     sudo systemctl enable sddm
     sudo systemctl enable NetworkManager
-elif [[ "$visual" == 'CIN' ]];then
+elif [[ "${visual_list[$visual]}" == 'CIN' ]];then
     echo "Cinnammon"
     sudo pacman -S cinnamon --noconfirm
     #sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
@@ -116,7 +229,7 @@ elif [[ "$visual" == 'CIN' ]];then
     cd ~/
     sudo echo "[Theme]" > /etc/sddm.conf
     sudo echo "Current=sugar-candy" >> /etc/sddm.conf
-elif [[ "$visual" == 'GNOME' ]];then
+elif [[ "${visual_list[$visual]}" == 'Cinnamon' ]];then
     sudo pacman -S gnome-shell \
         gnome-terminal \
         gnome-tweaks \
@@ -156,9 +269,9 @@ elif [[ "$visual" == 'GNOME' ]];then
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
-elif [[ "$visual" == 'MangoWC' ]]; then
+elif [[ "${visual_list[$visual]}" == 'MangoWC' ]]; then
     echo 'TODO make it'
-elif [[ "$visual" == 'Hyprland' ]]; then
+elif [[ "${visual_list[$visual]}" == 'Hyprland' ]]; then
     # Установка (официальные репозитории!)
     sudo pacman -S hyprland
 
@@ -166,52 +279,9 @@ elif [[ "$visual" == 'Hyprland' ]]; then
     sudo pacman -S waybar rofi wofi grim slurp mako
 fi
 
-if [[ "$dop" == '1' ]];then
+if [[ "${po_main_list[$po_main]}" == 'choice' ]];then
     echo "Add PO"
-    sudo pacman -S firefox \
-        flatpak \
-        keepassxc \
-        dbeaver \
-        docker \
-        docker-compose \
-        intellij-idea-community-edition \
-        telegram-desktop \
-        kate \
-        cmake \
-        corectrl \
-        pavucontrol \
-        meld \
-        kdf \
-        htop \
-        psensor \
-        lm_sensors \
-        xsensors \
-        yakuake \
-        blueman \
-        partitionmanager \
-        flatseal \
-        filelight \
-        kcalc \
-        openrgb \
-        dolphin \
-        koko \
-        lutris \
-        telegram-desktop \
-        inkscape \
-        kate \
-        blender \
-        firefox \
-        elisa \
-        obs-studio \
-        rhythmbox \
-        krecorder \
-        vlc \
-        virtualbox \
-        ark \
-        kleopatra \
-        protontricks \
-        wine wine-mono vkd3d winetricks \
-        krita --noconfirm
+    sudo pacman -S "$po_install[@]" --noconfirm
     flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo usermod -aG docker $USER
 fi
