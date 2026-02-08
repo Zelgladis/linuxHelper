@@ -306,7 +306,7 @@ elif [[ "${visual_list[$visual-1]}" == 'Hyprland' ]]; then
     sudo pacman -S waybar rofi wofi grim slurp mako
 fi
 
-if [[ " choice choice_min " =~ " ${po_main_list[$po_main-1]} " ]];then
+if [[ " choice choice_min all " =~ " ${po_main_list[$po_main-1]} " ]];then
     echo "Add PO"
     sudo pacman -S "$po_install[@]" --noconfirm
     flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
