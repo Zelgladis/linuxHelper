@@ -150,8 +150,8 @@ elif [[ "${po_main_list[$po_main-1]}" == "choice_min" ]]; then
 fi
 
 echo "
-System Interface: ${visual_list[$visual]}
-VirtualBoxGuest: ${yesno[$vb]}
+System Interface: ${visual_list[$visual-1]}
+VirtualBoxGuest: ${yesno[$vb-1]}
 Utils ${po_main_list[$po_main-1]}:
 ${po_install[@]}
 
@@ -185,7 +185,7 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si && cd ~
 
-if [[ "${visual_list[$visual]}" == 'XFCE' ]];then
+if [[ "${visual_list[$visual-1]}" == 'XFCE' ]];then
     echo "XFCE"
     sudo pacman -S xfce4 xfce4-goodies --noconfirm
     sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
@@ -205,7 +205,7 @@ if [[ "${visual_list[$visual]}" == 'XFCE' ]];then
     sudo pacman -S xfce4-mount-plugin --noconfirm
     sudo pacman -S gvfs-smb --noconfirm
     sudo pacman -S gvfs-mtp --noconfirm
-elif [[ "${visual_list[$visual]}" == 'KDE' ]]; then
+elif [[ "${visual_list[$visual-1]}" == 'KDE' ]]; then
     echo "KDE"
     sudo pacman -S --needed sddm --noconfirm
     sudo pacman -S --needed plasma plasma-workspace plasma-x11-session --noconfirm
@@ -215,7 +215,7 @@ elif [[ "${visual_list[$visual]}" == 'KDE' ]]; then
 
     sudo systemctl enable sddm
     sudo systemctl enable NetworkManager
-elif [[ "${visual_list[$visual]}" == 'CIN' ]];then
+elif [[ "${visual_list[$visual-1]}" == 'Cinnamon' ]];then
     echo "Cinnammon"
     sudo pacman -S cinnamon --noconfirm
     #sudo pacman -S lightdm lightdm-gtk-greeter --noconfirm
@@ -256,7 +256,7 @@ elif [[ "${visual_list[$visual]}" == 'CIN' ]];then
     cd ~/
     sudo echo "[Theme]" > /etc/sddm.conf
     sudo echo "Current=sugar-candy" >> /etc/sddm.conf
-elif [[ "${visual_list[$visual]}" == 'Cinnamon' ]];then
+elif [[ "${visual_list[$visual-1]}" == 'GNOME' ]];then
     sudo pacman -S gnome-shell \
         gnome-terminal \
         gnome-tweaks \
@@ -296,9 +296,9 @@ elif [[ "${visual_list[$visual]}" == 'Cinnamon' ]];then
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
-elif [[ "${visual_list[$visual]}" == 'MangoWC' ]]; then
+elif [[ "${visual_list[$visual-1]}" == 'MangoWC' ]]; then
     echo 'TODO make it'
-elif [[ "${visual_list[$visual]}" == 'Hyprland' ]]; then
+elif [[ "${visual_list[$visual-1]}" == 'Hyprland' ]]; then
     # Установка (официальные репозитории!)
     sudo pacman -S hyprland
 
@@ -313,7 +313,7 @@ if [[ " choice choice_min " =~ " ${po_main_list[$po_main-1]} " ]];then
     sudo usermod -aG docker $USER || true
 fi
 
-if [[ "$vb" == '1' ]];then
+if [[ "${yesno[$vb-1]}" == 'Yes' ]];then
     echo "VirtualBox"
     sudo pacman -S linux-headers virtualbox-guest-utils --noconfirm
     sudo systemctl enable --now vboxservice.service
