@@ -309,7 +309,7 @@ fi
 if [[ " choice choice_min all " =~ " ${po_main_list[$po_main-1]} " ]];then
     echo "Add PO"
     sudo pacman -S ${po_install[@]} --noconfirm
-    flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+    flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpak.repo || true
     sudo usermod -aG docker $USER || true
 fi
 
