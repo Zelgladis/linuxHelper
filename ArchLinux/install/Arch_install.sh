@@ -141,13 +141,11 @@ systemctl --user enable --now pipewire pipewire-pulse
 
 # radeon
 if [[ "${graph_list[$graph-1]}" == 'Radeon' ]]; then
-    pacman -S mesa xf86-video-amdgpu amdsmi --noconfirm
+    pacman -S xf86-video-amdgpu amdsmi --noconfirm
 elif [[ "${graph_list[$graph-1]}" == 'Nvidia' ]]; then
-    pacman -S mesa nvidia-utils nvidia-open nvidia-prime --noconfirm
+    pacman -S nvidia-utils nvidia-open nvidia-prime --noconfirm
 elif [[ "${graph_list[$graph-1]}" == 'Intel' ]]; then
-    pacman -S mesa intel-gpu-tools --noconfirm
-else
-    pacman -S mesa --noconfirm
+    pacman -S intel-gpu-tools --noconfirm
 fi
 # xorg dop and fonts
 pacman -S xorg xorg-server xorg-drivers noto-fonts-cjk otf-ipafont --noconfirm
