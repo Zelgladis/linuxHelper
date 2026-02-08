@@ -4,7 +4,6 @@
 
 set -e
 
-#!/bin/bash
 visual_list=(
     "Cinnamon"
     "KDE"
@@ -13,49 +12,47 @@ visual_list=(
     "Выход"
 )
 po_list=(
-   "flatpak|Менедже sпакетов флатпак|OFF"
-   "keepassxc|NOT|OFF"
-   "dbeaver|NOT|OFF"
-   "docker|NOT|OFF"
-   "docker-compose|NOT|OFF"
-   "intellij-idea-community-edition|NOT|OFF"
-   "telegram-desktop|NOT|OFF"
-   "kate|NOT|OFF"
-   "cmake|NOT|OFF"
-   "corectrl|NOT|OFF"
-   "pavucontrol|NOT|OFF"
-   "meld|NOT|OFF"
-   "kdf|NOT|OFF"
-   "htop|NOT|OFF"
-   "psensor|NOT|OFF"
-   "lm_sensors|NOT|OFF"
-   "xsensors|NOT|OFF"
-   "yakuake|NOT|OFF"
-   "blueman|NOT|OFF"
-   "partitionmanager|NOT|OFF"
-   "flatseal|NOT|OFF"
-   "filelight|NOT|OFF"
-   "kcalc|NOT|OFF"
-   "openrgb|NOT|OFF"
-   "dolphin|NOT|OFF"
-   "koko|NOT|OFF"
-   "lutris|NOT|OFF"
-   "telegram-desktop|NOT|OFF"
-   "inkscape|NOT|OFF"
-   "kate|NOT|OFF"
-   "blender|NOT|OFF"
-   "firefox|NOT|OFF"
-   "elisa|NOT|OFF"
-   "obs-studio|NOT|OFF"
-   "rhythmbox|NOT|OFF"
-   "krecorder|NOT|OFF"
-   "vlc|NOT|OFF"
-   "virtualbox|NOT|OFF"
-   "ark|NOT|OFF"
-   "kleopatra|NOT|OFF"
-   "protontricks|NOT|OFF"
-   "wine|NOT|OFF"
-   "krita|NOT|OFF"
+   "flatpak|Менедже sпакетов флатпак|OFF|base_po"
+   "keepassxc|NOT|OFF|base_po"
+   "dbeaver|NOT|OFF|prog_po"
+   "docker|NOT|OFF|prog_po"
+   "docker-compose|NOT|OFF|prog_po"
+   "intellij-idea-community-edition|NOT|OFF|prog_po"
+   "telegram-desktop|NOT|OFF|base_po"
+   "kate|NOT|OFF|base_po"
+   "cmake|NOT|OFF|system_po"
+   "corectrl|NOT|OFF|system_po"
+   "pavucontrol|NOT|OFF|system_po"
+   "meld|NOT|OFF|base_po"
+   "kdf|NOT|OFF|base_po"
+   "htop|NOT|OFF|system_po"
+   "psensor|NOT|OFF|system_po"
+   "lm_sensors|NOT|OFF|system_po"
+   "xsensors|NOT|OFF|system_po"
+   "yakuake|NOT|OFF|base_po"
+   "blueman|NOT|OFF|system_po"
+   "partitionmanager|NOT|OFF|system_po"
+   "flatseal|NOT|OFF|base_po"
+   "filelight|NOT|OFF|base_po"
+   "kcalc|NOT|OFF|base_po"
+   "openrgb|NOT|OFF|system_po"
+   "dolphin|NOT|OFF|base_po"
+   "koko|NOT|OFF|base_po"
+   "lutris|NOT|OFF|gamig_po"
+   "inkscape|NOT|OFF|visual_po"
+   "blender|NOT|OFF|visual_po"
+   "firefox|NOT|OFF|base_po"
+   "elisa|NOT|OFF|base_po"
+   "obs-studio|NOT|OFF|gamig_po"
+   "rhythmbox|NOT|OFF|base_po"
+   "krecorder|NOT|OFF|base_po"
+   "vlc|NOT|OFFbase_po"
+   "virtualbox|NOT|OFF|prog_po"
+   "ark|NOT|OFF|base_po"
+   "kleopatra|NOT|OFF|system_po"
+   "protontricks|NOT|OFF|gamig_po"
+   "wine|NOT|OFF|gamig_po"
+   "krita|NOT|OFF|visual_po"
 )
 
 yesno=('Yes' 'No')
@@ -66,6 +63,15 @@ po_main_list=(
     "choice"
     "choice_min"
 )
+po_min_list=(
+    "base_po|Базовое по текстовый редактор и тд.|OFF"
+    "system_po|Установка не которых системных по htop и тд.|OFF"
+    "gamig_po|Игровое по lutris и тд.|OFF"
+    "visual_po|Визуальные редакторы blender kirita|OFF"
+    "prog_po|Всякие докеры и тд.|OFF"
+)
+
+po_install_final=()
 
 win_size=(20 90 10)
 
@@ -84,6 +90,11 @@ po_main_opt=()
 for((i=0; i<${#po_main_list[@]}; i++)); do
     po_main_opt+=("$((i+1))" "${po_main_list[$i]}")
 done
+po_min_opt=()
+for((i=0;i<${#po_min_list[@]}; i++)); do
+    IFS="|" read -r a b c <<< "${po_min_list[$i]}"
+    po_min_opt+=("$a" "$b" "$c")
+done
 
 visual=$(whiptail --title "Выбор опции" \
     --menu "Интерфейс системы - GNOME XFCE KDE CIN(cinnamon)" \
@@ -101,16 +112,13 @@ po_main=$(whiptail --title "Доплнительное по" --menu "Выбор 
     "${po_main_opt[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
-if [[ "${po_main}" == "4" ]]; then
+if [[ "${po_main_list[$po_main-1]}" == "choice_min" ]]; then
     po_install_str=$(whiptail --title "Настройки" \
         --checklist "Выберите параметры:" "${win_size[@]}" \
         --separate-output \
-        "base_po" "Базовое по текстовый редактор и тд." OFF \
-        "system_po" "Установка не которых системных по htop и тд." OFF \
-        "gamig_po" "Игровое по lutris и тд." OFF \
-        "visual_po" "Визуальные редакторы blender kirita" OFF 3>&1 1>&2 2>&3)
+        "${po_min_opt[@]}" 3>&1 1>&2 2>&3)
     exit_status=$?
-elif [[ "${po_main}" == "3" ]]; then
+elif [[ ${po_main_list[$po_main-1]} == "choice" ]]; then
     po_install_str=$(whiptail --title "Настройки" \
         --checklist "Выберите параметры:" "${win_size[@]}" \
         --separate-output \
@@ -119,17 +127,36 @@ elif [[ "${po_main}" == "3" ]]; then
     exit_status=$?
 fi
 
-IFS=$'\n' read -r -d '' -a po_install <<< "$po_install_str"
+if [[ "${po_main_list[$po_main-1]}" == "choice" ]]; then
+    IFS=$'\n' read -r -d '' -a po_install <<< "$po_install_str"
+elif [[ "${po_main_list[$po_main-1]}" == "all" ]]; then
+    po_install=""
+    for ((i=0; i<${#po_list[@]};i++)); do
+        IFS="|" read -r a b c <<< "${po_list[$i]}"
+        po_install+="$a "
+    done
+    po_install="${po_install% }"
+elif [[ "${po_main_list[$po_main-1]}" == "choice_min" ]]; then
+    po_install=""
+    po_min_tmp=()
+    IFS=$'\n' read -r -d '' -a po_min_check <<< "${po_install_str}"
+    for ((i=0; i<${#po_list[@]};i++)); do
+        IFS="|" read -r a b c d <<< "${po_list[$i]}"
+        if [[ " ${po_min_check[@]} " =~ " $d " ]]; then
+            po_install+="$a "
+        fi
+    done
+    po_install="${po_install% }"
+fi
 
 echo "
 System Interface: ${visual_list[$visual]}
 VirtualBoxGuest: ${yesno[$vb]}
-Utils:
-${po_main_list[$po_main]}
-$po_install
+Utils ${po_main_list[$po_main-1]}:
+${po_install[@]}
 
 
-Продолжаем?: "
+Продолжаем?(y/n): "
 read conte
 
 
@@ -279,11 +306,11 @@ elif [[ "${visual_list[$visual]}" == 'Hyprland' ]]; then
     sudo pacman -S waybar rofi wofi grim slurp mako
 fi
 
-if [[ "${po_main_list[$po_main]}" == 'choice' ]];then
+if [[ " choice choice_min " =~ " ${po_main_list[$po_main-1]} " ]];then
     echo "Add PO"
     sudo pacman -S "$po_install[@]" --noconfirm
-    flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    sudo usermod -aG docker $USER
+    flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+    sudo usermod -aG docker $USER || true
 fi
 
 if [[ "$vb" == '1' ]];then

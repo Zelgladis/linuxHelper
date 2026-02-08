@@ -1,25 +1,45 @@
 #!/bin/bash
-echo "Имя пользователя"
-read usern
+boot_loader_list=("EFI" "LEGACY")
+auto_grub_list=("Auto" "Manual")
+graph_list=("Nvidia" "Radeon" "Intel" "Other(VM)")
+win_size=(20 90 10)
+boot_loader_opt=()
+for((i=0;i<${#boot_loader_list[@]};i++)); do
+    boot_loader_opt+=("$((i+1))" "${boot_loader_list[$i]}")
+done
+auto_grub_opt=()
+for((i=0;i<${#auto_grub_list[@]};i++)); do
+    auto_grub_opt+=("$((i+1))" "${auto_grub_list[$i]}")
+done
+graph_opt=()
+for((i=0;i<${#graph_list[@]};i++)); do
+    graph_opt+=("$((i+1))" "${graph_list[$i]}")
+done
 
-echo "EFI 1, LEGACY 0:"
-read efi
+usern=$(whiptail --title "Имя пользователя" --inputbox "Имя" "${win_size[@]:0:2}" 3>&1 1>&2 2>&3)
+exit_status=$?
+boot_loader=$(whiptail --title "Загрузчик" --menu "Версия Загрузчика" "${win_size[@]}" \
+    "${boot_loader_opt[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
 
-echo "auto grub 1, manual 0"
-read auto_grub
+auto_grub=$(whiptail --title "Загрузчик" --menu "Вариант Загрузчика" "${win_size[@]}" \
+    "${auto_grub_opt[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
 
-echo "hostname"
-read myhostname
+myhostname=$(whiptail --title "Имя компьютера" --inputbox "Имя хоста" "${win_size[@]:0:2}" 3>&1 1>&2 2>&3)
+exit_status=$?
 
-echo "nvidia 1 radeo 2 other *"
-read graph
+graph=$(whiptail --title "Видеокарта" --menu "Ваша Видеокарта" "${win_size[@]}" \
+    "${graph_opt[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
 
 echo "
 Username: $usern
 Password: 123 смени его после установки
-UEFI: $efi
-Auto GRUB: $auto_grub
+UEFI: ${boot_loader_list[$boot_loader-1]}
+Auto GRUB: ${auto_grub_list[auto_grub-1]}
 Hostname: $myhostname
+VideoCard: ${graph_list[$graph-1]}
 
 Continue?(y/n) default n"
 read conte
@@ -56,7 +76,7 @@ systemctl enable sshd
 systemctl enable dhcpcd
 
 # EFI
-if [[ "$efi" == '1' ]];then
+if [[ "${boot_loader_list[$boot_loader-1]}" == 'EFI' ]];then
     echo "----------- EFI CHOSEN -----------"
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
     mkinitcpio -p linux
@@ -68,7 +88,7 @@ else
     mkinitcpio -p linux
 fi
 
-if [[ "$auto_grub" == '1' ]];then
+if [[ "${auto_grub_list[auto_grub-1]}" == 'Auto' ]];then
     echo "AUTOGRUB"
     grub-mkconfig -o /boot/grub/grub.cfg
 else
@@ -118,12 +138,16 @@ pacman -S xf86-video-vesa mesa \
 systemctl --user enable --now pipewire pipewire-pulse
 
 # radeon
-if [[ "${graph}" == '1' ]]; then
-    pacman -S mesa xf86-video-amdgpu --noconfirm
+if [[ "${graph_list[$graph-1]}" == 'Radeon' ]]; then
+    pacman -S mesa xf86-video-amdgpu amdsmi --noconfirm
+if [[ "${graph_list[$graph-1]}" == 'Nvidia' ]]; then
+    pacman -S mesa nvidia-utils nvidia-open nvidia-prime --noconfirm
+if [[ "${graph_list[$graph-1]}" == 'Intel' ]]; then
+    pacman -S mesa intel-gpu-tools --noconfirm
 else
     pacman -S mesa --noconfirm
 fi
-# xorg dop
+# xorg dop and fonts
 pacman -S xorg xorg-server xorg-drivers noto-fonts-cjk otf-ipafont --noconfirm
 
 sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
