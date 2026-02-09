@@ -320,3 +320,12 @@ if [[ "${yesno[$vb-1]}" == 'Yes' ]];then
     sudo modprobe -a vboxguest vboxsf vboxvideo
     echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
 fi
+
+if [[ "${myShell}" == "zsh" ]]; then
+    yay -S git zsh wget ttf-meslo-nerd-font-powerlevel10k --noconfirm
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+        ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+    sed -i 's|^ZSH_THEME=.*|ZSH_THEME="powerlevel10k/powerlevel10k"|' ~/.zshrc
+    exec zsh
+fi

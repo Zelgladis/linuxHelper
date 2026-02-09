@@ -73,7 +73,7 @@ echo "127.0.0.1 localhost
 #Доп по(необходимое):
 pacman -Syu --noconfirm
 pacman -S vi nano reflector gcc perl make dhcpcd openssh \
-       btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo --noconfirm
+       btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo bash-completion --noconfirm
 systemctl enable sshd
 systemctl enable dhcpcd
 
