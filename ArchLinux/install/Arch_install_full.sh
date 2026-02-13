@@ -421,3 +421,4 @@ elif [[ "$1" == '2' ]]; then
     part2
 fi
 
+timedatectl set-ntp true

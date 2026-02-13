@@ -331,3 +331,5 @@ if [[ "${myShell}" == "zsh" ]]; then
     sed -i 's|^ZSH_THEME=.*|ZSH_THEME="powerlevel10k/powerlevel10k"|' ~/.zshrc
     exec zsh
 fi
+
+timedatectl set-ntp true
