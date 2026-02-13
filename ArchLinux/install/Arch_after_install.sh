@@ -1,6 +1,8 @@
 #!/bin/bash
 # Красота в консоле
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
+# echo PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔'; else echo '❌'; fi) \[\e[38;5;81m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[90m\]\w> \[\e[0m\]"
+
 
 set -e
 
@@ -329,3 +331,5 @@ if [[ "${myShell}" == "zsh" ]]; then
     sed -i 's|^ZSH_THEME=.*|ZSH_THEME="powerlevel10k/powerlevel10k"|' ~/.zshrc
     exec zsh
 fi
+
+timedatectl set-ntp true
