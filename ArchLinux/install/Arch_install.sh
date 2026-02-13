@@ -137,7 +137,7 @@ sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 pacman -S xf86-video-vesa mesa \
     alsa-utils alsa-plugins \
     pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
-systemctl --user enable --now pipewire pipewire-pulse
+systemctl --user enable pipewire pipewire-pulse
 
 # radeon
 if [[ "${graph_list[$graph-1]}" == 'Radeon' ]]; then
