@@ -148,8 +148,8 @@ sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 # drivers
 pacman -S xf86-video-vesa mesa \
     alsa-utils alsa-plugins \
-    pipewire pipewire-alsa pipewire-pulse pipewire-jack --noconfirm
-systemctl --user enable --now pipewire pipewire-pulse
+    pipewire pipewire-alsa pipewire-pulse pipewire-jack easyeffects --noconfirm
+systemctl --user enable pipewire pipewire-pulse
 
 # radeon
 if [[ "${graph}" == '1' ]]; then
