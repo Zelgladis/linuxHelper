@@ -55,6 +55,7 @@ po_list=(
    "protontricks|NOT|OFF|gamig_po"
    "wine|NOT|OFF|gamig_po"
    "krita|NOT|OFF|visual_po"
+   "passlib|NOT|OFF|system_po"
 )
 
 yesno=('Yes' 'No')

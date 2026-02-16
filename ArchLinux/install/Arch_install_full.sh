@@ -398,7 +398,8 @@ if [[ "$dop" == '1' ]];then
         kleopatra \
         protontricks \
         wine wine-mono vkd3d winetricks \
-        krita --noconfirm
+        krita \
+        passlib --noconfirm
     flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo usermod -aG docker $USER
 fi
