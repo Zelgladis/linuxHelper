@@ -167,7 +167,7 @@ emerge --ask --verbose sys-boot/grub
 # emerge --ask --update --newuse --verbose sys-boot/grub
 ### Если какая-то шляпа
 umount /dev/sda1
-mount /dev/sda1 /efi
+mount /dev/sda1 /boot
 ###
 
 # grub-install --efi-directory=/efi --target=x86_64-efi
