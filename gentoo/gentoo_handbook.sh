@@ -193,15 +193,7 @@ eselect locale list
 
 # Но нам нужно KDE так-что продолжаем
 emerge --ask kde-plasma/plasma-meta
-emerge --ask x11-misc/sddm \
-            x11-base/xorg-server \
-            media-video/wireplumber \
-            media-video/pipewire \
-            kde-plasma/plasma-systemmonitor \
-            sys-apps/xdg-desktop-portal kde-plasma/xdg-desktop-portal-kde \
-            app-portage/gentoolkit \
-            media-libs/mesa x11-apps/mesa-progs \
-            kde-apps/dolphin \
+emerge --ask x11-apps/mesa-progs
 
 systemctl enable sddm
 systemctl enable NetworkManager
@@ -238,14 +230,12 @@ sudo emerge --ask --verbose app-containers/docker \
             app-containers/docker-compose
 sudo usermod -aG docker $USER
 
-sudo emerge --ask media-sound/rhythmbox \
-            app-admin/keepassxc \
+sudo emerge --ask app-admin/keepassxc \
             dev-build/cmake \
             sys-process/htop \
-            media-gfx/inkscape \
-            media-sound/elisa \
-            media-gfx/krita
-sudo emerge --ask media-gfx/blender
+            media-sound/elisa
+            
+sudo emerge --ask media-gfx/blender media-gfx/inkscape media-gfx/krita
 
 # Создаём/редактируем package.use для ncurses
 mkdir -p /etc/portage/package.use
