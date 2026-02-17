@@ -170,7 +170,7 @@ umount /dev/sda1
 mount /dev/sda1 /boot
 ###
 
-# grub-install --efi-directory=/efi --target=x86_64-efi
+# grub-install --efi-directory=/boot --target=x86_64-efi
 grub-install --efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 
