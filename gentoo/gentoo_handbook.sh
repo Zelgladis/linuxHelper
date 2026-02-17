@@ -22,8 +22,8 @@ mkfs.btrfs -L ROOT /dev/sda3
 mkdir --parents /mnt/gentoo
 swapon /dev/sda2
 mount /dev/sda3 /mnt/gentoo
-mkdir --parents /mnt/gentoo/efi
-#mount /dev/sd1 /mnt/gentoo/
+mkdir --parents /mnt/gentoo/boot
+#mount /dev/sd1 /mnt/gentoo/boot
 
 # Установка основы системы stage3 desktop systemd(современная)
 cd /mnt/gentoo
@@ -61,7 +61,7 @@ mount --make-slave /mnt/gentoo/run
 # Вход в устанавливаемую систему
 chroot /mnt/gentoo /bin/bash 
 source /etc/profile && export PS1="(chroot) ${PS1}"
-mount /dev/sda1 /efi
+mount /dev/sda1 /boot
 
 # mount /dev/sda1 /efi 
 emerge-webrsync
@@ -117,8 +117,9 @@ nano /etc/portage/package.use/installkernel
 mkdir /etc/dracut.conf.d
 blkid # ROOT UUID осюда взять
 nano /etc/dracut.conf.d/00-installkernel.conf
-# kernel_cmdline=" root=UUID=611e1df1-f128-4957-b3c7-d336df9a82ec "
+# kernel_cmdline=" root=UUID=5c0df033-0e06-4fc3-87a2-b6c13f906775 "
 # echo 'sys-apps/systemd boot' > /etc/portage/package.use/uki
+systemctl enable kernel-bootcfg-boot-successful.service
 emerge --ask sys-kernel/installkernel
 emerge --ask sys-kernel/gentoo-kernel-bin
 emerge --ask sys-kernel/gentoo-sources
@@ -170,7 +171,7 @@ mount /dev/sda1 /efi
 ###
 
 # grub-install --efi-directory=/efi --target=x86_64-efi
-grub-install --efi-directory=/efi
+grub-install --efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 
 passwd
