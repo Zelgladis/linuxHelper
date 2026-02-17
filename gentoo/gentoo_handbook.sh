@@ -124,6 +124,7 @@ emerge --ask sys-kernel/installkernel
 emerge --ask sys-kernel/gentoo-kernel-bin
 emerge --ask sys-kernel/gentoo-sources
 
+
 eselect kernel list
 eselect kernel set 2
 ls -l /usr/src/linux
@@ -256,6 +257,31 @@ echo "media-gfx/blender -brotli" | sudo tee -a /etc/portage/package.use/blender
 echo "media-libs/freetype brotli" | sudo tee -a /etc/portage/package.use/freetype
 echo ">=media-libs/freetype-2.14.1-r1" | sudo tee /etc/portage/package.unmask/freetype-brotli
 
+
+
+
+
+# 1 Если не -dist ядро
+cd /usr/src/linux
+make localmodconfig
+make menuconfig 
+make && make modules_install
+make install
+# 1 END
+
+# 2 Собрать ядро из -bin конфига
+cp /boot/config-*-gentoo-dist /usr/src/linux/.config
+cd /usr/src/linux
+make olddefconfig   # обновляем до текущей версии исходников
+make -j6 # ЯДра в системе
+make modules_install
+make install
+# 2 END
+
+# BOOT initframs
+dracut --kver=$(make kernelrelease) /boot/initramfs-$(make kernelrelease).img
+grub-mkconfig -o /boot/grub/grub.cfg
+# END Ядро настройка
 
 
 protontricks
