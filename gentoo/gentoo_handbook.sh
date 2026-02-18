@@ -44,13 +44,12 @@ nano /mnt/gentoo/etc/portage/make.conf # confs/make.conf
 # MAKEOPTS="-j4 -l5"
 # EMERGE_DEFAULT_OPTS="--jobs=3 --load-average=5"
 
-# Копируем настройки DNS из мастер системы
-cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
-
 # Монтирование и привязка необходимых ФС
 # Каталог /proc/ монтируется в /mnt/gentoo/proc/, остальные — через перепривязку точки монтирования. 
 # Это означает, что, например, /mnt/gentoo/sys/ на самом деле будет /sys/ (это просто вторая точка входа в ту же файловую систему), 
 # тогда как /mnt/gentoo/proc/ является новой точкой монтирования (так сказать, экземпляром) файловой системы. 
+# Копируем настройки DNS из мастер системы
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 mount --types proc /proc /mnt/gentoo/proc
 mount --rbind /sys /mnt/gentoo/sys
 mount --make-rslave /mnt/gentoo/sys
@@ -58,9 +57,9 @@ mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
 mount --bind /run /mnt/gentoo/run
 mount --make-slave /mnt/gentoo/run 
-
 # Вход в устанавливаемую систему
 chroot /mnt/gentoo /bin/bash 
+
 source /etc/profile && export PS1="(chroot) ${PS1}"
 mount /dev/sda1 /boot
 
@@ -68,7 +67,7 @@ mount /dev/sda1 /boot
 emerge-webrsync
 
 # установка и настройка зеркал
-emerge --ask --verbose --oneshot app-portage/mirrorselect
+emerge --ask --verbose app-portage/mirrorselect
 mirrorselect -i -o >> /etc/portage/make.conf
 emerge --sync
 
@@ -82,7 +81,7 @@ eselect profile list
 
 
 # Поддержка процессора и видеокарты
-emerge --ask --oneshot app-portage/cpuid2cpuflags
+emerge --ask app-portage/cpuid2cpuflags
 cpuid2cpuflags
 echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
 # vmware
@@ -108,29 +107,38 @@ env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 
 
 # Установка ЯДРА
-# Большая часть драйверов
-emerge --ask sys-kernel/linux-firmware
-# OpenSource драйвера
-emerge --ask sys-firmware/sof-firmware
+# Большая часть драйверов и OpenSource драйвера
+# blkid # ROOT UUID осюда взять
+# systemctl enable kernel-bootcfg-boot-successful.service
+emerge --ask sys-kernel/linux-firmware sys-firmware/sof-firmware
 # Загрузчик
-emerge --ask sys-kernel/installkernel
-mkdir -p /efi/EFI/Gentoo
-nano /etc/portage/package.use/installkernel
-# sys-kernel/installkernel dracut
+mkdir -p /boot/EFI/Gentoo
 mkdir /etc/dracut.conf.d
-blkid # ROOT UUID осюда взять
-nano /etc/dracut.conf.d/00-installkernel.conf
-# kernel_cmdline=" root=UUID=f4e89b63-0196-4d01-8574-4dea7f49ece6 "
-# echo 'sys-apps/systemd boot' > /etc/portage/package.use/uki
-systemctl enable kernel-bootcfg-boot-successful.service
-emerge --ask sys-kernel/installkernel
+echo 'sys-kernel/installkernel dracut' > /etc/portage/package.use/installkernel
+echo 'kernel_cmdline=" root=LABEL=ROOT "' > /etc/dracut.conf.d/00-installkernel.conf
+emerge --ask sys-kernel/installkernel 
 emerge --ask sys-kernel/gentoo-kernel-bin
-# emerge --ask sys-kernel/gentoo-sources
-
-
+# emerge --ask sys-kernel/gentoo-sources sys-kernel/genkernel 
 eselect kernel list
-eselect kernel set 2
+eselect kernel set 1
 ls -l /usr/src/linux
+
+# Если source то необходимо скомпилировать ядро команлды
+# 2 Собрать ядро из -bin конфига
+### простой вариант
+cd /usr/src/linux
+genkernel all # --menuconfig если нужно
+# END простой вариант
+cp /boot/config-*-gentoo-dist /usr/src/linux/.config
+cd /usr/src/linux
+make olddefconfig   # обновляем до текущей версии исходников
+make -j$(nproc)
+make modules_install
+make install
+# 2 END
+# END компиляция source
+
+
 
 nano /etc/fstab
 echo ariko > /etc/hostname
@@ -142,16 +150,8 @@ systemctl preset-all --preset-mode=enable-only
 # Установка системных приложений
 # emerge --ask app-admin/sysklogd
 # rc-update add sysklogd default
-emerge --ask net-misc/dhcpcd
-emerge --ask net-misc/openssh
-emerge --ask net-misc/networkmanager
-emerge --ask app-misc/ca-certificates
-
-# emerge --ask net-misc/openssh
-# systemctl enable sshd
-emerge --ask app-shells/bash-completion
-emerge --ask sys-apps/mlocate
-emerge --ask net-misc/chrony
+emerge --ask net-misc/dhcpcd net-misc/openssh net-misc/networkmanager app-misc/ca-certificates \
+    app-shells/bash-completion sys-apps/mlocate net-misc/chrony
 
 update-ca-certificates
 systemctl enable chronyd.service
@@ -161,7 +161,7 @@ systemctl enable sshd
 systemctl enable dhcpcd
 
 # Утилиты для работы с файловыми системами и НВМЕ
-emerge --ask sys-fs/btrfs-progs sys-fs/e2fsprogs sys-block/io-scheduler-udev-rules
+emerge --ask sys-fs/btrfs-progs sys-block/io-scheduler-udev-rules
 
 # WIFI PPPp
 emerge --ask net-dialup/ppp
@@ -169,11 +169,6 @@ emerge --ask net-wireless/iw net-wireless/wpa_supplicant
 
 emerge --ask --verbose sys-boot/grub
 # emerge --ask --update --newuse --verbose sys-boot/grub
-### Если какая-то шляпа
-umount /dev/sda1
-mount /dev/sda1 /boot
-###
-
 # grub-install --efi-directory=/boot --target=x86_64-efi
 grub-install --efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -182,7 +177,7 @@ passwd
 emerge --ask app-admin/sudo
 useradd -m -G users,wheel,audio -s /bin/bash mio 
 passwd mio
-passwd -l root
+# passwd -l root
 EDITOR=nano visudo
 # %wheel ALL=(ALL) ALL
 
