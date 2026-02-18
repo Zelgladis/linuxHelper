@@ -263,10 +263,15 @@ make install
 cp /boot/config-*-gentoo-dist /usr/src/linux/.config
 cd /usr/src/linux
 make olddefconfig   # обновляем до текущей версии исходников
-make -j6 # ЯДра в системе
+make -j$(nproc)
 make modules_install
 make install
 # 2 END
+
+# Команды удаление серта если брали конфиг из старого ядра
+sed -i 's|^CONFIG_MODULE_SIG_KEY=.*|CONFIG_MODULE_SIG_KEY="certs/signing_key.pem"|' .config
+sed -i 's|^CONFIG_SYSTEM_TRUSTED_KEYS=.*|CONFIG_SYSTEM_TRUSTED_KEYS=""|' .config
+# END
 
 # BOOT initframs
 dracut --kver=$(make kernelrelease) /boot/initramfs-$(make kernelrelease).img
