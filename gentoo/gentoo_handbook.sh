@@ -278,3 +278,11 @@ protontricks
 lutris
 obs-studio
 
+# VMWARE
+sudo emerge --ask --depclean x11-drivers/xf86-video-amdgpu \
+                               x11-drivers/xf86-video-ati \
+                               x11-drivers/xf86-video-nouveau
+
+sudo emerge --ask --autounmask-write @preserved-rebuild
+sudo dispatch-conf
+sudo emerge --ask @preserved-rebuild
