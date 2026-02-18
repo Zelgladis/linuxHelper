@@ -389,7 +389,6 @@ if [[ "$dop" == '1' ]];then
         firefox \
         elisa \
         obs-studio \
-        rhythmbox \
         krecorder \
         vlc \
         virtualbox \
@@ -398,6 +397,7 @@ if [[ "$dop" == '1' ]];then
         protontricks \
         wine wine-mono vkd3d winetricks \
         krita \
+        btop \
         passlib --noconfirm
     flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo usermod -aG docker $USER
