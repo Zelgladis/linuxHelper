@@ -16,7 +16,7 @@ fdisk /dev/sda
 # Форматируем диски в нужные fs
 mkfs.vfat -F 32 -n EFI /dev/sda1
 mkswap -L SWAP /dev/sda2
-mkfs.btrfs -L ROOT /dev/sda3
+mkfs.btrfs -L ROOT /dev/sda3 -f
 
 # Создаём директории и подключаем созданные диски
 mkdir --parents /mnt/gentoo
@@ -37,6 +37,7 @@ tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo #
 # Первоначальная Настройка системы установки
 # Настройка менеджера пакетов portage
 nano /mnt/gentoo/etc/portage/make.conf # confs/make.conf
+
 
 # Для Rust и настройки проца
 # RUSTFLAGS="${RUSTFLAGS} -C target-cpu=native"
@@ -71,12 +72,14 @@ emerge --ask --verbose --oneshot app-portage/mirrorselect
 mirrorselect -i -o >> /etc/portage/make.conf
 emerge --sync
 
+# Поддержка bin пакетов
+nano /etc/portage/binrepos.conf/gentoobinhost.conf # confs/gentoobinhost.conf
+
 # Выбираем для KDE plasma
 eselect profile set 8
 eselect profile list
 
-# Поддержка bin пакетов
-nano /etc/portage/binrepos.conf/gentoobinhost.conf # confs/gentoobinhost.conf
+
 
 # Поддержка процессора и видеокарты
 emerge --ask --oneshot app-portage/cpuid2cpuflags
@@ -117,12 +120,12 @@ nano /etc/portage/package.use/installkernel
 mkdir /etc/dracut.conf.d
 blkid # ROOT UUID осюда взять
 nano /etc/dracut.conf.d/00-installkernel.conf
-# kernel_cmdline=" root=UUID=5c0df033-0e06-4fc3-87a2-b6c13f906775 "
+# kernel_cmdline=" root=UUID=f4e89b63-0196-4d01-8574-4dea7f49ece6 "
 # echo 'sys-apps/systemd boot' > /etc/portage/package.use/uki
 systemctl enable kernel-bootcfg-boot-successful.service
 emerge --ask sys-kernel/installkernel
 emerge --ask sys-kernel/gentoo-kernel-bin
-emerge --ask sys-kernel/gentoo-sources
+# emerge --ask sys-kernel/gentoo-sources
 
 
 eselect kernel list
@@ -290,3 +293,6 @@ sudo emerge --ask --depclean x11-drivers/xf86-video-amdgpu \
 sudo emerge --ask --autounmask-write @preserved-rebuild
 sudo dispatch-conf
 sudo emerge --ask @preserved-rebuild
+
+# Если mesa ломаеся из за 32бит
+echo "media-libs/mesa -abi_x86_32" | sudo tee /etc/portage/package.use/mesa
