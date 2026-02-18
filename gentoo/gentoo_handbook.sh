@@ -185,6 +185,10 @@ EDITOR=nano visudo
 
 # Finnale По идеи после этой команды можно загружаться в систему и всё должно работать
 emerge --ask --update --deep --newuse @world
+# После смены профиля обязательно
+emerge --ask --changed-use --deep @world
+# END Смена прфиля
+
 # Починить конфы(точнее обновить)
 dispatch-conf
 locale-gen
