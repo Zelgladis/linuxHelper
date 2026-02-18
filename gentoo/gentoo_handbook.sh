@@ -175,7 +175,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 passwd
 emerge --ask app-admin/sudo
-useradd -m -G users,wheel,audio -s /bin/bash mio 
+addgoup sudo
+useradd -m -G users,wheel,audio,video,sudo -s /bin/bash mio 
 passwd mio
 # passwd -l root
 EDITOR=nano visudo
@@ -213,7 +214,6 @@ emerge --ask kde-apps/konsole \
             app-misc/fastfetch \
             kde-plasma/discover \
             app-eselect/eselect-repository \
-            sys-apps/flatpak \
             kde-misc/kdeconnect \
             kde-apps/ark \
             kde-apps/okular \
@@ -296,3 +296,6 @@ sudo emerge --ask @preserved-rebuild
 
 # Если mesa ломаеся из за 32бит
 echo "media-libs/mesa -abi_x86_32" | sudo tee /etc/portage/package.use/mesa
+
+sudo usermod -aG vboxguest vboxsf mio
+sudo modprobe -a vboxguest vboxsf vboxvideo
