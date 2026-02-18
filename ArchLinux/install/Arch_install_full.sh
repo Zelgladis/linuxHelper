@@ -193,12 +193,11 @@ echo 'include "~/.nano/*.nanorc"' >> ~/.nanorc
 # Xorg :0 -configure # После драверов
 # cp /root/xorg.conf.new /etc/X11/xorg.conf # После драйверов
 
-# YAY aur
-mkdir ~/OTB
-mkdir ~/OTB/gits
+# paru aur
+mkdir ~/OTB/gits -p
 cd ~/OTB/gits
-git clone https://aur.archlinux.org/yay.git
-cd yay
+git clone https://aur.archlinux.org/paru.git
+cd paru
 makepkg -si && cd ~
 
 if [[ "$visual" == 'XFCE' ]];then
