@@ -234,7 +234,6 @@ sudo emerge --ask --verbose app-containers/docker \
 sudo usermod -aG docker $USER
 
 sudo emerge --ask app-admin/keepassxc \
-            dev-build/cmake \
             sys-process/htop \
             media-sound/elisa
             
