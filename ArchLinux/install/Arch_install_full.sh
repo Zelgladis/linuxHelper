@@ -92,7 +92,7 @@ systemctl enable dhcpcd
 # EFI
 if [[ "$efi" == '1' ]];then
     echo "----------- EFI CHOSEN -----------"
-    grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ArchLinux --recheck
     mkinitcpio -p linux
 # LEGACY
 else
@@ -141,7 +141,7 @@ useradd -m -g users -G wheel -s /bin/bash $usern
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
-echo "gentoo:123" | sudo chpasswd
+echo "mio:123" | sudo chpasswd
 echo "root:123" | sudo chpasswd
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
@@ -225,8 +225,6 @@ elif [[ "$visual" == 'KDE' ]]; then
     sudo pacman -S --needed sddm --noconfirm
     sudo pacman -S --needed plasma plasma-workspace plasma-x11-session --noconfirm
     sudo pacman -S --needed qt6 --noconfirm
-    sudo pacman -S --needed networkmanager-openvpn --noconfirm
-    sudo pacman -S networkmanager-openconnect --noconfirm
 
     sudo systemctl enable sddm
     sudo systemctl enable NetworkManager
@@ -409,6 +407,7 @@ if [[ "$vb" == '1' ]];then
     sudo systemctl enable --now vboxservice.service
     sudo modprobe -a vboxguest vboxsf vboxvideo
     echo -e "vboxguest\nvboxsf\nvboxvideo" | sudo tee /etc/modules-load.d/virtualbox.conf
+    usermod -aG vboxsf $usern
 fi
 
 }

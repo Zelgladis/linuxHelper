@@ -47,13 +47,13 @@ mkfs.fat -F32 -n EFI /dev/sda2
 #### Монтируем диски
 ```bash
 mount /dev/sda1 /mnt
-mount --mkdir /dev/sda2 /mnt/efi
+mount --mkdir /dev/sda2 /mnt/boot
 swapon /dev/sda3
 ```
 
 #### Установка ArchLinux в /mnt
 ```bash
-pacstrap /mnt base linux linux-firmware
+pacstrap -K /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 ---
