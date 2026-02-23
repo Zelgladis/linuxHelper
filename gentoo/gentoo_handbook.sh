@@ -181,6 +181,12 @@ passwd mio
 # passwd -l root
 EDITOR=nano visudo
 # %wheel ALL=(ALL) ALL
+# Учим что wheel это админы
+sudo cat > /etc/polkit-1/rules.d/50-admin.rules << EOF
+polkit.addAdminRule(function(action, subject) {
+    return ["unix-group:wheel"];
+});
+EOF
 
 # Finnale По идеи после этой команды можно загружаться в систему и всё должно работать
 emerge --ask --update --deep --newuse @world
