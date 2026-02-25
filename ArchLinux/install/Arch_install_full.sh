@@ -136,11 +136,11 @@ EOF
     sed -i '/#NoExtract   =/a NoUpgrade = boot/grub/grub.cfg' /etc/pacman.conf
 fi
 
-useradd -m -g users -G wheel -s /bin/bash $usern
 
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
+useradd -m -g users -G wheel -s /bin/bash $usern
 echo "mio:123" | sudo chpasswd
 echo "root:123" | sudo chpasswd
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
@@ -174,7 +174,7 @@ pacman -S wget \
     linux-headers \
     dkms \
     go \
-    ttf-opensans ttf-dejavu ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
+    ttf-opensans ttf-dejavu ttf-dejavu-nerd ttf-hack ttf-ubuntu-font-family noto-fonts-emoji --noconfirm
 
 saveVars
 }

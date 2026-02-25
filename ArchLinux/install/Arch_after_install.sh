@@ -54,7 +54,7 @@ po_list=(
    "protontricks|Прога для wine|OFF|gamig_po"
    "wine|Windows раннер|OFF|gamig_po"
    "krita|Фотогоп для линукс|OFF|visual_po"
-   "passlib|Либы|OFF|system_po"
+   "python-passlib|Либы|OFF|system_po"
    "btop|Соверменный htop|OFF|system_po"
 )
 
