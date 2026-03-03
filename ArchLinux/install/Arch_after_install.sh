@@ -332,4 +332,11 @@ if [[ "${myShell}" == "zsh" ]]; then
     exec zsh
 fi
 
+if [[ "${FLATPAKS}" == "true" ]]; then
+    flatpak install flathub com.visualstudio.code
+    flatpak install flathub io.github.radiolamp.mangojuice
+    flatpak install flathub org.freedesktop.Platform.VulkanLayer.MangoHud
+    flatpak install flathub com.heroicgameslauncher.hgl
+fi
+
 timedatectl set-ntp true
