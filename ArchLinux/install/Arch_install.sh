@@ -78,10 +78,13 @@ pacman -S vi nano reflector gcc perl make dhcpcd openssh \
 systemctl enable sshd
 systemctl enable dhcpcd
 
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+reflector --country Russia --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
 # EFI
 if [[ "${boot_loader_list[$boot_loader-1]}" == 'EFI' ]];then
     echo "----------- EFI CHOSEN -----------"
-    grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ArchLinux --recheck
     mkinitcpio -p linux
 # LEGACY
 else
@@ -125,11 +128,10 @@ EOF
     sed -i '/#NoExtract   =/a NoUpgrade = boot/grub/grub.cfg' /etc/pacman.conf
 fi
 
-useradd -m -g users -G wheel -s /bin/bash $usern
-
 # Предоставить членам группы wheel доступ к sudo: 
 # в файле /etc/sudoers разкоментить %wheel      ALL=(ALL:ALL) ALL
 pacman -S sudo --noconfirm
+useradd -m -g users -G wheel -s /bin/bash $usern
 echo "$usern:123" | sudo chpasswd
 echo "root:123" | sudo chpasswd
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
