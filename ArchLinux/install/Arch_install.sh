@@ -74,7 +74,7 @@ echo "127.0.0.1 localhost
 pacman -Syu --noconfirm
 pacman -S vi nano reflector gcc perl make dhcpcd openssh \
        btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo bash-completion \
-       chafa libsixel imagemagick --noconfirm
+       chafa libsixel imagemagick ntfs-3g --noconfirm
 systemctl enable sshd
 systemctl enable dhcpcd
 
