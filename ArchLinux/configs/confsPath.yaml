@@ -1,0 +1,3 @@
+'fish.config': '~/.config/fish/fish.config'
+'starship.toml': '~/.config/starship.toml'
+'mokka.jsonc': '~/.config/fastfetsh/mokka.jsonc'

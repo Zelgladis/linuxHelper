@@ -313,6 +313,8 @@ if [[ " choice choice_min all " =~ " ${po_main_list[$po_main-1]} " ]];then
     sudo pacman -S ${po_install[@]} --noconfirm
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpak.repo || true
     sudo usermod -aG docker $USER || true
+    sudo pacman -S fish starship yq --noconfirm
+    cp "$()"
 fi
 
 if [[ "${yesno[$vb-1]}" == 'Yes' ]];then
