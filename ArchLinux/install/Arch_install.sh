@@ -158,6 +158,9 @@ sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
   s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
 }' /etc/pacman.conf
 
+pacman -S networkmanager
+systemctl enable NetworkManager
+
 sudo pacman -Syu --noconfirm
 
 
