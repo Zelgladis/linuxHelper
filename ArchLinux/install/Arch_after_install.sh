@@ -159,6 +159,7 @@ ${po_install[@]}
 Продолжаем?(y/n): "
 read conte
 
+set -e
 
 if [[ "$conte" != 'y' ]];then
     exit 0
