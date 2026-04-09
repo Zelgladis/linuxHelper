@@ -3,9 +3,6 @@
 # echo 'PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔️'; else echo '❌'; fi) \[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[33m\]\w\[\e[0m\]\[\e[95m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | awk '{printf \" (%s)\", \$1}') \[\e[0m\]💫 $ "' >> ~/.bashrc
 # echo PS1="\[\e[91m\]\$(if [[ \$? -eq 0 ]]; then echo '✔'; else echo '❌'; fi) \[\e[38;5;81m\]\u@\h\[\e[0m\] \[\e[94m\]🌸 \[\e[90m\]\w> \[\e[0m\]"
 
-
-set -e
-
 visual_list=(
     "Cinnamon"
     "KDE"
@@ -47,7 +44,7 @@ po_list=(
    "elisa|Музыкальный плеер|OFF|base_po"
    "obs-studio|Для стриминга|OFF|gamig_po"
    "krecorder|NOT|OFF|base_po"
-   "vlc|Плеер|OFFbase_po"
+   "vlc|Плеер|OFF|base_po"
    "virtualbox|Виртуальные машины|OFF|prog_po"
    "ark|Архиватор|OFF|base_po"
    "kleopatra|NOT|OFF|system_po"
@@ -85,8 +82,8 @@ done
 
 po_opt=()
 for((i=0; i<${#po_list[@]}; i++)); do
-    IFS="|" read -r a b c <<< "${po_list[$i]}"
-    po_opt+=("$a" "$b" "$c")
+    IFS="|" read -r a b c d <<< "${po_list[$i]}"
+    po_opt+=("$a" "$b" "$c" "$d")
 done
 
 po_main_opt=()
