@@ -333,7 +333,6 @@ if [[ "${myShell}" == "zsh" ]]; then
 fi
 
 if [[ "${FLATPAKS}" == "true" ]]; then
-    flatpak install flathub com.visualstudio.code
     flatpak install flathub io.github.radiolamp.mangojuice
     flatpak install flathub org.freedesktop.Platform.VulkanLayer.MangoHud
     flatpak install flathub com.heroicgameslauncher.hgl
