@@ -13,6 +13,10 @@ sudo systemctl enable sddm
 # Шрифты
 sudo pacman -S --needed ttf-firacode-nerd noto-fonts noto-fonts-emoji ttf-dejavu \
     ttf-nerd-fonts-symbols-mono ttf-ibm-plex
+# Обновляем кэш шрифтов (обязательно после установки)
+fc-cache -fv
+# Проверяем
+fc-list | grep -i "fira code"
 
 # Утилиты
 sudo pacman -S --needed grim slurp wl-clipboard cliphist brightnessctl playerctl \
@@ -30,17 +34,24 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 
 
 
-# 1. Клонируем репозиторий во временную директорию
 cd ~
+# Удаляем возможный "мусор" и клонируем заново
+rm -rf temp-dots
 git clone https://github.com/knMaqHe/Dots-Arch-Linux-Hyprland.git temp-dots
 
-# 2. Копируем конфиги приложений в ~/.config/
-#    (используем cp -r с явными путями, а не "скопируйте папки")
-cp -r temp-dots/hypr/* ~/.config/hypr/
-cp -r temp-dots/waybar/* ~/.config/waybar/
-cp -r temp-dots/rofi/* ~/.config/rofi/
-cp -r temp-dots/alacritty/* ~/.config/alacritty/
-cp -r temp-dots/swaync/* ~/.config/swaync/
+# Проверяем структуру (должны быть папки hypr, waybar, rofi и т.д.)
+ls temp-dots/
+
+# Создаём целевые папки и копируем файлы
+mkdir -p ~/.config/{hypr,waybar,rofi,alacritty,swaync}
+cp -rfv temp-dots/hypr/* ~/.config/hypr/
+cp -rfv temp-dots/waybar/* ~/.config/waybar/
+cp -rfv temp-dots/rofi/* ~/.config/rofi/
+cp -rfv temp-dots/alacritty/* ~/.config/alacritty/
+cp -rfv temp-dots/swaync/* ~/.config/swaync/
+
+# Проверяем, появился ли главный конфиг
+ls -la ~/.config/hypr/hyprland.conf
 
 # 3. Копируем обои и изображения
 mkdir -p ~/Images/Wallpaper
