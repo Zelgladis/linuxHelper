@@ -76,7 +76,7 @@ pacman -S vi nano reflector gcc perl make dhcpcd openssh \
        btrfs-progs e2fsprogs grub efibootmgr os-prober hwinfo bash-completion \
        chafa libsixel imagemagick ntfs-3g dosfstools exfatprogs gparted --noconfirm
 systemctl enable sshd
-systemctl enable dhcpcd
+# systemctl enable dhcpcd
 
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 reflector --country Russia --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
