@@ -213,6 +213,8 @@ elif [[ "${visual_list[$visual-1]}" == 'KDE' ]]; then
     sudo pacman -S --needed networkmanager-openvpn --noconfirm
     sudo pacman -S networkmanager-openconnect --noconfirm
 
+    sudo pacman -S dolphin-plugins --noconfirm
+
     sudo systemctl enable sddm
     sudo systemctl enable NetworkManager
 elif [[ "${visual_list[$visual-1]}" == 'Cinnamon' ]];then
