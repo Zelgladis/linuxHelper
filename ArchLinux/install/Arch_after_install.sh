@@ -298,6 +298,11 @@ elif [[ "${visual_list[$visual-1]}" == 'GNOME' ]];then
 
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable gdm
+elif [[ "${visual_list[$visual-1]}" == 'niri' ]]; then
+    sudo pacman -Syu niri xwayland-satellite xdg-desktop-portal-gnome xdg-desktop-portal-gtk alacritty \
+    dms-shell-niri matugen cava qt6-multimedia-ffmpeg
+    systemctl --user add-wants niri.service dms
+
 elif [[ "${visual_list[$visual-1]}" == 'MangoWC' ]]; then
     echo 'TODO make it'
 elif [[ "${visual_list[$visual-1]}" == 'Hyprland' ]]; then
@@ -326,7 +331,7 @@ if [[ "${yesno[$vb-1]}" == 'Yes' ]];then
 fi
 
 if [[ "${myShell}" == "zsh" ]]; then
-    yay -S git zsh wget ttf-meslo-nerd-font-powerlevel10k --noconfirm
+    paru -S git zsh wget ttf-meslo-nerd-font-powerlevel10k --noconfirm
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
         ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k

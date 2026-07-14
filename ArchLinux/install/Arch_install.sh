@@ -153,13 +153,13 @@ fi
 # xorg dop and fonts
 pacman -S xorg xorg-server xorg-drivers noto-fonts-cjk otf-ipafont --noconfirm
 
+pacman -S networkmanager
+systemctl enable NetworkManager
+
 sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
   s/^#\(\[multilib\]\)/\1/
   s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
 }' /etc/pacman.conf
-
-pacman -S networkmanager
-systemctl enable NetworkManager
 
 sudo pacman -Syu --noconfirm
 

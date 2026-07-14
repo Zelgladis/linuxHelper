@@ -99,13 +99,20 @@ echo '127.0.0.1 localhost
 
 ##### Доп по(необходимое):
 ```bash
-pacman -Suy
+pacman -S networkmanager
+systemctl enable NetworkManager
+
+sudo sed -i '/^#\[\s*multilib\s*\]/, /^#\[/ {
+  s/^#\(\[multilib\]\)/\1/
+  s/^#\(Include\s*=\s*\/etc\/pacman.d\/mirrorlist\)/\1/
+}' /etc/pacman.conf
+pacman -Syu
 pacman -S gvim vi nano micro reflector --noconfirm
 # Для автоматического получения сетевых настроек установите dhcpcd и добавить в автозапуск
-pacman -S dhcpcd --noconfirm
+#pacman -S dhcpcd --noconfirm
 pacman -S openssh --noconfirm
 systemctl enable sshd
-systemctl enable dhcpcd
+#systemctl enable dhcpcd
 # Установите пакет grub и efibootmgr
 pacman -S btrfs-progs --noconfirm
 pacman -S e2fsprogs --noconfirm
@@ -140,9 +147,9 @@ mkinitcpio -p linux
 ```
 
 ```bash
-# EFI Должен быть создан раздел FAT 32 и монитрован в /efi
-grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux --recheck
-mkinitcpio -p linux
+# EFI Должен быть создан раздел FAT 32 и монитрован в /boot
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ArchLinux --recheck
+grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 ##### Автоматическая настрйока
