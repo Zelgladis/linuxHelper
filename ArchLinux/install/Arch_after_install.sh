@@ -277,8 +277,9 @@ elif [[ "${visual_list[$visual-1]}" == 'GNOME' ]];then
         gnome-shell-extensions \
         gnome-shell-extension-desktop-icons-ng \
         firefox --noconfirm
+    sudo pacman -Rns gnome-mines gnome-sudoku gnome-mahjongg gnome-robots quadrapassel swell-foop gnome-chess gnome-nibbles
 
-    yay -S gnome-shell-extension-dash-to-dock pamac-aur --noconfirm
+    paru -S gnome-shell-extension-dash-to-dock --noconfirm
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Alt>Shift_L']"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Shift>Alt_L']"
     gnome-extensions enable dash-to-dock@micxgx.gmail.com
