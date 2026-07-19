@@ -98,9 +98,9 @@ paru catppuccin-sddm-theme-mocha
 systemctl --user enable mako.service
 
 ## Niri
-sudo pacman -S niri xwayland-satellite xdg-desktop-portal-gnome xdg-desktop-portal-gtk alacritty matugen cava qt6-multimedia-ffmpeg mako waybar swaybg swayidle fuzzel
-systemctl --user add-wants niri.service
-systemctl --user add-wants niri.service mako.service
-systemctl --user add-wants niri.service waybar.service
+sudo pacman -S niri xwayland-satellite xdg-desktop-portal-gnome xdg-desktop-portal-gtk xdg-desktop-portal-wlr xdg-desktop-portal-kde alacritty matugen cava qt6-multimedia-ffmpeg waybar swaybg swayidle fuzzel kitty
+# systemctl --user add-wants niri.service
+# systemctl --user add-wants niri.service mako.service
+# systemctl --user add-wants niri.service waybar.service
 
 
